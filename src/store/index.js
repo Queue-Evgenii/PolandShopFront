@@ -1,7 +1,13 @@
+import categoryModules from './modules/category.modules'
+import productModules from './modules/product.modules'
 import { createStore } from 'vuex'
 
-export default createStore({
+const store = createStore({
   state: {
+    cartList: [],
+    quickBuy: [],
+    recentList: [],
+    isQuickBuy: false,
   },
   getters: {
   },
@@ -10,5 +16,9 @@ export default createStore({
   actions: {
   },
   modules: {
+    categoryModules,
+    productModules,
   }
 })
+
+export default store
