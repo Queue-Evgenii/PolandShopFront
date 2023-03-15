@@ -1,12 +1,13 @@
 <template>
   <div class="subslider">
     <VueSlickCarousel v-if="subSlides.length !== 0" v-bind="settings" class="subslider__wrapper" ref="slider">
-        <router-link  class="subslider__slide" v-for="item in subSlides" :key="item.id" :to="{name: 'catalogList', params: {id: item.id}}">
-          <div class="subslider__image"><img :src="item.preview" alt=""></div>
-          <div class="subslider__label">{{ item.name }}</div>
-        </router-link>
+          <router-link  class="subslider__slide" v-for="item in subSlides" :key="item.id" :to="{name: 'catalogList', params: {id: item.id}}">
+            <div class="subslider__image"><img :src="item.preview" alt=""></div>
+            <div class="subslider__label">{{ item.name }}</div>
+          </router-link>
     </VueSlickCarousel>
     <span class="loading" v-if="subSlides.length === 0"></span>
+    {{ this.subSlides }}
   </div>
 </template>
 <style lang="stylus">
@@ -163,7 +164,6 @@ export default {
   },
   mounted () {
     this.fetchCategory()
-    this.slider = this.$refs.slider
   },
 }
 </script>
