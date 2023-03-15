@@ -24,21 +24,21 @@ const routes = [
     name: 'productItem',
     component: () => import('../views/ProductView.vue')
   },
-  // {
-  //   path: '/cart/',
-  //   name: 'cart',
-  //   component: () => import('../views/CartView.vue')
-  // },
-  // {
-  //   path: '/payment/',
-  //   name: 'payment',
-  //   component: () => import('../views/PaymentView.vue')
-  // },
-  // {
-  //   path: '/:pathMatch(.*)',
-  //   name: 'PageNotFound',
-  //   component: () => import('../views/PageNotFound.vue')
-  // },
+  {
+    path: '/cart/',
+    name: 'cart',
+    component: () => import('../views/CartView.vue')
+  },
+  {
+    path: '/payment/',
+    name: 'payment',
+    component: () => import('../views/PaymentView.vue')
+  },
+  {
+    path: '/:pathMatch(.*)',
+    name: 'PageNotFound',
+    component: () => import('../views/PageNotFound.vue')
+  },
   {
     path: '/kategorie/',
     name: 'kategorie',
