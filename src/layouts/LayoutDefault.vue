@@ -323,7 +323,7 @@
       }
     }
     &__favorite-icon{
-      background url('../assets/img/header/icon/favorite.png') center no-repeat
+      background url('../../src/assets/img/header/icon/favorite.png') center no-repeat
       height 26px
       flex 0 0 26px
       position relative
@@ -332,7 +332,7 @@
       }
     }
     &__cart-icon{
-      background url('../assets/img/header/icon/cart.png') center no-repeat
+      background url('../../src/assets/img/header/icon/cart.png') center no-repeat
       height 26px
       flex 0 0 26px
       position relative
@@ -341,7 +341,7 @@
       }
     }
     &__user-icon{
-      background url('../assets/img/header/icon/user.png') center no-repeat
+      background url('../../src/assets/img/header/icon/user.png') center no-repeat
       height 27px
       flex 0 0 26px
     }
@@ -606,7 +606,6 @@
 }
 </style>
 <script>
-// import cartList from '@/mock/cartList'
 
 import InputHeader from '@/components/header/InputHeader'
 import HeaderMenu from '@/components/header/HeaderMenu'

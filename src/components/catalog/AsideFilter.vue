@@ -5,12 +5,12 @@
       <div class="sidebar-filter__section section-filter">
         <div class="section-filter__title">Cena £</div>
         <div class="section-filter__body active range-filter">
-          <range-slider
+          <!-- <range-slider
             class="range-filter__slider"
             :min="filterSlider.sliderMinValue"
             :max="filterSlider.sliderMaxValue"
             v-model="filterSlider.sliderValue">
-          </range-slider>
+          </range-slider> -->
           <div class="range-filter__values flex">
             <span class="range-filter__min">{{ filterSlider.sliderMinValue }}</span>
             <span class="range-filter__max">{{ filterSlider.sliderMaxValue }}</span>
@@ -34,9 +34,9 @@
 </template>
 <script>
   import SectionFilter from "@/components/catalog/SectionFilter";
-  import RangeSlider from 'vue-range-slider'
-  // you probably need to import built-in style
-  import 'vue-range-slider/dist/vue-range-slider.css'
+  // import RangeSlider from 'vue-range-slider'
+  // // you probably need to import built-in style
+  // import 'vue-range-slider/dist/vue-range-slider.css'
   export default {
     data () {
       return {
@@ -55,7 +55,7 @@
       }
     },
     components: {
-      RangeSlider,
+      // RangeSlider,
       SectionFilter
     },
     methods: {

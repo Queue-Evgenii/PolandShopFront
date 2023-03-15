@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-
 const routes = [
   {
     path: '/',
@@ -84,7 +83,7 @@ const router = createRouter({
   routes,
   linkActiveClass: 'current',
   scrollBehavior() {
-      return {x: 0, y: 0}
+      return { top: 0 }
   }
 })
 

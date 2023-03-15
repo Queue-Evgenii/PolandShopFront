@@ -40,7 +40,7 @@ import AsideFilter from '@/components/catalog/AsideFilter'
 import CatalogProducts from '@/components/catalog/CatalogProducts'
 import RecentProducts from '@/components/home/RecentProducts'
 import PageAds from '@/components/PageAds'
-import NotFound from '@/components/NotFound'
+// import NotFound from '@/components/NotFound'
 export default {
   name: 'CatalogView',
   layouts: 'default',
@@ -55,7 +55,7 @@ export default {
     CatalogProducts,
     RecentProducts,
     PageAds,
-    NotFound,
+    // NotFound,
   },
   data () {
     return {

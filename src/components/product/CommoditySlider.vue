@@ -2,29 +2,29 @@
   <div class="commodity-page__images commodity-images">
     <div class="commodity-images__wrapper">
       <div class="commodity-images__array" v-if="typeof productItem.preview === 'array'">
-        <VueSlickCarousel 
-        ref="thumb" 
-        v-bind="settingsThumbs" 
-        :asNavFor="slider"
-        class="commodity-images__thumbs thumbs-commodity"
-      >
-        <div class="thumbs-commodity__slide" v-for="item in productItem.preview" :key="item.id">
-          <div class="thumbs-commodity__image"><img :src="item.image" alt=""></div>
-        </div>
-      </VueSlickCarousel>
-      <VueSlickCarousel 
-        ref="slider" 
-        v-bind="settings" 
-        :asNavFor="thumb"
-        class="commodity-images__carousel carousel-commodity"
-      >
-        <div class="carousel-commodity__slide"
-          v-for="item in productItem.preview"
-          :key="item.id"
+        <!-- <VueSlickCarousel 
+          ref="thumb" 
+          v-bind="settingsThumbs" 
+          :asNavFor="slider"
+          class="commodity-images__thumbs thumbs-commodity"
         >
-          <div class="carousel-commodity__image"><img :src="item.image" alt="" @click="openPopup(item.id)"></div>
-        </div>
-      </VueSlickCarousel>
+          <div class="thumbs-commodity__slide" v-for="item in productItem.preview" :key="item.id">
+            <div class="thumbs-commodity__image"><img :src="item.image" alt=""></div>
+          </div>
+        </VueSlickCarousel>
+        <VueSlickCarousel 
+          ref="slider" 
+          v-bind="settings" 
+          :asNavFor="thumb"
+          class="commodity-images__carousel carousel-commodity"
+        >
+          <div class="carousel-commodity__slide"
+            v-for="item in productItem.preview"
+            :key="item.id"
+          >
+            <div class="carousel-commodity__image"><img :src="item.image" alt="" @click="openPopup(item.id)"></div>
+          </div>
+        </VueSlickCarousel> -->
       </div>
       <div class="commodity-images__string" v-if="typeof productItem.preview === 'string'">
         <div class="carousel-commodity__image"><img :src="productItem.preview" alt="" @click="openPopup(1)"></div>
@@ -33,8 +33,8 @@
   </div>
 </template>
 <script>
-import VueSlickCarousel from 'vue-slick-carousel'
-import 'vue-slick-carousel/dist/vue-slick-carousel.css'
+// import VueSlickCarousel from 'vue-slick-carousel'
+// import 'vue-slick-carousel/dist/vue-slick-carousel.css'
 export default {
   data() {
     return {
@@ -124,7 +124,7 @@ export default {
       required: true,
     }
   },
-  components: { VueSlickCarousel },
+  // components: { VueSlickCarousel },
   methods: {
     openPopup (id) {
       this.$emit('openPopup', id)

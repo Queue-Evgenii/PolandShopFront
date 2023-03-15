@@ -159,7 +159,7 @@ export default {
       justify-content center
       &::after{
         content ''
-        background url('/assets/img/catalog/price-arrow.png') 0 0 / 100% no-repeat
+        background url('../../assets/img/catalog/price-arrow.png') 0 0 / 100% no-repeat
         display inline-block
         height 17px
         width 12px

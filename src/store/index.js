@@ -1,6 +1,6 @@
+import { createStore } from 'vuex'
 import categoryModules from './modules/category.modules'
 import productModules from './modules/product.modules'
-import { createStore } from 'vuex'
 
 const store = createStore({
   state: {

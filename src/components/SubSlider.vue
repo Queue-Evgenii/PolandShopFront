@@ -1,13 +1,55 @@
 <template>
   <div class="subslider">
-    <VueSlickCarousel v-if="subSlides.length !== 0" v-bind="settings" class="subslider__wrapper" ref="slider">
-          <router-link  class="subslider__slide" v-for="item in subSlides" :key="item.id" :to="{name: 'catalogList', params: {id: item.id}}">
-            <div class="subslider__image"><img :src="item.preview" alt=""></div>
-            <div class="subslider__label">{{ item.name }}</div>
-          </router-link>
-    </VueSlickCarousel>
+    <!-- <VueSlickCarousel v-if="this.subSlides.length !== 0" v-bind="settings" class="subslider__wrapper">
+        <router-link  class="subslider__slide" v-for="item in subSlides" :key="item.id" :to="{name: 'catalogList', params: {id: item.id}}">
+          <div class="subslider__image"><img :src="item.preview" alt=""></div>
+          <div class="subslider__label">{{ item.name }}</div>
+        </router-link>
+    </VueSlickCarousel> -->
+
+    <swiper
+      v-if="subSlides.length !== 0"
+      :modules="modules"
+      :space-between="15"
+      :loop="true"
+      :scrollbar="false"
+      :navigation="true"
+      :breakpoints="{
+            1590: {
+              slidesPerView: 4
+            },
+            1350: {
+              slidesPerView: 3
+            },
+            1200: {
+              slidesPerView: 2
+            },
+            1130: {
+              slidesPerView: 4
+            },
+            920: {
+              slidesPerView: 3
+            },
+            520: {
+              slidesPerView: 2,
+            },
+            300: {
+              slidesPerView: 1,
+            }
+      }"
+      @swiper="onSwiper"
+      @slideChange="onSlideChange"
+      class="subslider__wrapper"
+    >
+      <swiper-slide v-for="item in subSlides" :key="item.id">
+        <router-link  class="subslider__slide" :to="{name: 'catalogList', params: {id: item.id}}">
+          <div class="subslider__image"><img :src="item.preview" alt=""></div>
+          <div class="subslider__label">{{ item.name }}</div>
+        </router-link>
+      </swiper-slide>
+    </swiper>
+
     <span class="loading" v-if="subSlides.length === 0"></span>
-    {{ this.subSlides }}
   </div>
 </template>
 <style lang="stylus">
@@ -31,12 +73,13 @@
         flex: 1 1 auto
         min-width 0
         justify-content space-between
-        .slick-prev{
+        position initial
+        .swiper-button-prev{
           display none !important
         }
-        .slick-next{
-          right -120px
-          bottom 50px
+        .swiper-button-next{
+          right 20px
+          bottom 105px
         }
         .slick-track{
           display flex !important
@@ -83,87 +126,43 @@
     }
 </style>
 <script>
-import VueSlickCarousel from 'vue-slick-carousel'
-import 'vue-slick-carousel/dist/vue-slick-carousel.css'
+import { Swiper } from 'swiper/vue/swiper.js';
+import { SwiperSlide } from 'swiper/vue/swiper-slide';
+import { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
+import 'swiper/swiper.css';
+
 export default {
   data () {
     return {
-      settings: {
-        "dots": false,
-        "focusOnSelect": true,
-        "infinite": false,
-        "speed": 500,
-        "slidesToShow": 4,
-        "slidesToScroll": 1,
-        "touchThreshold": 5,
-        "responsive": [
-          {
-            "breakpoint": 1590,
-            "settings": {
-              "slidesToShow": 3
-            }
-          },
-          {
-            "breakpoint": 1350,
-            "settings": {
-              "slidesToShow": 2
-            }
-          },
-          {
-            "breakpoint": 1200,
-            "settings": {
-              "slidesToShow": 4
-            }
-          },
-          {
-            "breakpoint": 1130,
-            "settings": {
-              "slidesToShow": 3
-            }
-          },
-          {
-            "breakpoint": 920,
-            "settings": {
-              "slidesToShow": 2
-            }
-          },
-          {
-            "breakpoint": 768,
-            "settings": {
-              "slidesToShow": 2,
-              "dots": true
-            }
-          },
-          {
-            "breakpoint": 520,
-            "settings": {
-              "slidesToShow": 1,
-              "dots": true
-            }
-          }
-        ]
-      },
-      slider: undefined,
       subSlides: [],
     }
   },
-  // props: {
-  //   subSlides: {
-  //     type: Array,
-  //   }
-  // },
-  components: { VueSlickCarousel },
+  // components: { VueSlickCarousel },
   methods: {
     fetchCategory () {
       this.$store.dispatch('getCategories')
       .then(data => {
         this.subSlides = data.data.filter(item => item.children.length === 0)
-        console.log(this.subSlides)
       })
     }
   },
   mounted () {
     this.fetchCategory()
+  },
+  components: {
+    Swiper,
+    SwiperSlide,
+  },
+  setup() {
+    const onSwiper = () => {
+    };
+    const onSlideChange = () => {
+    };
+    return {
+      onSwiper,
+      onSlideChange,
+      modules: [Navigation, Pagination, Scrollbar, A11y],
+    };
   },
 }
 </script>
