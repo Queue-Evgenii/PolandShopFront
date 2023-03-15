@@ -11,14 +11,14 @@
               <div class="product-page__content content">
                 <div class="product-page__commodity commodity-page">
                   <!-- <div class="carousel-commodity__image"><img :src="this.productItem.preview" alt="" @click="openPopup(item.id)"></div> -->
-                  <!-- <commodity-slider :productItem="this.productItem" @openPopup="openPopup" /> -->
-                  <!-- <commodity-content :productItem="this.productItem" @openAlertPopup="openAlertPopup" @inputValue="inputValue" /> -->
+                  <commodity-slider :productItem="this.productItem" @openPopup="openPopup" />
+                  <commodity-content :productItem="this.productItem" @openAlertPopup="openAlertPopup" @inputValue="inputValue" />
                 </div>
                 <div class="product-page__info info-product">
-                  <!-- <about-product v-if="this.productItem.description" :aboutText="this.productItem.description" /> -->
+                  <about-product v-if="this.productItem.description" :aboutText="this.productItem.description" />
                   <!-- <table-product :tableProductItems="productItem.description" /> -->
                   <!-- <gallery-product :commoditySlides="productItem.images" /> -->
-                  <!-- <reviews-product v-if="this.productItem.feedbacks" :ReviewsProductItems="productItem.feedbacks" /> -->
+                  <reviews-product v-if="this.productItem.feedbacks" :ReviewsProductItems="productItem.feedbacks" />
                   <!-- <button class="info-product__more">Uczyć się więcej</button> -->
                 </div>
               </div>
@@ -43,7 +43,7 @@
      @closePopup="closePopup"
      :popupOutput="this.beforePayment"
     >
-      <!-- <payment-alert @quickBuy="quickBuy" :popupOutput="this.beforePayment"/> -->
+      <payment-alert @quickBuy="quickBuy" :popupOutput="this.beforePayment"/>
     </page-popup>
   </div>
 </template>
@@ -139,14 +139,14 @@
 import PagePopup from '@/components/PagePopup'
 
 
-// import PaymentAlert from '@/components/product/PaymentAlert'
-// import ReviewsProduct from '@/components/product/ReviewsProduct'
+import PaymentAlert from '@/components/product/PaymentAlert'
+import ReviewsProduct from '@/components/product/ReviewsProduct'
 // import TableProduct from '@/components/product/TableProduct'
 // import GalleryProduct from '@/components/product/GalleryProduct'
-// import AboutProduct from '@/components/product/AboutProduct'
+import AboutProduct from '@/components/product/AboutProduct'
 
-// import CommodityContent from '@/components/product/CommodityContent'
-// import CommoditySlider from '@/components/product/CommoditySlider'
+import CommodityContent from '@/components/product/CommodityContent'
+import CommoditySlider from '@/components/product/CommoditySlider'
 
 import LayoutDefault from '@/layouts/LayoutDefault'
 import AsideSidebar from '@/components/home/AsideSidebar'
@@ -160,14 +160,14 @@ export default {
     AsideSidebar,
     RecentProducts,
     PageAds,
-    // CommoditySlider,
-    // CommodityContent,
-    // AboutProduct,
+    CommoditySlider,
+    CommodityContent,
+    AboutProduct,
     // TableProduct,
     // GalleryProduct,
-    // ReviewsProduct,
+    ReviewsProduct,
     PagePopup,
-    // PaymentAlert,
+    PaymentAlert,
   },
   data() {
     return {

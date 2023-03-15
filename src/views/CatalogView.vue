@@ -8,16 +8,16 @@
             <div class="catalog-page__row row">
               <aside class="catalog-page__sidebar sidebar">
                 <aside-sidebar v-if="SidebarWidth" />
-                <!-- <aside-filter :filterItems="filterItems" v-if="SidebarWidth" /> -->
+                <aside-filter :filterItems="filterItems" v-if="SidebarWidth" />
               </aside>
               <div class="catalog-page__content content">
                 <div class="catalog-page__slider">
                   <sub-slider :subSlides="categoryItems" />
                 </div>
                 <div class="catalog-page__products">
-                  <!-- <catalog-products :catalogProducts="catalogProducts" :productsLabel="productsLabel" > 
+                  <catalog-products :catalogProducts="catalogProducts" :productsLabel="productsLabel" > 
                     <aside-filter :filterItems="filterItems" v-if="!SidebarWidth"></aside-filter>
-                  </catalog-products> -->
+                  </catalog-products>
                 </div>
               </div>
             </div>
@@ -36,8 +36,8 @@
 import LayoutDefault from '@/layouts/LayoutDefault'
 import AsideSidebar from '@/components/home/AsideSidebar'
 import SubSlider from '@/components/SubSlider'
-// import AsideFilter from '@/components/catalog/AsideFilter'
-// import CatalogProducts from '@/components/catalog/CatalogProducts'
+import AsideFilter from '@/components/catalog/AsideFilter'
+import CatalogProducts from '@/components/catalog/CatalogProducts'
 import RecentProducts from '@/components/home/RecentProducts'
 import PageAds from '@/components/PageAds'
 // import NotFound from '@/components/NotFound'
@@ -50,9 +50,9 @@ export default {
   components: {
     LayoutDefault,
     AsideSidebar,
-    // AsideFilter,
+    AsideFilter,
     SubSlider,
-    // CatalogProducts,
+    CatalogProducts,
     RecentProducts,
     PageAds,
     // NotFound,
