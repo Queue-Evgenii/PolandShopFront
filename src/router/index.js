@@ -19,11 +19,11 @@ const routes = [
     name: 'catalogList',
     component: () => import('../views/CatalogView.vue')
   },
-  // {
-  //   path: '/product/:id',
-  //   name: 'productItem',
-  //   component: () => import('../views/ProductView.vue')
-  // },
+  {
+    path: '/product/:id',
+    name: 'productItem',
+    component: () => import('../views/ProductView.vue')
+  },
   // {
   //   path: '/cart/',
   //   name: 'cart',

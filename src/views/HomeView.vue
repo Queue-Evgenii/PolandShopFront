@@ -29,12 +29,12 @@ export default {
               </aside>
               <div class="home-page__content content">
                 <main-slider :mainSlides="mainSlides" />
-                <!-- <sub-slider /> -->
+                <sub-slider />
               </div>
             </div>
           </div>
         </div>
-        <!-- <home-catalogue
+        <home-catalogue
           catalogId='13'
           @addToCart="addToCart"
         />
@@ -48,7 +48,7 @@ export default {
           @addToCart="addToCart"
         />
         <recent-products v-if="recentList.length !== 0" :recentProducts="recentList" @addToCart="addToCart" />
-        <page-ads /> -->
+        <page-ads />
       </main>
     </layout-default>
   </div>
@@ -58,10 +58,10 @@ export default {
 import LayoutDefault from '@/layouts/LayoutDefault'
 import AsideSidebar from '@/components/home/AsideSidebar'
 import MainSlider from '@/components/home/MainSlider'
-// import SubSlider from '@/components/SubSlider'
-// import HomeCatalogue from '@/components/home/HomeCatalogue'
-// import RecentProducts from '@/components/home/RecentProducts'
-// import PageAds from '@/components/PageAds'
+import SubSlider from '@/components/SubSlider'
+import HomeCatalogue from '@/components/home/HomeCatalogue'
+import RecentProducts from '@/components/home/RecentProducts'
+import PageAds from '@/components/PageAds'
 export default {
   name: 'HomeView',
   layouts: 'default',
@@ -117,10 +117,10 @@ export default {
     LayoutDefault,
     AsideSidebar,
     MainSlider,
-    // SubSlider,
-    // HomeCatalogue,
-    // RecentProducts,
-    // PageAds
+    SubSlider,
+    HomeCatalogue,
+    RecentProducts,
+    PageAds
   },
 }
 </script>

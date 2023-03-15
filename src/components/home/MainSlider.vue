@@ -55,6 +55,7 @@
   font-size 0
   bottom 45px
   transition opacity 0.3s ease
+  cursor pointer
   &:hover{
     background: rgb(255, 255, 255);
     opacity 0.9
@@ -95,7 +96,7 @@
   right 120px
   z-index 1;
   @media(max-width: 768px){
-    bottom -36px
+    bottom 25px
     right auto
     width 100%
     justify-content center
@@ -130,6 +131,10 @@
   width 100%
   height 567px
   overflow-y: hidden
+  position relative
+  .swiper{
+    position initial !important
+  }
   &__image{
     max-width 1500px
     height 567px
@@ -169,7 +174,6 @@
   }
   @media(max-width: 768px){
     height 320px
-    display flex
     flex-direction column
     &__image{
       max-height 254px
@@ -211,20 +215,20 @@ props: {
 
 
 components: {
-      Swiper,
-      SwiperSlide,
-    },
-    setup() {
-      const onSwiper = () => {
-      };
-      const onSlideChange = () => {
-      };
-      return {
-        onSwiper,
-        onSlideChange,
-        modules: [Navigation, Pagination, Scrollbar, A11y],
-      };
-    },
+  Swiper,
+  SwiperSlide,
+},
+setup() {
+  const onSwiper = () => {
+  };
+  const onSlideChange = () => {
+  };
+  return {
+    onSwiper,
+    onSlideChange,
+    modules: [Navigation, Pagination, Scrollbar, A11y],
+  };
+},
 
 
 // mounted() {

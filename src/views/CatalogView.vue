@@ -12,7 +12,7 @@
               </aside>
               <div class="catalog-page__content content">
                 <div class="catalog-page__slider">
-                  <!-- <sub-slider :subSlides="categoryItems" /> -->
+                  <sub-slider :subSlides="categoryItems" />
                 </div>
                 <div class="catalog-page__products">
                   <!-- <catalog-products :catalogProducts="catalogProducts" :productsLabel="productsLabel" > 
@@ -23,8 +23,8 @@
             </div>
           </div>
         </div>
-        <!-- <recent-products  v-if="recentList.length !== 0" :recentProducts="recentList"/>
-        <page-ads /> -->
+        <recent-products  v-if="recentList.length !== 0" :recentProducts="recentList"/>
+        <page-ads />
       </main>
     </layout-default>
     <NotFound v-else/>
@@ -35,11 +35,11 @@
 <script>
 import LayoutDefault from '@/layouts/LayoutDefault'
 import AsideSidebar from '@/components/home/AsideSidebar'
-// import SubSlider from '@/components/SubSlider'
+import SubSlider from '@/components/SubSlider'
 // import AsideFilter from '@/components/catalog/AsideFilter'
 // import CatalogProducts from '@/components/catalog/CatalogProducts'
-// import RecentProducts from '@/components/home/RecentProducts'
-// import PageAds from '@/components/PageAds'
+import RecentProducts from '@/components/home/RecentProducts'
+import PageAds from '@/components/PageAds'
 // import NotFound from '@/components/NotFound'
 export default {
   name: 'CatalogView',
@@ -51,10 +51,10 @@ export default {
     LayoutDefault,
     AsideSidebar,
     // AsideFilter,
-    // SubSlider,
+    SubSlider,
     // CatalogProducts,
-    // RecentProducts,
-    // PageAds,
+    RecentProducts,
+    PageAds,
     // NotFound,
   },
   data () {
