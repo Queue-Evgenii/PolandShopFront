@@ -15,15 +15,16 @@
               </button>
               <div v-bind:class="{active: burgerActive}" class="menu__body" >
                 <main-menu v-if="!MobileWidth" :mainMenu="mainMenu" />
-                <header-menu v-if="!MobileWidth" :headerMenu="headerMenu" />
+                <span></span>
+                <shop-menu v-if="!MobileWidth" :shopMenu="shopMenu" />
               </div>
             </nav>
             <a href="/" class="top-header__logo"><img src="@/assets/img/header/logo.png" alt=""></a>
             <div class="top-header__phones phones-header flex">
               <button @click="activePhones = !activePhones" type="button" class="phones-header__icon"><img src="@/assets/img/header/icon/phone.png" alt=""></button>
               <div class="phones-header__items" v-bind:class="{active: activePhones}">
-                <a href="tel:48729216186" class="phones-header__item hover-underline">+48 729 216 186</a>
-                <a href="tel:48729856998" class="phones-header__item hover-underline">+48 729 856 998</a>
+                <a href="tel:48884074848" class="phones-header__item hover-underline">+48 884 074 848</a>
+                <!-- <a href="tel:48729856998" class="phones-header__item hover-underline">+48 729 856 998</a> -->
               </div>
             </div>
             <form class="top-header__search search-header flex">
@@ -50,7 +51,7 @@
       </div>
       <div class="header__bottom bottom-header">
         <div class="bottom-header__container container">
-          <header-menu v-if="MobileWidth" :headerMenu="headerMenu" />
+          <shop-menu v-if="MobileWidth" :shopMenu="shopMenu" />
         </div>
       </div>
     </header>
@@ -85,13 +86,13 @@
               <div class="contact-footer__phones phones-footer flex">
                 <div class="phones-header__icon"><img src="@/assets/img/header/icon/phone.png" alt=""></div>
                 <div class="phones-footer__items">
-                 <a href="tel:48729216186" class="phones-footer__item hover-underline">+48 729 216 186</a>
-                 <a href="tel:48729856998" class="phones-footer__item hover-underline">+48 729 856 998</a>
+                 <a href="tel:48884074848" class="phones-footer__item hover-underline">+48 884 074 848</a>
+                 <!-- <a href="tel:48729856998" class="phones-footer__item hover-underline">+48 729 856 998</a> -->
                 </div>
               </div>
               <div class="contact-footer__emailes flex">
                 <div class="contact-footer__icon"><img src="@/assets/img/header/icon/email.png" alt=""></div>
-                <a href="mailto:dosufitu.pl@gmail.com" class="contact-footer__email hover-underline">dosufitu.pl@gmail.com</a>
+                <a href="mailto:sufitypolandgroup@gmail.com" class="contact-footer__email hover-underline">sufitypolandgroup@gmail.com</a>
               </div>
             </div>
           </div>
@@ -161,7 +162,8 @@
     }
   }
   .phones-header{
-    flex: 0 1 480px
+    // flex: 0 1 480px
+    width: max-content
     column-gap: 20px
     position relative
     &__icon{
@@ -226,9 +228,9 @@
   }
   .search-header{
     height 50px
-    max-width: 480px
+    max-width: 680px
     position relative
-    flex 0 1 480px
+    flex 1 1 680px
     &__button{
       height 100%
       width 45px
@@ -403,6 +405,13 @@
     &.active{
       left: 0;
     }
+    span{
+      display block
+      width 100%
+      height 2px
+      background-color rgba(139,139,139,0.522)
+      margin 25px 0
+    }
   }
   &__icon {
     display: none;
@@ -455,7 +464,8 @@
   @media(max-width: 768px){
     flex-wrap: wrap
     gap: 15px
-    margin-bottom 25px
+    flex-direction: column
+    align-items start
     a{
       font-size 26px
     }
@@ -608,7 +618,7 @@
 <script>
 
 import InputHeader from '@/components/header/InputHeader'
-import HeaderMenu from '@/components/header/HeaderMenu'
+import ShopMenu from '@/components/header/ShopMenu'
 import MainMenu from '@/components/header/MainMenu'
 import FooterCopy from '@/components/footer/FooterCopy'
 import PagePopup from '@/components/PagePopup'
@@ -627,61 +637,36 @@ export default {
       mainMenu: [
         {
           id: 1,
-          label: 'Wzmacniacz',
-          to: 'home'
+          label: 'GŁÓWNA',
+          to: '/'
         },
         {
           id: 2,
-          label: 'O nas',
-          to: 'about'
+          label: 'SUFITY NAPINANE',
+          to: 'https://polandgroups.pl/sufity-napinane'
         },
         {
           id: 3,
-          label: 'Łączność',
-          to: 'kontakt'
+          label: 'O FIRMIE',
+          to: 'https://polandgroups.pl/o-firmie'
         },
         {
           id: 4,
-          label: 'Sklepy',
-          to: 'home'
+          label: 'GALERIA',
+          to: 'https://polandgroups.pl/galeria'
+        },
+        {
+          id: 4,
+          label: 'KONTAKT',
+          to: 'https://polandgroups.pl/kontakt'
         }
       ],
-      headerMenu: [
+      shopMenu: [
         {
           id: 1,
-          label: 'Kategorie',
-          url: 'kategorie'
+          label: 'Shop',
+          url: 'home'
         },
-        {
-          id: 2,
-          label: 'Promocje',
-          url: 'promocje'
-        },
-        {
-          id: 3,
-          label: 'Aktualności',
-          url: 'aktualności'
-        },
-        {
-          id: 4,
-          label: 'Nowości',
-          url: 'nowości'
-        },
-        {
-          id: 5,
-          label: 'Dostawa',
-          url: 'dostawa'
-        },
-        {
-          id: 6,
-          label: 'Dodaj opinię o sklepie',
-          url: 'opinię'
-        },
-        {
-          id: 7,
-          label: 'Kontakt',
-          url: 'kontakt'
-        }
       ],
       footerColumn: [
         {
@@ -803,7 +788,7 @@ export default {
   },
   components: {
     InputHeader,
-    HeaderMenu,
+    ShopMenu,
     MainMenu,
     FooterCopy,
     PagePopup,
@@ -816,7 +801,7 @@ export default {
     },
     closePopup () {
       this.visibilityPopup = null;
-    }
+    },
   },
   computed: {
     cartList () {
@@ -836,6 +821,6 @@ export default {
         return true
       }
     }
-  }
+  },
 }
 </script>

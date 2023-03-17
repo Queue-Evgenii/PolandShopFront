@@ -88,7 +88,7 @@
   .navigation a{
   padding: 0 10px;
   font-size: 14px;
-  line-height: 16px;
+  line-height: 114%;
   color: #8B8B8B;
   }
   .row{

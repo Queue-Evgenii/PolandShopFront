@@ -205,6 +205,11 @@ export default {
       this.$store.dispatch('getProducts')
         .then(res => {
           this.productItem = res.data.find(item => item.id === this.productId)
+          if (this.productItem.quantity !== 0) {
+            this.productItem.amount = 1
+          } else {
+            this.productItem.amount = 0
+          }
         })
     }
   },

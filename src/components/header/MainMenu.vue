@@ -1,6 +1,6 @@
 <template>
   <nav class="navigation flex">
-    <router-link v-for="item in mainMenu" :key="item.id" :to="{name: item.to}">{{ item.label }}</router-link>
+    <a v-for="item in mainMenu" :key="item.id" :href="item.to">{{ item.label }}</a>
   </nav>
 </template>
 <script>

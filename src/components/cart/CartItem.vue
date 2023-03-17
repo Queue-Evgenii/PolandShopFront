@@ -11,7 +11,7 @@
       <div class="item-cart__quantity quantity-product">
         <span @click="decrement(product.id)">-</span>
         <div class="quantity-product__input">
-          <input type="text" :value="product.quantity">
+          <input type="text" :value="product.amount">
         </div>
         <span @click="increment(product.id)">+</span>
       </div>

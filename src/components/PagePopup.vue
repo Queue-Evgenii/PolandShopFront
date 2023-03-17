@@ -36,6 +36,7 @@
       padding 40px
       background-color #fff
       position relative
+      max-width: 1200px
     }
     &__header{
       display flex
@@ -51,6 +52,7 @@
       max-width: 500px
     }
     &__close{
+      cursor pointer
       z-index 11
       @media(max-width: 630px){
         margin-bottom 30px

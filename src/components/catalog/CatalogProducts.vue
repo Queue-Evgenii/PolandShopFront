@@ -72,17 +72,17 @@ export default {
       list.classList.toggle('active')
     },
     filtersLayout (e) {
-      const column = this.$refs.column,
-            row = column.nextElementSibling,
-            products = this.$refs.products;
+      const column = this.$refs.column;
+      const row = column.nextElementSibling;
+      let products = this.$refs.products;
             // productItems = this.$refs.product
       if (column === e.target) {
-        for (let productItem of products.childNodes) {
+        for (let productItem of products.children) {
           productItem.classList.remove('item-product-row')
         }
         products.classList.remove('products-items-row')
       } else if (row === e.target) {
-        for (let productItem of products.childNodes) {
+        for (let productItem of products.children) {
           //const productItem = products[index];
           productItem.classList.add('item-product-row');
         }
@@ -91,8 +91,9 @@ export default {
     },
     addToCart (product) {
       if(this.$store.state.cartList.find(item => item.id === product.id)){
-        product.quantity++
+        product.amount++
       } else {
+        product.amount = 1;
         this.$store.state.cartList.push(product)
       }
     }

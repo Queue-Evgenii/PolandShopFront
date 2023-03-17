@@ -161,8 +161,9 @@ export default {
   methods: {
     addToCart (product) {
       if(this.$store.state.cartList.find(item => item.id === product.id)){
-        product.quantity++
+        product.amount++
       } else {
+        product.amount = 1
         this.$store.state.cartList.push(product)
       }
     },

@@ -2,12 +2,12 @@
   <div class="cart-page__component">
     <div class="cart-page__title">Twój Koszyk</div>
     <div class="cart-page__items">
-      <div class="cart-page__titles">
+      <div class="cart-page__titles" v-if="cartList.length !== 0">
         <span class="cart-page__title-product">Produkt</span>
         <span class="cart-page__title-amount">Ilość</span>
         <span class="cart-page__title-total">Cena £</span>
       </div>
-      <div class="cart-block">
+      <div class="cart-block" v-if="cartList.length !== 0">
         <cart-item :product="product" v-for="product in cartList" :key="product.id" @closePopup="closePopup"/>
         <div class="cart-page__payment payment-cart">
           <div class="payment-cart__cupon"></div>
@@ -20,6 +20,9 @@
             <router-link :to="{name: 'payment'}" @click="closePopup()" class="payment-cart__button button"><span @click="notQuickBuy()">Zapłać za towar</span></router-link>
           </div>
         </div>
+      </div>
+      <div class="cart-block" v-else>
+        <div class="empty-cart">Your cart is <span>empty!</span></div>
       </div>
     </div>
   </div>
@@ -75,6 +78,16 @@ export default {
 }
 </script>
 <style lang="stylus">
+.empty-cart{
+  padding 80px
+  text-align center
+  font-size 32px
+  line-height 114%
+  span{
+    color: #FF0031;
+
+  }
+}
 .item-cart {
   padding 45px 0
   display grid

@@ -39,34 +39,6 @@ const routes = [
     name: 'PageNotFound',
     component: () => import('../views/PageNotFound.vue')
   },
-  {
-    path: '/kategorie/',
-    name: 'kategorie',
-  },
-  {
-    path: '/promocje/',
-    name: 'promocje',
-  },
-  {
-    path: '/aktualnosci/',
-    name: 'aktualności',
-  },
-  {
-    path: '/nowosci/',
-    name: 'nowości',
-  },
-  {
-    path: '/dostawa/',
-    name: 'dostawa',
-  },
-  {
-    path: '/opinie/',
-    name: 'opinię',
-  },
-  {
-    path: '/kontakt/',
-    name: 'kontakt',
-  },
 ]
 
 // const router = createRouter({

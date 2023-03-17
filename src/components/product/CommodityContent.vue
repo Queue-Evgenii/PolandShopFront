@@ -348,11 +348,10 @@
     computed: {
       getQuantity () {
         if (!this.$store.state.cartList.find(item => item.id === this.productItem.id)) {
-          return this.productItem.quantity
+          return this.productItem.amount
         } else {
           const item = this.$store.state.cartList.find(item => item.id === this.productItem.id)
-          console.log(item)
-          return item.quantity
+          return item.amount
         }
       }
     }
