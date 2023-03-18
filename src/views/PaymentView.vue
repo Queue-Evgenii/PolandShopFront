@@ -131,14 +131,14 @@ export default {
       let result = [];
       if(this.$store.state.quickBuy.length > 0){
         for(let item of this.$store.state.quickBuy) {
-          result.push(item.price * item.quantity);
+          result.push(item.price * item.amount);
         }
         result = result.reduce(function (sum, el) {
           return sum + el;
         })
       } else if (this.$store.state.cartList.length > 0) {
         for(let item of this.$store.state.cartList) {
-          result.push(item.price * item.quantity);
+          result.push(item.price * item.amount);
         }
         result = result.reduce(function (sum, el) {
           return sum + el;

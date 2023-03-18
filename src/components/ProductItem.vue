@@ -14,7 +14,11 @@
         </div>
         <div class="item-product__actions actions-product flex">
           <button @click="addToCart(product);$event.stopPropagation();$event.preventDefault();showAlert()" type="button" class="actions-product__button">Dodaj do koszyka</button>
-          <button type="button" class="actions-product__favorite"></button>
+          <button
+            @click="changeFavoriteList(product);$event.stopPropagation();$event.preventDefault();"
+            type="button" class="actions-product__favorite"
+            :class="{'favorite' : product.isFavorite === true}">
+          </button>
         </div>
       </div>
     </router-link>
@@ -28,12 +32,18 @@ export default {
       required: true,
     }
   },
-  computed: {
-
-  },
   methods: {
     addToCart(product) {
       this.$emit('addToCart', product)
+    },
+    changeFavoriteList(product) {
+      if (!this.$store.state.favoriteItems.find(item => item.id === product.id)) {
+        product.isFavorite = true
+        this.$store.dispatch('addFavoriteToLocalStorage', product)
+      } else {
+        product.isFavorite = false
+        this.$store.dispatch('removeFavoriteFromLocalStorage', product)
+      }
     },
     addToRecent(product){
       if(this.$store.state.recentList.find(item => item.id === product.id)){

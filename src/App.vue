@@ -173,6 +173,9 @@
       }
     }
   }
+  .actions-product__favorite.favorite{
+    background url('../src/assets/img/main/icons/favorite-on-hover.png') 0 0 no-repeat
+  }
   .item-product {
   &__body {
     min-height 100%
@@ -319,6 +322,23 @@
   font-size: 24px;
   line-height: 1.5;
   padding: 50px 0;
+}
+.block{
+  display block
+}
+.big-title{
+  text-align center
+  font-size 30px
+  line-height 34px
+}
+.empty-block{
+  text-align center
+  padding 50px 0
+  font-size 32px
+  line-height 114%
+  span{
+    color: #ff0031
+  }
 }
 </style>
 

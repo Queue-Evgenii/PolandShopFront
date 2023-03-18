@@ -5,7 +5,7 @@
       <div class="preview-product__info">
         <div class="preview-product__label">{{ item.name }}</div>
         <div class="preview-product__price">{{ item.price }}<span>PLN</span></div>
-        <div class="preview-product__quantity"><span>Ilość:</span>{{ item.quantity }}</div>
+        <div class="preview-product__quantity"><span>Ilość:</span>{{ item.amount }}</div>
       </div>
     </li>
   </ul>

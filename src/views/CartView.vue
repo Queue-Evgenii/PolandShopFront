@@ -6,7 +6,7 @@
           <div class="cart-page__container container">
             <div class="cart-page__content flex">
               <cart-component :cartList="cartList" />
-              <div class="cart-page__present present-cart">
+              <div v-if="this.$store.state.cartList.length !== 0" class="cart-page__present present-cart">
                 <div class="present-cart__title flex">
                   <img src="@/assets/img/main/icons/present.png" alt="">
                   <span>Darmowy prezent do zakupu</span>
@@ -36,8 +36,10 @@
     }
   }
   &__items {
+    &.popup {
     flex: 1 1 1200px
     max-width: 1200px
+    }
   }
 }
 .present-cart {

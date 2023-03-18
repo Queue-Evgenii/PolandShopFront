@@ -328,11 +328,11 @@
       addToCart (product) {
         if(this.$store.state.cartList.find(item => item.id === product.id)){
           const item = this.$store.state.cartList.find(item => item.id === product.id)
-          item.quantity = this.$refs.productInput.value
+          item.amount = this.$refs.productInput.value
         } else {
           this.$store.state.cartList.push(product)
           const item = this.$store.state.cartList.find(item => item.id === product.id)
-          item.quantity = this.$refs.productInput.value
+          item.amount = this.$refs.productInput.value
         }
         console.log(product.quantity)
       },

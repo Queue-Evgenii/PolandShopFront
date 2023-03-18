@@ -1,6 +1,6 @@
 <template>
   <div class="cart-page__component">
-    <div class="cart-page__title">Twój Koszyk</div>
+    <div class="cart-page__title big-title">Twój Koszyk</div>
     <div class="cart-page__items">
       <div class="cart-page__titles" v-if="cartList.length !== 0">
         <span class="cart-page__title-product">Produkt</span>
@@ -22,7 +22,7 @@
         </div>
       </div>
       <div class="cart-block" v-else>
-        <div class="empty-cart">Your cart is <span>empty!</span></div>
+        <div class="empty-block">Your cart is <span>empty!</span></div>
       </div>
     </div>
   </div>
@@ -44,7 +44,7 @@ export default {
       let result = [];
       if(this.$store.state.cartList.length > 0){
         for(let item of this.$store.state.cartList) {
-          result.push(item.price * item.quantity);
+          result.push(item.price * item.amount);
         }
         result = result.reduce(function (sum, el) {
           return sum + el;
@@ -78,15 +78,9 @@ export default {
 }
 </script>
 <style lang="stylus">
-.empty-cart{
-  padding 80px
-  text-align center
-  font-size 32px
-  line-height 114%
-  span{
-    color: #FF0031;
-
-  }
+.cart-page__component{
+  align-self start
+  flex: 1 1 auto
 }
 .item-cart {
   padding 45px 0
@@ -245,9 +239,6 @@ export default {
 .cart-page{
   &__title{
     flex 1 1 100%
-    text-align center
-    font-size: 30px;
-    line-height: 34px;
     color: #3D3D3D;
   }
   &__titles {
