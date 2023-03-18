@@ -28,15 +28,29 @@
       <div class="actions-commodity__status flex no" v-else><span>W magazynie - </span>{{ productItem.labelMark }}</div>
       <div class="actions-commodity__row">
         <button type="button" class="actions-commodity__cart button" @click="addToCart(productItem);showAlert()"><span>Dodaj do koszyka</span></button>
-        <button type="button" class="actions-commodity__buy button" @click="openAlertPopup"><span>Kup w 1 kliknięciu</span></button>
+        <button type="button" class="actions-commodity__buy button" @click="openAlertPopup()"><span>Kup w 1 kliknięciu</span></button>
       </div>
-      <div class="actions-commodity__row">
-        <button type="button" class="actions-commodity__favorite flex">Dodaj do uratowanego</button>
+      <div class="actions-commodity__row" v-if="0">
+        <button v-if="!productItem.isFavorite" type="button" class="actions-commodity__favorite flex">Dodaj do uratowanego</button>
+        <button
+          v-else
+          @click="changeFavoriteList()"
+          type="button"
+          class="actions-commodity__favorite flex favorite"
+        >
+          Dodano do uratowanego
+        </button>
       </div>
     </div>
   </div>
 </template>
 <style lang="stylus">
+.actions-commodity__favorite.favorite{
+  color: #FF0031
+  &::before{
+    background url('../../assets/img/main/icons/favorite-on-hover.png') 0 0 no-repeat
+  }
+}
   .content-commodity{
     padding 0 20px
     &__title{
@@ -344,6 +358,10 @@
       openAlertPopup () {
         this.$emit('openAlertPopup', this.$refs.productInput.value)
       },
+      changeFavoriteList() {
+        console.log(1)
+        this.$emit('changeFavoriteList')
+      }
     },
     computed: {
       getQuantity () {
@@ -353,7 +371,7 @@
           const item = this.$store.state.cartList.find(item => item.id === this.productItem.id)
           return item.amount
         }
-      }
+      },
     }
   }
 </script>

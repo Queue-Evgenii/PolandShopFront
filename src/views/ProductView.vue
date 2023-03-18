@@ -12,7 +12,7 @@
                 <div class="product-page__commodity commodity-page">
                   <!-- <div class="carousel-commodity__image"><img :src="this.productItem.preview" alt="" @click="openPopup(item.id)"></div> -->
                   <commodity-slider :productItem="this.productItem" @openPopup="openPopup" />
-                  <commodity-content :productItem="this.productItem" @openAlertPopup="openAlertPopup" @inputValue="inputValue" />
+                  <commodity-content :productItem="this.productItem" @openAlertPopup="openAlertPopup" @inputValue="inputValue" @changeFavoriteList="changeFavoriteList"/>
                 </div>
                 <div class="product-page__info info-product">
                   <about-product v-if="this.productItem.description" :aboutText="this.productItem.description" />
@@ -210,8 +210,22 @@ export default {
           } else {
             this.productItem.amount = 0
           }
+          if (this.$store.state.favoriteItems.find(item => item.id === this.productItem.id)) {
+            this.productItem.isFavorite = true
+          } else {
+            this.productItem.isFavorite = false
+          }
         })
-    }
+    },
+    changeFavoriteList() {
+      if (!this.$store.state.favoriteItems.find(item => item.id === this.productItem.id)) {
+        this.productItem.isFavorite = true
+        this.$store.dispatch('addFavoriteToLocalStorage', this.productItem)
+      } else {
+        this.productItem.isFavorite = false
+        this.$store.dispatch('removeFavoriteFromLocalStorage', this.productItem)
+      }
+    },
   },
   mounted () {
     this.getProducts()

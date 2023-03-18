@@ -1,6 +1,6 @@
 <template>
   <div class="favorite-page__component">
-    <div class="favorite-page__title big-title">Ulubione produkty</div>
+    <div class="favorite-page__title big-title">Uratowani produkty</div>
     <div class="favorite-page__items">
       <div class="favorite-block" v-if="favoriteItems.length !== 0">
         <div class="products__items">
@@ -8,7 +8,7 @@
         </div>
       </div>
       <div class="favorite-block" v-else>
-        <div class="empty-block">Your favorite is <span>empty!</span></div>
+        <div class="empty-block">Your uratowane is <span>empty!</span></div>
       </div>
     </div>
   </div>
