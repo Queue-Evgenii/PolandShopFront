@@ -56,9 +56,11 @@
   bottom 45px
   transition opacity 0.3s ease
   cursor pointer
-  &:hover{
-    background: rgb(255, 255, 255);
-    opacity 0.9
+  @media(min-width: 769px) {
+    &:hover{
+      background: rgb(255, 255, 255);
+      opacity 0.9
+    }
   }
   &::before, &::after{
     content ''
@@ -167,8 +169,10 @@
       color: #FF0000;
       font-weight 700
       transition box-shadow 0.5s ease
-      &:hover{
-        box-shadow: 2px 2px 5px rgba(#000, 0.3)
+      @media(min-width: 769px) {
+        &:hover{
+          box-shadow: 2px 2px 5px rgba(#000, 0.3)
+        }
       }
     }
   }

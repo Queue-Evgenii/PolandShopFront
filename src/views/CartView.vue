@@ -50,8 +50,10 @@
   border-radius 10px
   margin-bottom 30px
   transition: all 0.5s ease 0s
-  &:hover{
-    box-shadow: 1px 1px 30px rgba(#FF0031,0.3)
+  @media(min-width: 769px) {
+    &:hover{
+      box-shadow: 1px 1px 30px rgba(#FF0031,0.3)
+    }
   }
   @media(max-width: 1340px) {
     width 100%
@@ -74,8 +76,11 @@
     background-color: #FFFFFF;
     border: 1px solid #FF0031;
     transition: all 0.5s ease 0s
-    &:hover{
-      box-shadow: 1px 1px 30px rgba(#FF0031,0.3)
+    
+    @media(min-width: 769px) {
+      &:hover{
+        box-shadow: 1px 1px 30px rgba(#FF0031,0.3)
+      }
     }
   }
 }

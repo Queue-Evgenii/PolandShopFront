@@ -43,7 +43,7 @@
     >
       <swiper-slide v-for="item in subSlides" :key="item.id">
         <router-link  class="subslider__slide" :to="{name: 'catalogList', params: {id: item.id}}">
-          <div class="subslider__image"><img :src="item.preview" alt=""></div>
+          <div class="subslider__image"><img v-if="item.preview" :src="item.preview" alt=""></div>
           <div class="subslider__label">{{ item.name }}</div>
         </router-link>
       </swiper-slide>
@@ -53,6 +53,11 @@
   </div>
 </template>
 <style lang="stylus">
+@media(min-width: 769px) {
+  .subslider__slide:hover{
+    box-shadow: 2px 2px 4px 2px #d5d5d5
+  }
+}
     .subslider{
       padding 40px 0
       display flex
@@ -105,6 +110,8 @@
         cursor: pointer
         text-align: center;
         background: linear-gradient(117.13deg, #FFFFFF -11.73%, #D5D5D5 105.48%);
+        transition: all 0.3s ease 0s
+        margin 5px 0
       }
       &__image{
         width 174px

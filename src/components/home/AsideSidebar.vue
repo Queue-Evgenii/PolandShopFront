@@ -120,19 +120,24 @@
       color: #3d3d3d
       font-size: 20px;
       line-height: 40px;
-      &:hover{
-        color: #FF0031;
-      }
+      
     }
-    &:hover{
-      &::before{
-        content ''
-        position absolute
-        left 0
-        top 33%
-        width 20px
-        height 14px
-        background url('../../assets/img/main/icons/arrow-on-hover.png') center no-repeat
+    @media(min-width: 769px) {
+      a{
+        &:hover{
+          color: #FF0031;
+        }
+      }
+      &:hover{
+        &::before{
+          content ''
+          position absolute
+          left 0
+          top 33%
+          width 20px
+          height 14px
+          background url('../../assets/img/main/icons/arrow-on-hover.png') center no-repeat
+        }
       }
     }
   }

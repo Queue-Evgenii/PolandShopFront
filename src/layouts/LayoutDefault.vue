@@ -33,12 +33,12 @@
             </form>
             <div class="top-header__actions actions-header flex">
               <router-link :to="{name: 'favorite'}" class="actions-header__favorite actions-header__item flex">
-                <a href="#" class="actions-header__link hover-underline">Uratowany</a>
-                <a href="#" class="actions-header__favorite-icon"><span>{{ this.$store.state.favoriteItems.length }}</span></a>
+                <div href="#" class="actions-header__link hover-underline">Uratowany</div>
+                <div href="#" class="actions-header__favorite-icon"><span>{{ this.$store.state.favoriteItems.length }}</span></div>
               </router-link>
               <div class="actions-header__cart actions-header__item flex" @click="openPopup">
-                <a href="#" class="actions-header__link hover-underline">Moje zakupy</a>
-                <a href="#" class="actions-header__cart-icon"><span>{{ this.$store.state.cartList.length }}</span></a>
+                <div href="#" class="actions-header__link hover-underline">Moje zakupy</div>
+                <div href="#" class="actions-header__cart-icon"><span>{{ this.$store.state.cartList.length }}</span></div>
               </div>
               <div class="actions-header__user actions-header__item flex">
                 <a href="#" class="actions-header__link hover-underline">Obszar osobisty</a>
@@ -309,6 +309,7 @@
       display: inline-block
     }
     &__item{
+      cursor pointer
       display flex !important
       padding 0 25px
       flex 1 1 auto
@@ -363,8 +364,10 @@
       column-gap: 2.6%
       a{
         color: #3D3D3D;
-        &:hover{
-          color: #FF0031;
+        @media(min-width: 769px) {
+          &:hover{
+            color: #FF0031;
+          }
         }
       }
       li{

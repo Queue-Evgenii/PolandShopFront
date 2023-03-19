@@ -256,9 +256,11 @@ export default {
     z-index 3
     border: 1px solid #3D3D3D;
     opacity: 0.4
-    &:hover{
-      background: rgb(255, 255, 255);
-      opacity: 0.9
+    @media(min-width: 769px) {
+      &:hover{
+        background: rgb(255, 255, 255);
+        opacity: 0.9
+      }
     }
     &::before, &::after{
       content ''

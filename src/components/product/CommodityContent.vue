@@ -232,12 +232,6 @@
       span{
         color #FF0031
       }
-      &:hover{
-        background-color #FF0031
-        span{
-          color #fff
-        }
-      }
     }
     &__favorite{
       color: #3D3D3D;
@@ -250,10 +244,22 @@
         height 28px
         background url('../../assets/img/main/icons/main-favorite.png') 0 0 no-repeat
       }
-      &:hover{
-        color: #FF0031
-        &::before{
-          background url('../../assets/img/main/icons/favorite-on-hover.png') 0 0 no-repeat
+    }
+    @media(min-width: 769px) {
+      &__buy {
+        &:hover{
+          background-color #FF0031
+          span{
+            color #fff
+          }
+        }
+      }
+      &__favorite{
+        &:hover{
+          color: #FF0031
+          &::before{
+            background url('../../assets/img/main/icons/favorite-on-hover.png') 0 0 no-repeat
+          }
         }
       }
     }

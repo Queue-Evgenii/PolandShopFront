@@ -142,10 +142,6 @@
     border 1px solid #FF0031;
     border-radius 5px
     transition background 0.3s ease 0s;
-    &:hover{
-      background-color #ff0031;
-      color: #fff;
-    }
   }
   &__cancel {
     background transparent
@@ -156,9 +152,14 @@
     @media(max-width: 992px){
       width 100%
     }
-    &:hover{
-      background-color #ff0031;
-      color: #fff;
+  }
+  @media(min-width: 769px){
+    &__button,
+    &__cancel{
+      &:hover{
+        background-color #ff0031;
+        color: #fff;
+      }
     }
   }
   &__submit{

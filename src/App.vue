@@ -59,11 +59,7 @@
     display flex
     align-items center
   }
-  .hover-underline{
-      &:hover{
-          text-decoration underline
-      }
-  }
+  
   .navigation {
     padding 10px 0
     margin: 0 -10px;
@@ -126,11 +122,8 @@
   @media(max-width:1440px){
     width 100%
   }
-  &:hover{
-    border 1px solid #FF0031
-    background-color: rgba(#FF0031, 0.5);
-  }
 }
+
 .quantity-product {
     display flex
     align-items center
@@ -140,9 +133,7 @@
       color: #3D3D3D;
       padding 15px
       cursor: pointer
-      &:hover{
-        color: #FF0031;
-      }
+      
     }
     &__input {
       flex: 0 0 70px
@@ -171,15 +162,6 @@
     background-color #fff
     border 2px solid rgba(256, 256, 256, 0.1)
     transition all 0.3s ease 0s
-    &:hover{
-      box-shadow: 10px 10px 40px rgba(0, 0, 0, 0.2);
-      border: 2px solid #FF0031;
-      .actions-product__button{
-        border: 2px solid #FF0031;
-        color: #FF0031
-        transition all 0.3s ease 0s
-      }
-    }
   }
   &__image {
     display block
@@ -253,17 +235,15 @@
     font-size: 16px;
     border: 2px solid #000000;
     border-radius: 10px;
-    &:hover{
-      background-color #FF0031;
-      color: #fff !important
-    }
   }
   &__favorite {
     width 28px
     height 28px
     background url('../src/assets/img/main/icons/main-favorite.png') 0 0 no-repeat
-    &:hover{
-      background url('../src/assets/img/main/icons/favorite-on-hover.png') 0 0 no-repeat
+    @media(min-width: 769px) {
+      &:hover{
+        background url('../src/assets/img/main/icons/favorite-on-hover.png') 0 0 no-repeat
+      }
     }
   }
 }
@@ -333,11 +313,53 @@
     max-width 350px
     span{
       color #ff0031
-      &:hover {
-        color #fff
-      }
+      
     }
   }
 }
+@media(min-width: 769px) {
+    .clear-all{
+      button {
+        span{
+          &:hover {
+            color #fff
+          }
+        }
+      }
+    }
+    .hover-underline{
+      &:hover{
+          text-decoration underline
+      }
+    }
+    .button:hover {
+      border 1px solid #FF0031
+      background-color: rgba(#FF0031, 0.5);
+    }
+    .quantity-product{
+      span{
+        &:hover{
+          color: #FF0031;
+        }
+      }
+    }
+    .item-product__body {
+      &:hover{
+        box-shadow: 10px 10px 40px rgba(0, 0, 0, 0.2);
+        border: 2px solid #FF0031;
+        .actions-product__button{
+          border: 2px solid #FF0031;
+          color: #FF0031
+          transition all 0.3s ease 0s
+        }
+      }
+    }
+    .actions-product__button{
+      &:hover{
+        background-color #FF0031;
+        color: #fff !important
+      }
+    }
+  }
 </style>
 

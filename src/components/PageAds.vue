@@ -103,8 +103,10 @@
         font-size: 16px;
         line-height: 18px;
       }
-      &:hover{
-        box-shadow 2px 2px 2px #FF0031
+      @media(min-width: 769px) {
+        &:hover{
+          box-shadow 2px 2px 2px #FF0031
+        }
       }
       @media(max-width:1440px){
         span{

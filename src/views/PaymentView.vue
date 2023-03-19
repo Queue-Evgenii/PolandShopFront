@@ -87,7 +87,7 @@ export default {
         sale: "-10",
       },
       onPayment: {
-        title: "Do you really want go back??",
+        name: "Do you really want go back??",
         nclass: "on-payment",
       },
     }
@@ -191,8 +191,10 @@ export default {
     padding 25px 15px
     max-width: 375px
     transition: all 0.5s ease 0s
-    &:hover{
-      box-shadow: 1px 1px 30px rgba(#FF0031,0.3)
+    @media(min-width: 769px) {
+      &:hover{
+        box-shadow: 1px 1px 30px rgba(#FF0031,0.3)
+      }
     }
   }
   &__row {
