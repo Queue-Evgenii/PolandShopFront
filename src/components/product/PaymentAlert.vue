@@ -70,7 +70,6 @@ export default {
       this.$emit('goBack', event);
     },
     quickBuy() {
-      console.log(112233)
       this.$emit('quickBuy')
     },
     closePopup() {

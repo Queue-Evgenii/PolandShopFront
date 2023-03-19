@@ -160,11 +160,14 @@ export default {
   },
   methods: {
     addToCart (product) {
+      const cartItems = this.$store.state.cartList
       if(this.$store.state.cartList.find(item => item.id === product.id)){
-        product.amount++
+        const cartItem = cartItems.find(item => item.id === product.id)
+        cartItem.amount++
       } else {
-        product.amount = 1
-        this.$store.state.cartList.push(product)
+        product.amount = 1;
+        cartItems.push(product)
+        localStorage.setItem('cartItems', JSON.stringify(cartItems))
       }
     },
   },

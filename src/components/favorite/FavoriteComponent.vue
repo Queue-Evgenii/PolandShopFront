@@ -4,8 +4,11 @@
     <div class="favorite-page__items">
       <div class="favorite-block" v-if="favoriteItems.length !== 0">
         <div class="products__items">
-          <ProductItem v-for="item in favoriteItems" :key="item.id" :product="item"/>
+          <ProductItem v-for="item in favoriteItems" :key="item.id" :product="item" @addToCart="addToCart"/>
         </div>
+        <!-- <div class="clear-all">
+          <button @click="clearAllFavorites()" type="button" class="button"><span>Clear all uratovane</span></button>
+        </div> -->
       </div>
       <div class="favorite-block" v-else>
         <div class="empty-block">Your uratowane is <span>empty!</span></div>
@@ -25,7 +28,18 @@ export default {
     getFavoriteItems() {
       console.log(this.$store.state.favoriteItems)
       this.favoriteItems = this.$store.state.favoriteItems
-    }
+    },
+    addToCart (product) {
+      const cartItems = this.$store.state.cartList
+      if(this.$store.state.cartList.find(item => item.id === product.id)){
+        const cartItem = cartItems.find(item => item.id === product.id)
+        cartItem.amount++
+      } else {
+        product.amount = 1;
+        cartItems.push(product)
+        localStorage.setItem('cartItems', JSON.stringify(cartItems))
+      }
+    },
   },
   mounted() {
     this.getFavoriteItems()

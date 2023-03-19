@@ -30,15 +30,14 @@
         <button type="button" class="actions-commodity__cart button" @click="addToCart(productItem);showAlert()"><span>Dodaj do koszyka</span></button>
         <button type="button" class="actions-commodity__buy button" @click="openAlertPopup()"><span>Kup w 1 kliknięciu</span></button>
       </div>
-      <div class="actions-commodity__row" v-if="0">
-        <button v-if="!productItem.isFavorite" type="button" class="actions-commodity__favorite flex">Dodaj do uratowanego</button>
+      <div class="actions-commodity__row">
         <button
-          v-else
           @click="changeFavoriteList()"
           type="button"
-          class="actions-commodity__favorite flex favorite"
+          class="actions-commodity__favorite flex"
+          :class="{'favorite' : checkIsFavorite(productItem) === true}"
         >
-          Dodano do uratowanego
+          Dodaj do uratowanego
         </button>
       </div>
     </div>
@@ -340,15 +339,16 @@
         }
       },
       addToCart (product) {
+        const items = this.$store.state.cartList
         if(this.$store.state.cartList.find(item => item.id === product.id)){
-          const item = this.$store.state.cartList.find(item => item.id === product.id)
+          const item = items.find(item => item.id === product.id)
           item.amount = this.$refs.productInput.value
         } else {
-          this.$store.state.cartList.push(product)
-          const item = this.$store.state.cartList.find(item => item.id === product.id)
+          items.push(product)
+          const item = items.find(item => item.id === product.id)
           item.amount = this.$refs.productInput.value
         }
-        console.log(product.quantity)
+        localStorage.setItem('cartItems', JSON.stringify(items))
       },
       showAlert() {
         const block = document.querySelector('.access-alert__container')
@@ -359,9 +359,17 @@
         this.$emit('openAlertPopup', this.$refs.productInput.value)
       },
       changeFavoriteList() {
-        console.log(1)
         this.$emit('changeFavoriteList')
+      },
+      checkIsFavorite(product) {
+      if (this.$store.state.favoriteItems.find(item => item.id === product.id)) {
+        product.isFavorite = true
+        return true
+      } else {
+        product.isFavorite = false
+        return false
       }
+    },
     },
     computed: {
       getQuantity () {

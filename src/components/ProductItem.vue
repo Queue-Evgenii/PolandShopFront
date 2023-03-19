@@ -17,7 +17,7 @@
           <button
             @click="changeFavoriteList(product);$event.stopPropagation();$event.preventDefault();"
             type="button" class="actions-product__favorite"
-            :class="{'favorite' : product.isFavorite === true}">
+            :class="{'favorite' : checkIsFavorite(product) === true}">
           </button>
         </div>
       </div>
@@ -39,10 +39,27 @@ export default {
     changeFavoriteList(product) {
       if (!this.$store.state.favoriteItems.find(item => item.id === product.id)) {
         product.isFavorite = true
-        this.$store.dispatch('addFavoriteToLocalStorage', product)
+        const favoriteItems = this.$store.state.favoriteItems
+        favoriteItems.push(product)
+        console.log(favoriteItems)
+        localStorage.setItem('favoriteItems', JSON.stringify(favoriteItems))
+      } else {
+        let item = this.$store.state.favoriteItems.find(item => item.id === product.id)
+        item.isFavorite = false
+        let favoriteItems = this.$store.state.favoriteItems
+        const index = favoriteItems.indexOf(favoriteItems.find(item => item.id === product.id))
+        favoriteItems.splice(index, 1)
+        console.log(favoriteItems)
+        localStorage.setItem('favoriteItems', JSON.stringify(favoriteItems))
+      }
+    },
+    checkIsFavorite(product) {
+      if (this.$store.state.favoriteItems.find(item => item.id === product.id)) {
+        product.isFavorite = true
+        return true
       } else {
         product.isFavorite = false
-        this.$store.dispatch('removeFavoriteFromLocalStorage', product)
+        return false
       }
     },
     addToRecent(product){

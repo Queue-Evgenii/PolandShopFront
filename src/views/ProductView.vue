@@ -195,10 +195,9 @@ export default {
     },
     quickBuy() {
       this.$store.state.isQuickBuy = true
-      console.log(this.$store.state.isQuickBuy)
       this.$store.state.quickBuy[0] = this.productItem;
       if(this.$store.state.quickBuy.find(item => item.id === this.productItem.id)){
-        this.$store.state.quickBuy[0].quantity = this.inputValue;
+        this.$store.state.quickBuy[0].amount = this.inputValue;
       }
     },
     getProducts () {
