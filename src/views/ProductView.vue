@@ -4,6 +4,7 @@
       <main class="page">
         <div class="page__product product-page">
           <div class="product-page__container container">
+                <Breadcrumbs />
             <div class="product-page__row row">
               <aside class="product-page__sidebar sidebar">
                 <aside-sidebar v-if="SidebarWidth" />
@@ -152,6 +153,8 @@ import LayoutDefault from '@/layouts/LayoutDefault'
 import AsideSidebar from '@/components/home/AsideSidebar'
 import RecentProducts from '@/components/home/RecentProducts'
 import PageAds from '@/components/PageAds'
+
+import Breadcrumbs from '../components/Breadcrumbs'
 export default {
   name: 'CatalogView',
   layouts: 'default',
@@ -168,6 +171,7 @@ export default {
     ReviewsProduct,
     PagePopup,
     PaymentAlert,
+    Breadcrumbs,
   },
   data() {
     return {
