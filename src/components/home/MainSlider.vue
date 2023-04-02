@@ -1,24 +1,5 @@
 <template>
   <div class="mainslider">
-    <!-- <VueSlickCarousel @init="onInitCarousel" :autoplay="true" :arrows="true" :dots="true">
-      <div class="mainslider__slide" v-for="item in mainSlides" :key="item.id">
-        <div class="mainslider__image"><img :src="item.image" alt=""></div>
-        <div class="mainslider__button">
-          <router-link :to="item.url">{{ item.label }}</router-link>
-        </div>
-      </div>
-    </VueSlickCarousel> -->
-    <!-- <div class="swiper-container">
-      <div class="swiper-wrapper">
-        <div class="swiper-slide mainslider__slide" v-for="item in mainSlides" :key="item.id">
-          <div class="mainslider__image"><img :src="item.image" alt=""></div>
-          <div class="mainslider__button">
-            <router-link :to="item.url">{{ item.label }}</router-link>
-          </div>
-        </div>
-      </div>
-      <div class="swiper-pagintion"></div>
-    </div> -->
 
     <swiper
       :modules="modules"
@@ -98,10 +79,14 @@
   right 120px
   z-index 1;
   @media(max-width: 768px){
-    bottom 25px
-    right auto
+    // bottom 25px
+    // right auto
+    // width 100%
+    // justify-content center
     width 100%
     justify-content center
+    position initial
+    margin-top: 25px
   }
   @media(max-width: 400px){
     display none !important
@@ -131,20 +116,21 @@
 }
 .mainslider{
   width 100%
-  height 567px
   overflow-y: hidden
   position relative
+  @media(max-width: 600px) {
+    display none
+  }
   .swiper{
     position initial !important
   }
   &__image{
     max-width 1500px
-    height 567px
     text-align center
     img{
       display: block;
       width: 100%;
-      height: 100%;
+      // min-height 270px
       object-fit: cover;
     }
   }
@@ -160,8 +146,8 @@
       position absolute
       min-width 198px
       height 58px
-      bottom 138px
-      left 164px
+      bottom 50px
+      left 80px
       background: #FFFFFF;
       border: 1px solid #000000;
       box-shadow: 0px 4px 100px #FF0000;
@@ -177,7 +163,7 @@
     }
   }
   @media(max-width: 768px){
-    height 320px
+    // height 320px
     flex-direction column
     &__image{
       max-height 254px

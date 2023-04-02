@@ -4,13 +4,13 @@
     <!-- <div class="content-commodity__offer">{{ productItem.offer }}</div> -->
     <div class="content-commodity__info">
       <div class="content-commodity__info-row"><span>Numer kategorii: </span>{{ productItem.category_id }}</div>
-      <div class="content-commodity__info-row"><span>Kod EAN: </span>{{ productItem.code }}</div>
+      <!-- <div class="content-commodity__info-row"><span>Kod EAN: </span>{{ productItem.code }}</div> -->
     </div>
     <div class="content-commodity__price flex">
       <div class="content-commodity__new-price flex">{{ productItem.price }}<span>PLN ZA M.B.</span></div>
       <div class="content-commodity__sale-price">
         <div v-if="productItem.first_price" class="content-commodity__first-price flex">{{ productItem.first_price }}<span>PLN ZA M.B.</span></div>
-        <div v-if="productItem.first_price" class="content-commodity__price-info"><span>do -7% </span>w hurcie, sprawdz cennik</div>
+        <div v-if="productItem.first_price" class="content-commodity__price-info"><span>{{ "do " + Math.ceil(100 - productItem.price/productItem.first_price*100) + "% " }}</span>w hurcie, sprawdz cennik</div>
       </div>
     </div>
     <div class="content-commodity__actions actions-commodity">
@@ -24,8 +24,8 @@
         </div>
         <div class="actions-commodity__token flex"><span>Cod Kupon:</span><input type="text" placeholder="_ _ _ _ _ _ _ _ _ _ _ _ _"></div>
       </div>
-      <div class="actions-commodity__status flex yes" v-if="productItem.status"><span>W magazynie - </span>{{ productItem.labelMark }}</div>
-      <div class="actions-commodity__status flex no" v-else><span>W magazynie - </span>{{ productItem.labelMark }}</div>
+      <div class="actions-commodity__status flex yes" v-if="productItem.quantity > 0"><span>W magazynie - </span>{{ productItem.labelMark ? productItem.labelMark : productItem.quantity }}</div>
+      <div class="actions-commodity__status flex no" v-else><span>W magazynie - </span>{{ productItem.labelMark ? productItem.labelMark : productItem.quantity }}</div>
       <div class="actions-commodity__row">
         <button type="button" class="actions-commodity__cart button" @click="addToCart(productItem);showAlert()"><span>Dodaj do koszyka</span></button>
         <button type="button" class="actions-commodity__buy button" @click="openAlertPopup()"><span>Kup w 1 kliknięciu</span></button>

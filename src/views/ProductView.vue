@@ -4,7 +4,7 @@
       <main class="page">
         <div class="page__product product-page">
           <div class="product-page__container container">
-                <Breadcrumbs />
+            <Breadcrumbs />
             <div class="product-page__row row">
               <aside class="product-page__sidebar sidebar">
                 <aside-sidebar v-if="SidebarWidth" />

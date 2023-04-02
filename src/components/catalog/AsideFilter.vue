@@ -11,6 +11,7 @@
             :max="filterSlider.sliderMaxValue"
             v-model="filterSlider.sliderValue">
           </range-slider> -->
+          <input type="range" name="" id="" :min="filterSlider.sliderMinValue" :max="filterSlider.sliderMaxValue" class="range-slider">
           <div class="range-filter__values flex">
             <span class="range-filter__min">{{ filterSlider.sliderMinValue }}</span>
             <span class="range-filter__max">{{ filterSlider.sliderMaxValue }}</span>
@@ -123,6 +124,7 @@
       border-bottom 1px solid #CACACA;
     }
     &__title{
+      cursor pointer
     }
     &__body{
       margin-top 0
@@ -175,6 +177,7 @@
       }
       label{
         position relative
+        cursor pointer
         &::before{
           content: ''
           margin-right 10px
@@ -220,17 +223,35 @@
   .range-slider{
     width 100%
     padding 0
+    background-color transparent
   }
-  .range-slider-rail,
-  .range-slider-fill {
+  .range-slider::-webkit-slider-runnable-track,
+  .range-slider::-moz-range-track {
     background-color #000
     height: 1px;
     border-radius: 0;
   }
-  .range-slider-knob {
+  .range-slider::-webkit-slider-thumb,
+  .range-slider::-moz-range-thumb {
     height: 10px;
     width: 10px;
     border: none
     background-color: #000;
   }
+  // .range-slider{
+  //   width 100%
+  //   padding 0
+  // }
+  // .range-slider-rail,
+  // .range-slider-fill {
+  //   background-color #000
+  //   height: 1px;
+  //   border-radius: 0;
+  // }
+  // .range-slider-knob {
+  //   height: 10px;
+  //   width: 10px;
+  //   border: none
+  //   background-color: #000;
+  // }
 </style>
