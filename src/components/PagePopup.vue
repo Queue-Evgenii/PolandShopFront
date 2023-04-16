@@ -54,17 +54,14 @@
     &__close{
       cursor pointer
       z-index 11
-      @media(max-width: 630px){
-        margin-bottom 30px
-      }
-      @media(max-width: 450px){
-        margin-bottom 60px
-      }
+      // @media(max-width: 630px){
+      //   margin-bottom 30px
+      // }
+      // @media(max-width: 450px){
+      //   margin-bottom 60px
+      // }
     }
     &__body{
-      .slick-dots{
-        display none !important
-      }
     }
   }
 </style>

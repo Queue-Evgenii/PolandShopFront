@@ -24,7 +24,7 @@
   </div>
 </template> 
 <style lang="stylus">
-.swiper-button-prev,.swiper-button-next{
+  .swiper-button-prev,.swiper-button-next{
   width 75px
   height 75px
   background: rgb(255, 255, 255);
@@ -186,10 +186,6 @@
 }
 </style>
 <script>
-// import VueSlickCarousel from 'vue-slick-carousel'
-// import 'vue-slick-carousel/dist/vue-slick-carousel.css'
-// // optional style for arrows & dots
-// import 'vue-slick-carousel/dist/vue-slick-carousel-theme.css'
 
 import { Swiper } from 'swiper/vue/swiper.js';
 import { SwiperSlide } from 'swiper/vue/swiper-slide';
@@ -219,17 +215,5 @@ setup() {
     modules: [Navigation, Pagination, Scrollbar, A11y],
   };
 },
-
-
-// mounted() {
-//   new Swiper('.swiper-container', {
-//     direction: 'horizontal',
-//     loop: false,
-//     pagination: {
-//       el: '.swiper-pagintion', // элемент для вывода пагинации
-//     },
-//   });
-// }
-// components: { VueSlickCarousel },
 }
 </script>

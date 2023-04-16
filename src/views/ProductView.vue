@@ -4,21 +4,19 @@
       <main class="page">
         <div class="page__product product-page">
           <div class="product-page__container container">
-            <Breadcrumbs />
             <div class="product-page__row row">
               <aside class="product-page__sidebar sidebar">
                 <aside-sidebar v-if="SidebarWidth" />
               </aside>
               <div class="product-page__content content">
                 <div class="product-page__commodity commodity-page">
-                  <!-- <div class="carousel-commodity__image"><img :src="this.productItem.preview" alt="" @click="openPopup(item.id)"></div> -->
-                  <commodity-slider :productItem="this.productItem" @openPopup="openPopup" />
+                  <commodity-slider :productItem="this.productItem" @openPopup="openPopup" :isPopup="false"/>
                   <commodity-content :productItem="this.productItem" @openAlertPopup="openAlertPopup" @inputValue="inputValue" @changeFavoriteList="changeFavoriteList"/>
                 </div>
                 <div class="product-page__info info-product">
                   <about-product v-if="this.productItem.description" :aboutText="this.productItem.description" />
                   <!-- <table-product :tableProductItems="productItem.description" /> -->
-                  <!-- <gallery-product :commoditySlides="productItem.images" /> -->
+                  <gallery-product :productImages="productItem.images" />
                   <reviews-product v-if="this.productItem.feedbacks" :ReviewsProductItems="productItem.feedbacks" />
                   <!-- <button class="info-product__more">Uczyć się więcej</button> -->
                 </div>
@@ -30,15 +28,14 @@
         <page-ads />
       </main>
     </layout-default>
-    <!-- <page-popup 
+    <page-popup 
      v-if="visibilityPopup" 
      @closePopup="closePopup"
      :popupOutput="this.productItem"
     >
-      <commodity-slider :commoditySlides="this.productItem.images" />
-      <commodity-slider :productItem="this.productItem" />
-      <commodity-content :productAbout="this.productItem" />
-    </page-popup> -->
+      <commodity-slider :productItem="this.productItem" :isPopup="true"/>
+      <commodity-content :productItem="this.productItem" />
+    </page-popup>
     <page-popup 
      v-if="buyOneClickPopup" 
      @closePopup="closePopup"
@@ -101,40 +98,6 @@
       }
     }
   }
-  .popup{
-    .commodity-page__images{
-      max-width: 1600px
-      @media(max-width: 470px){
-        padding-bottom 20px
-      }
-    }
-    .carousel-commodity{
-      position relative !important
-      margin 0 80px
-      @media(max-width: 768px){
-        margin 0 40px
-      }
-      &__slide{
-        border: none
-      }
-      .slick-arrow{
-        display block !important
-        bottom 220px
-        @media(max-width: 1590px){
-          bottom 190px
-        }
-        @media(max-width: 500px){
-          bottom 140px
-        }
-      }
-      .slick-prev{
-        left -60px
-      }
-      .slick-next{
-        right -60px
-      }
-    }
-  }
 </style>
 <script>
 import PagePopup from '@/components/PagePopup'
@@ -143,7 +106,7 @@ import PagePopup from '@/components/PagePopup'
 import PaymentAlert from '@/components/product/PaymentAlert'
 import ReviewsProduct from '@/components/product/ReviewsProduct'
 // import TableProduct from '@/components/product/TableProduct'
-// import GalleryProduct from '@/components/product/GalleryProduct'
+import GalleryProduct from '@/components/product/GalleryProduct'
 import AboutProduct from '@/components/product/AboutProduct'
 
 import CommodityContent from '@/components/product/CommodityContent'
@@ -154,7 +117,6 @@ import AsideSidebar from '@/components/home/AsideSidebar'
 import RecentProducts from '@/components/home/RecentProducts'
 import PageAds from '@/components/PageAds'
 
-import Breadcrumbs from '../components/Breadcrumbs'
 export default {
   name: 'CatalogView',
   layouts: 'default',
@@ -167,11 +129,10 @@ export default {
     CommodityContent,
     AboutProduct,
     // TableProduct,
-    // GalleryProduct,
+    GalleryProduct,
     ReviewsProduct,
     PagePopup,
     PaymentAlert,
-    Breadcrumbs,
   },
   data() {
     return {
@@ -223,10 +184,16 @@ export default {
     changeFavoriteList() {
       if (!this.$store.state.favoriteItems.find(item => item.id === this.productItem.id)) {
         this.productItem.isFavorite = true
-        this.$store.dispatch('addFavoriteToLocalStorage', this.productItem)
+        const favoriteItems = this.$store.state.favoriteItems
+        favoriteItems.push(this.productItem)
+        localStorage.setItem('favoriteItems', JSON.stringify(favoriteItems))
       } else {
-        this.productItem.isFavorite = false
-        this.$store.dispatch('removeFavoriteFromLocalStorage', this.productItem)
+        let item = this.$store.state.favoriteItems.find(item => item.id === this.productItem.id)
+        item.isFavorite = false
+        let favoriteItems = this.$store.state.favoriteItems
+        const index = favoriteItems.indexOf(favoriteItems.find(item => item.id === this.productItem.id))
+        favoriteItems.splice(index, 1)
+        localStorage.setItem('favoriteItems', JSON.stringify(favoriteItems))
       }
     },
   },

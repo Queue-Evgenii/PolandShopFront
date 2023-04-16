@@ -41,7 +41,6 @@ export default {
         product.isFavorite = true
         const favoriteItems = this.$store.state.favoriteItems
         favoriteItems.push(product)
-        console.log(favoriteItems)
         localStorage.setItem('favoriteItems', JSON.stringify(favoriteItems))
       } else {
         let item = this.$store.state.favoriteItems.find(item => item.id === product.id)
@@ -49,7 +48,6 @@ export default {
         let favoriteItems = this.$store.state.favoriteItems
         const index = favoriteItems.indexOf(favoriteItems.find(item => item.id === product.id))
         favoriteItems.splice(index, 1)
-        console.log(favoriteItems)
         localStorage.setItem('favoriteItems', JSON.stringify(favoriteItems))
       }
     },

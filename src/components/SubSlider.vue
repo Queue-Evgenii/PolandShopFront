@@ -1,12 +1,5 @@
 <template>
   <div class="subslider">
-    <!-- <VueSlickCarousel v-if="this.subSlides.length !== 0" v-bind="settings" class="subslider__wrapper">
-        <router-link  class="subslider__slide" v-for="item in subSlides" :key="item.id" :to="{name: 'catalogList', params: {id: item.id}}">
-          <div class="subslider__image"><img :src="item.preview" alt=""></div>
-          <div class="subslider__label">{{ item.name }}</div>
-        </router-link>
-    </VueSlickCarousel> -->
-
     <swiper
       v-if="subSlides.length !== 0"
       :modules="modules"

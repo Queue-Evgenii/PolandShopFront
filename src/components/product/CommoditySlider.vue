@@ -1,41 +1,130 @@
 <template>
   <div class="commodity-page__images commodity-images">
     <div class="commodity-images__wrapper">
-      <div class="commodity-images__array" v-if="typeof productItem.preview === 'array'">
-        <!-- <VueSlickCarousel 
-          ref="thumb" 
-          v-bind="settingsThumbs" 
-          :asNavFor="slider"
-          class="commodity-images__thumbs thumbs-commodity"
-        >
-          <div class="thumbs-commodity__slide" v-for="item in productItem.preview" :key="item.id">
-            <div class="thumbs-commodity__image"><img :src="item.image" alt=""></div>
-          </div>
-        </VueSlickCarousel>
-        <VueSlickCarousel 
-          ref="slider" 
-          v-bind="settings" 
-          :asNavFor="thumb"
-          class="commodity-images__carousel carousel-commodity"
-        >
-          <div class="carousel-commodity__slide"
-            v-for="item in productItem.preview"
-            :key="item.id"
+      <div class="commodity-images__array" v-if="productItem.images" >
+        <div class="commodity-images__thumbs">
+          <swiper
+            v-if="!isPopup"
+            :slides-per-view="4"
+            :space-between="0"
+            :loop="true"
+            :modules="[Thumbs]"
+            watch-slides-progress
+            @swiper="setThumbsSwiper"
+            class="thumbs-commodity"
+            :breakpoints="{
+              1669:{
+                slidesPerView: 4,
+              },
+              1520:{
+                slidesPerView: 3,
+              },
+              1460: {
+                slidesPerView: 2,
+              },
+              1200:{
+                slidesPerView: 4,
+              },
+              1120:{
+                slidesPerView: 3,
+              },
+              992: {
+                slidesPerView: 2,
+              },
+              768: {
+                slidesPerView: 4,
+              },
+              500: {
+                slidesPerView: 3,
+              },
+            }"
           >
-            <div class="carousel-commodity__image"><img :src="item.image" alt="" @click="openPopup(item.id)"></div>
-          </div>
-        </VueSlickCarousel> -->
+            <swiper-slide v-for="item in productItem.images" :key="item.id">
+              <div class="thumbs-commodity__slide">
+                <div class="thumbs-commodity__image"><img :src="item" alt=""></div>
+              </div>
+            </swiper-slide>
+          </swiper>
+          <swiper
+            v-if="isPopup"
+            :slides-per-view="4"
+            :space-between="0"
+            :loop="true"
+            :modules="[Thumbs]"
+            watch-slides-progress
+            :direction="'vertical'"
+            @swiper="setThumbsSwiper"
+            class="thumbs-commodity"
+            :breakpoints="{
+              1669:{
+                slidesPerView: 4,
+              },
+              992: {
+                slidesPerView: 3,
+              },
+              768: {
+                slidesPerView: 4,
+              },
+              500: {
+                slidesPerView: 3,
+              },
+            }"
+          >
+            <swiper-slide v-for="item in productItem.images" :key="item.id">
+              <div class="thumbs-commodity__slide">
+                <div class="thumbs-commodity__image"><img :src="item" alt=""></div>
+              </div>
+            </swiper-slide>
+          </swiper>
+        </div>
+        <div class="commodity-images__carousel">
+          <swiper
+            :slides-per-view="1"
+            :space-between="0"
+            :loop="true"
+            :thumbs="{ swiper: thumbsSwiper }"
+            :modules="[Thumbs, Navigation, Pagination]"
+            @swiper="onSwiper"
+            @slideChange="onSlideChange"
+            navigation
+            :pagination="{clickable: true}"
+            class="carousel-commodity"
+          >
+            <swiper-slide v-for="item in productItem.images" :key="item.id">
+                <div class="carousel-commodity__slide">
+                  <div class="carousel-commodity__image"><img :src="item" alt="" @click="openPopup(item.id)"></div>
+                </div>
+            </swiper-slide>
+          </swiper>
+        </div>
       </div>
-      <div class="commodity-images__string" v-if="typeof productItem.preview === 'string'">
+      <div class="commodity-images__string" v-else>
         <div class="carousel-commodity__image"><img :src="productItem.preview" alt="" @click="openPopup(1)"></div>
       </div>
     </div>
   </div>
 </template>
 <script>
-// import VueSlickCarousel from 'vue-slick-carousel'
-// import 'vue-slick-carousel/dist/vue-slick-carousel.css'
+import { ref } from 'vue';
+import { Swiper } from 'swiper/vue/swiper.js';
+import { SwiperSlide } from 'swiper/vue/swiper-slide';
+import { Thumbs, Navigation, Pagination } from 'swiper';
+import 'swiper/swiper.css';
 export default {
+  components: {
+    Swiper,
+    SwiperSlide,
+  },
+  props: {
+    productItem: {
+      type: Object,
+      required: true,
+    },
+    isPopup: {
+      type: Boolean,
+      required: true,
+    }
+  },
   data() {
     return {
       slider: undefined,
@@ -114,172 +203,296 @@ export default {
       },
     }
   },
+  methods: {
+    openPopup (id) {
+      this.$emit('openPopup', id)
+    }
+  },
   mounted() {
     this.slider = this.$refs.slider
     this.thumb = this.$refs.thumb
   },
-  props: {
-    productItem: {
-      type: Object,
-      required: true,
+  setup() {
+    const onSwiper = () => {
+    };
+    const onSlideChange = () => {
+    };
+    let thumbsSwiper = ref(null);
+    const setThumbsSwiper = (swiper) => {
+      thumbsSwiper.value = swiper;
     }
-  },
-  // components: { VueSlickCarousel },
-  methods: {
-    openPopup (id) {
-      this.$emit('openPopup', id)
+    return {
+      Thumbs,
+      thumbsSwiper,
+      setThumbsSwiper,
+      onSwiper,
+      onSlideChange,
+      Navigation,
+      Pagination,
     }
   }
 } 
 </script>
 <style lang="stylus">
+.swiper-pagination{
+  display: inline-flex !important;
+  align-items: center;
+  position absolute
+  bottom 72px
+  right 120px
+  z-index 1;
+  @media(max-width: 768px){
+    width 100%
+    justify-content center
+    position initial
+    margin-top: 25px
+  }
+  @media(max-width: 400px){
+    display none !important
+  }
+  span {
+    display inline-block
+    width 13.5px
+    height 13.5px
+    background-color rgba(255, 255, 255, 0.6)
+    border-radius 50%
+    margin 0 10px
+    cursor pointer
+    @media(max-width: 768px){
+      background-color #3d3d3d
+      opacity 0.5
+    }
+    &.swiper-pagination-bullet-active{
+      background: rgba(255, 255, 255, 0.9);
+      width 22px
+      height 22px
+      @media(max-width: 768px){
+        background-color #FF0031
+        opacity 1
+      }
+    }
+  }
+}
+.popup{
+  @media(min-width 1120px){
+    .commodity-images__string{
+      width 590px
+    }
+  }
   .commodity-images{
-    &__wrapper{
-      // display grid
-      // grid-template-columns: 140px minmax(200px, 1fr)
-      // column-gap 25px
-      // row-gap: 10px
-      // overflow: hidden
-      // position relative
-      // padding-bottom 70px
-      // margin-bottom 30px
-      // @media(max-width: 1590px){
-      //   grid-template-columns: minmax(200px, 1fr)
-      // }
+    max-width: 1600px
+    @media(min-width: 1121px){
+      margin-right 120px
+    }
+    @media(max-width: 470px){
+      padding-bottom 20px
     }
     &__array{
-      display grid
-      grid-template-columns: 140px minmax(200px, 1fr)
-      column-gap 25px
-      row-gap: 10px
-      overflow: hidden
-      position relative
-      padding-bottom 70px
-      margin-bottom 30px
-      @media(max-width: 1590px){
-        grid-template-columns: minmax(200px, 1fr)
+      grid-template-columns: 140px 1fr !important
+      grid-template-rows: 1fr !important
+      max-height: 590px
+      @media(max-width: 1669px){
+        max-height 410px
       }
-    } 
-    &__thumbs,
-    &__carousel{
-      min-width 0
-      max-height 562px
-      @media(max-width: 1590px) {
-        height auto !important
+      @media(max-width: 992px){
+        grid-template-columns: 100px 1fr !important
+      }
+      @media(max-width: 640px){
+        grid-template-columns: 1fr !important
+        max-height 460px
       }
     }
     &__thumbs{
-      @media(max-width: 1590px){
-        order 2
+      order 0
+      .swiper{
+        max-height 590px
+        @media(max-width: 1669px){
+          max-height 410px
+        }
+      }
+      @media(max-width: 992px) {
+        .thumbs-commodity__image{
+          width 95px
+          height 95px
+        }
+      }
+      @media(max-width: 640px){
+        display none
       }
     }
     &__carousel{
-    }
-  }
-  .popup{
-    .thumbs-commodity__image{
-      border: 1px solid rgba(0, 0, 0, 0.2);
-    }
-    .thumbs-commodity{
-      .slick-current{
-        .thumbs-commodity__image{
-          border: 1px solid #FF0031
+      order 1
+      position relative
+      padding-left 120px
+      padding-right 120px
+      .swiper-button-next,
+      .swiper-button-prev{
+        display block
+        position absolute
+        width 77px
+        height 77px
+        bottom 47%
+        background url('../../assets/img/product/icon/product-slider-arrow.png') center no-repeat
+        background-size: cover;
+        cursor pointer
+        border none
+        &::before,
+        &::after{
+          display none
         }
       }
-    }
-  }
-  .thumbs-commodity{
-    .slick-track{
-    }
-    .slick-slide{
-      @media(max-width: 1590px){
-        padding 0 5px
+      .swiper-button-prev{
+        left 0px
+        transform rotate(0)
       }
-      @media(min-width: 1591px){
-        margin-top 1px
+      .swiper-button-next{
+        right 0px
+        transform rotate(180deg) !important
       }
-    }
-    &__slide{
-    }
-    .slick-current{
-      .thumbs-commodity__image{
-        border: 1px solid rgba(0, 0, 0, 0.2);
+      @media(max-width: 1669px) {
+        .swiper-button-next,
+        .swiper-button-prev{
+          bottom 42%
+        }
       }
-    }
-    &__image{
-      background-color #fff
-      min-width 135px
-      height 130px
-      position relative
-      img{
-        padding 8px
-        position absolute
-        width 100%
-        height 100%
-        object-fit: contain
+      @media(max-width: 1120px) {
+        padding-left 50px
+        padding-right 50px
+        .swiper-button-next,
+        .swiper-button-prev{
+          width 45px !important
+          height 45px !important
+          bottom 44% !important
+        }
       }
-      @media(max-width: 500px) {
-        min-width 80px
-        height 80px
+      @media(max-width: 768px) {
+        padding-left 0px
+        padding-right 0px
+        .swiper-button-next,
+        .swiper-button-prev{
+          display none
+        }
       }
     }
   }
   .carousel-commodity{
-    position initial !important
-    .slick-arrow{
-      display none !important
-      border: none
-      background: inherit
-      &::after,
-      &::before{
-        background-color #D60029
+    .swiper-pagination{
+      @media(max-width: 640px) {
+        display inline-flex !important
       }
-    }
-    .slick-dots{
-      bottom 0 
-      right 0
-      width 100%
-      justify-content center
-      @media(min-width: 1591px) {
-        right -75px
-      }
-      li {
-        background-color #3d3d3d
-        opacity 0.5
-      &.slick-active{
-          background-color #FF0031
-          opacity 1
-      }
-    }
-    }
-    &__slide{
-      background-color #fff
-      border: 1px solid rgba(0, 0, 0, 0.2);
     }
     &__image{
-      // max-width 610px
-      border: 1px solid rgba(139,139,139,0.522);
-      height 558px
-      position relative
-      img{
-        padding 80px
-        position absolute
-        width 100%
-        height 100%
-        object-fit: contain
-        @media(max-width: 1590px) {
-          padding 20px
-        }
-      }
-      @media(max-width: 1590px) {
-        height 410px 
-      }
-      @media(max-width: 500px) {
+      @media(max-width: 640px) {
         height 300px
       }
-    }
-    @media(max-width: 1460px){
-      max-width:1200px
+      img{
+        padding 20px
+        @media(max-width:640px){
+          padding 0
+        }
+      }
     }
   }
+}
+.commodity-images{
+  .swiper-pagination{
+    display none !important
+  }
+  .swiper-button-next,
+  .swiper-button-prev{
+    display none
+  }
+  &__array{
+    display grid
+    grid-template-columns: 1fr
+    grid-template-rows: 562px 145px
+    column-gap 25px
+    row-gap: 5px
+    overflow: hidden
+    position relative
+    @media(max-width: 1669px){
+      grid-template-rows: 410px 145px
+    }
+    @media(max-width: 500px) {
+      grid-template-rows: 305px
+    }
+  } 
+  &__thumbs,
+  &__carousel{
+    min-width 0 !important
+    min-height 0 !important
+  }
+  &__thumbs{
+    order: 1
+    @media(max-width: 500px){
+      display none
+    }
+  }
+  &__carousel{
+    order 0
+  }
+}
+.thumbs-commodity{
+  .swiper-slide{
+    padding 1px 0
+  }
+  .swiper-slide-thumb-active{
+    .thumbs-commodity__slide{
+      border: 1px solid rgba(0, 0, 0, 0.2);
+    }
+  }
+  &__slide{
+    display flex
+    align-items center
+    justify-content center
+    border: 1px solid transparent;
+  }
+  &__image{
+    border: 1px solid transparent;
+    width 135px
+    height 130px
+    position relative
+    img{
+      padding 8px
+      position absolute
+      width 100%
+      height 100%
+      object-fit: contain
+    }
+    @media(max-width: 500px) {
+      min-width 80px
+      height 80px
+    }
+  }
+}
+.carousel-commodity{
+  position initial !important
+  &__slide{
+    background-color transparent
+  }
+  &__image{
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    height 558px
+    position relative
+    img{
+      padding 80px
+      position absolute
+      width 100%
+      height 100%
+      object-fit: contain
+      @media(max-width: 1669px) {
+        padding 20px
+      }
+      @media(max-width: 400px) {
+        padding 15px
+      }
+    }
+    @media(max-width: 1669px) {
+      height 410px 
+    }
+    @media(max-width: 500px) {
+      height 300px
+    }
+  }
+}
 </style>

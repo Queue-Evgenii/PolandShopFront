@@ -7,9 +7,9 @@
       <!-- <div class="content-commodity__info-row"><span>Kod EAN: </span>{{ productItem.code }}</div> -->
     </div>
     <div class="content-commodity__price flex">
-      <div class="content-commodity__new-price flex">{{ productItem.price }}<span>PLN ZA M.B.</span></div>
+      <div class="content-commodity__new-price flex">{{ productItem.price }}<span>{{ 'PLN ZA ' + productItem.unit_of_measure }}</span></div>
       <div class="content-commodity__sale-price">
-        <div v-if="productItem.first_price" class="content-commodity__first-price flex">{{ productItem.first_price }}<span>PLN ZA M.B.</span></div>
+        <div v-if="productItem.first_price" class="content-commodity__first-price flex">{{ productItem.first_price }}<span>{{ 'PLN ZA ' + productItem.unit_of_measure }}</span></div>
         <div v-if="productItem.first_price" class="content-commodity__price-info"><span>{{ "do " + Math.ceil(100 - productItem.price/productItem.first_price*100) + "% " }}</span>w hurcie, sprawdz cennik</div>
       </div>
     </div>
@@ -275,11 +275,29 @@
       max-width: 260px
       padding 0
       right 0
+      @media(max-width: 1120px){
+        max-width: none
+        display flex
+        &__actions{
+          margin 0
+          margin-left 25px
+        }
+      }
+      @media(max-width: 481px){
+        flex-direction column
+        align-items center
+        &__price{
+          margin-top 0
+        }
+        &__actions{
+          margin 0
+          .actions-commodity__row{
+            padding 0
+          }
+        }
+      }
     }
-    .content-commodity__title{
-      position absolute
-      top 40px
-    }
+    .content-commodity__title,
     .content-commodity__info,
     .content-commodity__offer,
     .content-commodity__price-info,
@@ -297,7 +315,7 @@
       width 200px
       min-width 0 !important
       bottom 55px
-      @media(max-width: 470px){
+      @media(max-width: 1120px){
         bottom 35px
         left 50px
       }
@@ -306,24 +324,18 @@
       flex-direction: column-reverse
       width 200px
       bottom 100px
-      @media(max-width: 1590px){
-        bottom 30px
-        left 50px
-        flex-direction row
-      }
-      @media(max-width: 790px){
+      @media(max-width: 1669px){
         .content-commodity__sale-price{
           display none
         }
       }
-      @media(max-width: 470px){
-        bottom 70px
-      }
     }
     .actions-commodity__cart,
     .content-commodity__price{
-      position absolute
-      right 50px
+      @media(min-width: 1121px){
+        position absolute
+        right 50px
+      }
     }
   }
 </style>

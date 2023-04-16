@@ -15,7 +15,7 @@
         <p class="reviews-product__text">{{item.message}}</p>
       </li>
     </ul>
-    <div v-else class="reviews-product__no-reviews">This product not contain feedbacks ;(</div>
+    <div v-else class="not-exist-items">This product not contain feedbacks ;(</div>
   </div>
 </template>
 <script>
@@ -76,11 +76,6 @@
       color: #3D3D3D;
       font-size 18px
       line-height 114%
-    }
-    &__no-reviews{
-      font-size: 20px;
-      line-height: 25px;
-      color: #000;
     }
   }
   .rating-product{

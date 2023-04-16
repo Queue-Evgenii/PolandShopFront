@@ -1,19 +1,20 @@
 <template>
   <div class="info-product__gallery gallery-product info-product__block">
     <div class="info-product__title">Product photo:</div>
-    <div class="gallery-product__items">
-      <div class="gallery-product__item" v-for="item in commoditySlides" :key="item.id">
+    <div v-if="productImages" class="gallery-product__items">
+      <div class="gallery-product__item" v-for="item in productImages" :key="item.id">
         <div class="gallery-product__image">
-          <img :src="item.image" alt="">
+          <img :src="item" alt="">
         </div>
       </div>
     </div>
+    <div v-else class="not-exist-items">Product does not have photos</div>
   </div>
 </template>
 <script>
   export default {
     props: {
-    commoditySlides :{
+      productImages :{
       type: Array,
       required: true,
     }
