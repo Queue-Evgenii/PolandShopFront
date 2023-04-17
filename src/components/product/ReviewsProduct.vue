@@ -1,7 +1,7 @@
 <template>
-  <div class="info-product__reviews reviews-product info-product__block">
+  <div  v-if="ReviewsProductItems.length !== 0" class="info-product__reviews reviews-product info-product__block">
     <div class="info-product__title">Opinie klientów:</div>
-    <ul v-if="ReviewsProductItems.length !== 0" class="reviews-product__items">
+    <ul class="reviews-product__items">
       <li class="reviews-product__item" v-for="item in ReviewsProductItems" :key="item.id">
         <div class="reviews-product__row">
           <span v-if="item.avatar" class="reviews-product__avatar"><img :src="item.avatar" alt=""></span>
@@ -15,7 +15,6 @@
         <p class="reviews-product__text">{{item.message}}</p>
       </li>
     </ul>
-    <div v-else class="not-exist-items">This product not contain feedbacks ;(</div>
   </div>
 </template>
 <script>

@@ -13,7 +13,8 @@
         <div class="quantity-product__input">
           <input type="text" :value="product.amount">
         </div>
-        <span @click="increment(product.id)">+</span>
+        <span v-if="product.amount < product.quantity" @click="increment(product.id)">+</span>
+        <span v-else class="_disabled">+</span>
       </div>
       <div class="item-cart__price">{{ product.price }}<span>PLN</span></div>
     </div>

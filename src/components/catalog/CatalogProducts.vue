@@ -93,8 +93,10 @@ export default {
       const cartItems = this.$store.state.cartList
       if(this.$store.state.cartList.find(item => item.id === product.id)){
         const cartItem = cartItems.find(item => item.id === product.id)
-        cartItem.amount++
-      } else {
+        if (cartItem.amount < cartItem.quantity){
+          cartItem.amount++
+        }
+      } else  if (product.quantity > 0) {
         product.amount = 1;
         cartItems.push(product)
         localStorage.setItem('cartItems', JSON.stringify(cartItems))

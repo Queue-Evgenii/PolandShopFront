@@ -338,7 +338,7 @@
     }
     .quantity-product{
       span{
-        &:hover{
+        &:not(._disabled):hover{
           color: #FF0031;
         }
       }
@@ -347,7 +347,7 @@
       &:hover{
         box-shadow: 10px 10px 40px rgba(0, 0, 0, 0.2);
         border: 2px solid #FF0031;
-        .actions-product__button{
+        .actions-product__button:not(._disabled){
           border: 2px solid #FF0031;
           color: #FF0031
           transition all 0.3s ease 0s
@@ -366,6 +366,23 @@
     line-height: 25px;
     color: #000;
   }
-
+  ._disabled{
+    opacity 0.5 
+    border-color: #3d3d3d !important
+    background-color transparent !important
+    color: #3d3d3d !important
+    span{
+      color: #3d3d3d !important
+    }
+    &:hover{
+      cursor: default !important
+      background-color transparent !important
+      border-color: #3d3d3d !important
+      color: #3d3d3d !important
+      span{
+        color: #3d3d3d !important
+      }
+    }
+  }
 </style>
 

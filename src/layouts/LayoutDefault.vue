@@ -802,9 +802,11 @@ export default {
   methods: {
     openPopup () {
       this.visibilityPopup = 1;
+      document.body.style.overflowY = "hidden"
     },
     closePopup () {
       this.visibilityPopup = null;
+      document.body.style.overflowY = "initial"
     },
   },
   computed: {

@@ -2,11 +2,11 @@
   <div class="alert-block">
     <!-- <div class="alert-block__text">{{popupOutput.title}}</div>  -->
     <div class="alert-block__buttons" :class="popupOutput.nclass === 'before-payment' ? 'before-payment' : ''">
-      <router-link :to="{name: 'payment'}" class="alert-block__buy button alert-block__button"><span  @click="quickBuy()">Buy onle that</span></router-link>
-      <router-link :to="{name: 'cart'}" class="alert-block__payment button alert-block__button"><span>Go to cart</span></router-link>
+      <router-link :to="{name: 'payment'}" class="alert-block__buy button alert-block__button"><span  @click="quickBuy();closePopup()">Buy onle that</span></router-link>
+      <router-link :to="{name: 'cart'}" class="alert-block__payment button alert-block__button"><span @click="closePopup()">Go to cart</span></router-link>
     </div>
     <div class="alert-block__buttons" :class="popupOutput.nclass === 'on-payment' ? 'on-payment' : ''">
-      <router-link :to="{name: 'cart'}" @click="goBack()" class="alert-block__buy button alert-block__button"><span>Go to cart page</span></router-link>
+      <router-link :to="{name: 'cart'}" @click="goBack();closePopup()" class="alert-block__buy button alert-block__button"><span>Go to cart page</span></router-link>
       <button class="alert-block__payment button alert-block__button" @click="closePopup()"><span>Back to payment</span></button>
     </div>
   </div>
@@ -80,6 +80,7 @@ export default {
     },
     closePopup() {
       this.$emit('closePopup');
+      document.body.style.overflowY = "initial"
     }
   }
 }

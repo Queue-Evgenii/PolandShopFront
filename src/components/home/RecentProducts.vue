@@ -16,8 +16,14 @@
                   <div class="item-product__price">{{ product.price }}</div>
                 </div>
                 <div class="item-product__actions actions-product flex">
-                  <button @click="addToCart(product);$event.stopPropagation();$event.preventDefault();showAlert()" type="button"
-                    class="actions-product__button">Dodaj do koszyka</button>
+                  <button
+                    @click="addToCart(product);$event.stopPropagation();$event.preventDefault();showAlert(product)"
+                    type="button"
+                    class="actions-product__button"
+                    :class="(getQuantity(product) >= product.quantity) ? '_disabled' : ''"
+                  >
+                    Dodaj do koszyka
+                  </button>
                   <button type="button" class="actions-product__favorite"></button>
                 </div>
               </div>
@@ -47,13 +53,22 @@ export default {
     }
   },
   methods: {
+    getQuantity (product) {
+      if (!this.$store.state.cartList.find(item => item.id === product.id)) {
+        return 0
+      }
+      const item = this.$store.state.cartList.find(item => item.id === product.id)
+      return item.amount
+    },
     addToCart(product) {
       this.$emit('addToCart', product)
     },
-    showAlert() {
-      const block = document.querySelector('.access-alert__container')
-      block.classList.add('show-access-alert')
-      setTimeout(() => block.classList.remove('show-access-alert'), 1000);
+    showAlert(product) {
+      if(this.getQuantity(product) < product.quantity) {
+        const block = document.querySelector('.access-alert__container')
+        block.classList.add('show-access-alert')
+        setTimeout(() => block.classList.remove('show-access-alert'), 1000);
+      }
     },
     addToRecent(product){
       if(this.$store.state.recentList.find(item => item.id === product.id)){

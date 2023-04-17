@@ -10,13 +10,13 @@
               </aside>
               <div class="product-page__content content">
                 <div class="product-page__commodity commodity-page">
-                  <commodity-slider :productItem="this.productItem" @openPopup="openPopup" :isPopup="false"/>
+                  <commodity-slider :galleryItems="galleryItems" @openPopup="openPopup" :isPopup="false"/>
                   <commodity-content :productItem="this.productItem" @openAlertPopup="openAlertPopup" @inputValue="inputValue" @changeFavoriteList="changeFavoriteList"/>
                 </div>
                 <div class="product-page__info info-product">
                   <about-product v-if="this.productItem.description" :aboutText="this.productItem.description" />
                   <!-- <table-product :tableProductItems="productItem.description" /> -->
-                  <gallery-product :productImages="productItem.images" />
+                  <gallery-product v-if="this.productItem.images" :productImages="galleryItems" />
                   <reviews-product v-if="this.productItem.feedbacks" :ReviewsProductItems="productItem.feedbacks" />
                   <!-- <button class="info-product__more">Uczyć się więcej</button> -->
                 </div>
@@ -33,7 +33,7 @@
      @closePopup="closePopup"
      :popupOutput="this.productItem"
     >
-      <commodity-slider :productItem="this.productItem" :isPopup="true"/>
+      <commodity-slider :galleryItems="galleryItems" :isPopup="true"/>
       <commodity-content :productItem="this.productItem" />
     </page-popup>
     <page-popup 
@@ -146,17 +146,51 @@ export default {
       productItem: {},
     }
   },
+  computed: {
+    recentList () {
+      return this.$store.state.recentList;
+    },
+    SidebarWidth() {
+      if (window.innerWidth <= 1200) {
+        return false
+      } else {
+        return true
+      }
+    },
+    MobileWidth() {
+      if (window.innerWidth <= 768) {
+        return false
+      } else {
+        return true
+      }
+    },
+    productId() {
+      return parseInt(this.$route.params.id) || 1;
+    },
+    galleryItems() {
+      if(this.productItem.images) {
+        let items = this.productItem.images;
+        items.unshift(this.productItem.preview)
+        console.log(items)
+        return items
+      }
+      return Array(this.productItem.preview)
+    }
+  },
   methods: {
     openPopup() {
       this.visibilityPopup = 1;
+      document.body.style.overflowY = "hidden"
     },
     closePopup() {
       this.visibilityPopup = null;
       this.buyOneClickPopup = null;
+      document.body.style.overflowY = "initial"
     },
     openAlertPopup(value) {
       this.buyOneClickPopup = 1;
       this.inputValue = value
+      document.body.style.overflowY = "hidden"
     },
     quickBuy() {
       this.$store.state.isQuickBuy = true
@@ -206,28 +240,6 @@ export default {
         this.getProducts()
       }, 0)
     }
-  },
-  computed: {
-    recentList () {
-      return this.$store.state.recentList;
-    },
-    SidebarWidth() {
-      if (window.innerWidth <= 1200) {
-        return false
-      } else {
-        return true
-      }
-    },
-    MobileWidth() {
-      if (window.innerWidth <= 768) {
-        return false
-      } else {
-        return true
-      }
-    },
-    productId() {
-      return parseInt(this.$route.params.id) || 1;
-    },
   },
 }
 </script>

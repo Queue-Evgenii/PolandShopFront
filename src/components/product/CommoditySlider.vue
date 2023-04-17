@@ -1,11 +1,11 @@
 <template>
   <div class="commodity-page__images commodity-images">
     <div class="commodity-images__wrapper">
-      <div class="commodity-images__array" v-if="productItem.images" >
+      <div class="commodity-images__array" v-if="gallerySize > 1" >
         <div class="commodity-images__thumbs">
           <swiper
-            v-if="!isPopup"
-            :slides-per-view="4"
+            v-if="!isPopup && gallerySize !== 1"
+            :slides-per-view="gallerySize"
             :space-between="0"
             :loop="true"
             :modules="[Thumbs]"
@@ -14,32 +14,32 @@
             class="thumbs-commodity"
             :breakpoints="{
               1669:{
-                slidesPerView: 4,
+                slidesPerView: gallerySize,
               },
               1520:{
-                slidesPerView: 3,
+                slidesPerView: (3 >= gallerySize) ? gallerySize : 3,
               },
               1460: {
-                slidesPerView: 2,
+                slidesPerView: (2 >= gallerySize) ? gallerySize : 2,
               },
               1200:{
-                slidesPerView: 4,
+                slidesPerView: gallerySize,
               },
               1120:{
-                slidesPerView: 3,
+                slidesPerView: (3 >= gallerySize) ? gallerySize : 3,
               },
               992: {
-                slidesPerView: 2,
+                slidesPerView: (2 >= gallerySize) ? gallerySize : 2,
               },
               768: {
-                slidesPerView: 4,
+                slidesPerView: gallerySize,
               },
               500: {
-                slidesPerView: 3,
+                slidesPerView: (3 >= gallerySize) ? gallerySize : 3,
               },
             }"
           >
-            <swiper-slide v-for="item in productItem.images" :key="item.id">
+            <swiper-slide v-for="item in galleryItems" :key="item.id">
               <div class="thumbs-commodity__slide">
                 <div class="thumbs-commodity__image"><img :src="item" alt=""></div>
               </div>
@@ -47,7 +47,7 @@
           </swiper>
           <swiper
             v-if="isPopup"
-            :slides-per-view="4"
+            :slides-per-view="gallerySize"
             :space-between="0"
             :loop="true"
             :modules="[Thumbs]"
@@ -57,20 +57,20 @@
             class="thumbs-commodity"
             :breakpoints="{
               1669:{
-                slidesPerView: 4,
+                slidesPerView: gallerySize,
               },
               992: {
-                slidesPerView: 3,
+                slidesPerView: (3 >= gallerySize) ? gallerySize : 3,
               },
               768: {
-                slidesPerView: 4,
+                slidesPerView: gallerySize,
               },
               500: {
-                slidesPerView: 3,
+                slidesPerView: (3 >= gallerySize) ? gallerySize : 3,
               },
             }"
           >
-            <swiper-slide v-for="item in productItem.images" :key="item.id">
+            <swiper-slide v-for="item in galleryItems" :key="item.id">
               <div class="thumbs-commodity__slide">
                 <div class="thumbs-commodity__image"><img :src="item" alt=""></div>
               </div>
@@ -90,7 +90,7 @@
             :pagination="{clickable: true}"
             class="carousel-commodity"
           >
-            <swiper-slide v-for="item in productItem.images" :key="item.id">
+            <swiper-slide v-for="item in galleryItems" :key="item.id">
                 <div class="carousel-commodity__slide">
                   <div class="carousel-commodity__image"><img :src="item" alt="" @click="openPopup(item.id)"></div>
                 </div>
@@ -99,7 +99,9 @@
         </div>
       </div>
       <div class="commodity-images__string" v-else>
-        <div class="carousel-commodity__image"><img :src="productItem.preview" alt="" @click="openPopup(1)"></div>
+        <div class="carousel-commodity__image">
+          <img v-if="gallerySize === 1" :src="galleryItems[0]" alt="" @click="openPopup()">
+        </div>
       </div>
     </div>
   </div>
@@ -116,8 +118,8 @@ export default {
     SwiperSlide,
   },
   props: {
-    productItem: {
-      type: Object,
+    galleryItems: {
+      type: Array,
       required: true,
     },
     isPopup: {
@@ -203,14 +205,25 @@ export default {
       },
     }
   },
+  computed: {
+    gallerySize() {
+      if(this.galleryItems){
+        if(this.galleryItems.length >= 4) {
+          return 4;
+        }
+        return this.galleryItems.length;
+      }
+      return 0
+    }
+  },
   methods: {
     openPopup (id) {
-      this.$emit('openPopup', id)
+      this.$emit('openPopup', id);
     }
   },
   mounted() {
-    this.slider = this.$refs.slider
-    this.thumb = this.$refs.thumb
+    this.slider = this.$refs.slider;
+    this.thumb = this.$refs.thumb;
   },
   setup() {
     const onSwiper = () => {
@@ -448,6 +461,7 @@ export default {
     border: 1px solid transparent;
   }
   &__image{
+    cursor: pointer;
     border: 1px solid transparent;
     width 135px
     height 130px
@@ -471,6 +485,7 @@ export default {
     background-color transparent
   }
   &__image{
+    cursor: pointer;
     border: 1px solid rgba(0, 0, 0, 0.2);
     height 558px
     position relative

@@ -13,7 +13,14 @@
           </div>
         </div>
         <div class="item-product__actions actions-product flex">
-          <button @click="addToCart(product);$event.stopPropagation();$event.preventDefault();showAlert()" type="button" class="actions-product__button">Dodaj do koszyka</button>
+          <button
+            @click="this.showAlert(product);addToCart(product);$event.stopPropagation();$event.preventDefault()"
+            type="button"
+            class="actions-product__button"
+            :class="(getQuantity(product) >= product.quantity) ? '_disabled' : ''"
+          >
+            Dodaj do koszyka
+          </button>
           <button
             @click="changeFavoriteList(product);$event.stopPropagation();$event.preventDefault();"
             type="button" class="actions-product__favorite"
@@ -33,8 +40,15 @@ export default {
     }
   },
   methods: {
+    getQuantity (product) {
+      if (!this.$store.state.cartList.find(item => item.id === product.id)) {
+        return 0
+      }
+      const item = this.$store.state.cartList.find(item => item.id === product.id)
+      return item.amount
+    },
     addToCart(product) {
-      this.$emit('addToCart', product)
+      this.$emit('addToCart', product);
     },
     changeFavoriteList(product) {
       if (!this.$store.state.favoriteItems.find(item => item.id === product.id)) {
@@ -68,10 +82,12 @@ export default {
       }
       // this.$store.state.recentList.push(product)
     },
-    showAlert() {
-      const block = document.querySelector('.access-alert__container')
-      block.classList.add('show-access-alert')
-      setTimeout(() => block.classList.remove('show-access-alert'), 1000);
+    showAlert(product) {
+      if(this.getQuantity(product) < product.quantity) {
+        const block = document.querySelector('.access-alert__container')
+        block.classList.add('show-access-alert')
+        setTimeout(() => block.classList.remove('show-access-alert'), 1000);
+      }
     },
   },
 }

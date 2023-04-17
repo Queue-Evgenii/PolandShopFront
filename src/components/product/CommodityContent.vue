@@ -18,17 +18,36 @@
         <div class="actions-commodity__quantity quantity-product">
           <span @click="decrement()">-</span>
           <div class="quantity-product__input">
-            <input type="text" :value="this.getQuantity" ref="productInput">
+            <input type="text" :value="this.getProductQuantity" ref="productInput">
           </div>
-          <span @click="increment()">+</span>
+          <span v-if="this.getProductQuantity < productItem.quantity" @click="increment()">+</span>
+          <span v-else class="_disabled">+</span>
         </div>
         <div class="actions-commodity__token flex"><span>Cod Kupon:</span><input type="text" placeholder="_ _ _ _ _ _ _ _ _ _ _ _ _"></div>
       </div>
       <div class="actions-commodity__status flex yes" v-if="productItem.quantity > 0"><span>W magazynie - </span>{{ productItem.labelMark ? productItem.labelMark : productItem.quantity }}</div>
       <div class="actions-commodity__status flex no" v-else><span>W magazynie - </span>{{ productItem.labelMark ? productItem.labelMark : productItem.quantity }}</div>
       <div class="actions-commodity__row">
-        <button type="button" class="actions-commodity__cart button" @click="addToCart(productItem);showAlert()"><span>Dodaj do koszyka</span></button>
-        <button type="button" class="actions-commodity__buy button" @click="openAlertPopup()"><span>Kup w 1 kliknięciu</span></button>
+        <button
+          :class="(getQuantity(productItem) >= productItem.quantity) ? '_disabled' : ''"
+          type="button" class="actions-commodity__cart button"
+          @click="showAlert(productItem);addToCart(productItem)"
+        >
+          <span>Dodaj do koszyka</span>
+        </button>
+        <button
+          v-if="getQuantity(productItem) < productItem.quantity"
+          type="button" class="actions-commodity__buy button"
+          @click="openAlertPopup()"
+        >
+          <span>Kup w 1 kliknięciu</span>
+        </button>
+        <button
+          v-else
+          type="button" class="actions-commodity__buy button _disabled"
+        >
+          <span>Kup w 1 kliknięciu</span>
+        </button>
       </div>
       <div class="actions-commodity__row">
         <button
@@ -368,10 +387,12 @@
         }
         localStorage.setItem('cartItems', JSON.stringify(items))
       },
-      showAlert() {
-        const block = document.querySelector('.access-alert__container')
-        block.classList.add('show-access-alert')
-        setTimeout(() => block.classList.remove('show-access-alert'), 1000);
+      showAlert(product) {
+        if(this.getQuantity(product) < product.quantity) {
+          const block = document.querySelector('.access-alert__container')
+          block.classList.add('show-access-alert')
+          setTimeout(() => block.classList.remove('show-access-alert'), 1000);
+        }
       },
       openAlertPopup () {
         this.$emit('openAlertPopup', this.$refs.productInput.value)
@@ -380,17 +401,24 @@
         this.$emit('changeFavoriteList')
       },
       checkIsFavorite(product) {
-      if (this.$store.state.favoriteItems.find(item => item.id === product.id)) {
-        product.isFavorite = true
-        return true
-      } else {
-        product.isFavorite = false
-        return false
-      }
-    },
+        if (this.$store.state.favoriteItems.find(item => item.id === product.id)) {
+          product.isFavorite = true
+          return true
+        } else {
+          product.isFavorite = false
+          return false
+        }
+      },
+      getQuantity (product) {
+        if (!this.$store.state.cartList.find(item => item.id === product.id)) {
+          return 0
+        }
+        const item = this.$store.state.cartList.find(item => item.id === product.id)
+        return item.amount
+      },
     },
     computed: {
-      getQuantity () {
+      getProductQuantity () {
         if (!this.$store.state.cartList.find(item => item.id === this.productItem.id)) {
           return this.productItem.amount
         } else {

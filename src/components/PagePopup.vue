@@ -13,6 +13,9 @@
 </template>
 <style lang="stylus">
   .popup{
+    body{
+      height 100%
+    }
     position fixed
     top 0
     right 0
