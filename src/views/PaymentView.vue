@@ -3,30 +3,34 @@
     <layout-default>
       <main class="page">
         <div class="page__payment payment-page">
-          <div class="payment-page__container container row">
-            <aside class="payment-page__sidebar sidebar"></aside>
-            <div class="payment-page__content content">
-              <div class="payment-page__title">Zapłata za towary</div>
-              <div class="payment-page__columns">
-                <payment-form @goBackPopup="goBackPopup"/>
-                <div class="payment-page__preview preview-payment">
-                  <div class="preview-payment__content">
-                    <div class="preview-payment__row flex">
-                      <div class="preview-payment__title">Podsumowanie zamowienia</div>
-                      <div class="preview-payment__qtty">
-                        <img src="@/assets/img/header/icon/cart.png" alt="">
-                        {{ this.previewProducts.length }}
-                        <span>produkty</span>
+          <div class="payment-page__container container">
+            <div class="login-form">
+              <login-form />
+            </div>
+            <div class="payment-hidden row">
+              <div :class="isLogged ? 'logged' : ''" class="payment-page__content content">
+                <div class="payment-page__title">Zapłata za towary</div>
+                <div class="payment-page__columns">
+                  <payment-form @goBackPopup="goBackPopup"/>
+                  <div class="payment-page__preview preview-payment">
+                    <div class="preview-payment__content">
+                      <div class="preview-payment__row flex">
+                        <div class="preview-payment__title">Podsumowanie zamowienia</div>
+                        <div class="preview-payment__qtty">
+                          <img src="@/assets/img/header/icon/cart.png" alt="">
+                          {{ this.previewProducts.length }}
+                          <span>produkty</span>
+                        </div>
                       </div>
-                    </div>
-                    <preview-product :Items="this.previewProducts" />
-                    <div class="preview-payment__delivery-price flex">
-                      <span class="preview-payment__label">Koszt przesyłki</span>
-                      <span>{{ this.deliveryPrice }} PLN</span>
-                    </div>
-                    <div class="preview-payment__total-price flex">
-                      <span class="preview-payment__label">Całkowity</span>
-                      <span>{{ +cartTotalCost + +this.deliveryPrice }} PLN</span>
+                      <preview-product :Items="this.previewProducts" />
+                      <div class="preview-payment__delivery-price flex">
+                        <span class="preview-payment__label">Koszt przesyłki</span>
+                        <span>{{ this.deliveryPrice }} PLN</span>
+                      </div>
+                      <div class="preview-payment__total-price flex">
+                        <span class="preview-payment__label">Całkowity</span>
+                        <span>{{ +cartTotalCost + +this.deliveryPrice }} PLN</span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -55,6 +59,7 @@ import PaymentForm from '@/components/payment/PaymentForm'
 import PreviewProduct from '@/components/PreviewProduct'
 import PaymentAlert from '@/components/product/PaymentAlert'
 import PageAds from '@/components/PageAds'
+import LoginForm from '@/components/payment/LoginForm'
 export default {
   name: 'CatalogView',
   layouts: 'default',
@@ -65,11 +70,13 @@ export default {
     PageAds,
     PaymentAlert,
     PagePopup,
+    LoginForm,
   },
   created () {
   },
   data() {
     return {
+      isLogged: false,
       previewProducts: [],
       deliveryPrice: "5",
       openPopup: false,
@@ -152,8 +159,26 @@ export default {
 }
 </script>
 <style lang="stylus">
+.login-form{
+  margin 0 auto
+  padding 25px 0
+  width fit-content
+  button{
+    min-width initial !important
+  }
+  &__actions{
+    @media(max-width: 768px) {
+      flex-wrap wrap !important
+    }
+  }
+  &__without-log{
+  }
+}
   .payment{
     color: #3D3D3D;
+  }
+  .payment-hidden{
+    overflow: hidden
   }
   .payment-page{
     &__title{
@@ -167,9 +192,17 @@ export default {
       justify-content space-around
     }
     &__content{
-      margin-bottom 150px
       max-width: none !important
       flex 100% !important;
+      transition all 0.9s ease 0.1s
+      transform: translate(0, -100%)
+      height 0
+      visibility collapse
+      &.logged{
+        transform: translate(0, 0)
+        height fit-content
+        visibility visible
+      }
     }
     &__sidebar{
       flex: 0 !important;
@@ -223,5 +256,149 @@ export default {
     padding 17px 0
     border-top 1px solid rgba(#8B8B8B, 0.3)
   }
+}
+.form-payment {
+  &__sections{
+    display flex
+    @media(max-width: 768px){
+      flex-direction column-reverse
+    }
+  }
+  &__section-btn {
+    justify-content left
+    gap: 30px
+    @media(max-width: 475px){
+      flex-wrap: wrap
+    }
+  }
+  &__title {
+  }
+  &__block {
+    padding 40px 0 40px 70px
+    display flex
+    flex-direction: column
+    gap: 35px
+    @media(max-width: 768px){
+      padding 40px 0
+    }
+  }
+  &__row {
+    display flex
+    flex-direction: column
+    gap: 15px
+  }
+  &__label{
+  }
+  &__input {
+    background-color transparent
+    padding 10px 15px
+    border: 1px solid #8B8B8B;
+    border-radius: 5px
+    max-width:300px
+    input{
+      background-color transparent
+    }
+  }
+  &__button {
+    width 162px
+    padding 15px
+    font-size: 14px;
+    line-height: 16px;
+    color: #FF0031;
+    border 1px solid #FF0031;
+    border-radius 5px
+    transition background 0.3s ease 0s;
+  }
+  &__cancel {
+    background transparent
+    color: #ff0031;
+    border: 1px solid #ff0031;
+    width 190px
+    min-width: initial;
+    @media(max-width: 992px){
+      width 100%
+    }
+  }
+  @media(min-width: 769px){
+    &__button,
+    &__cancel{
+      &:hover{
+        background-color #ff0031;
+        color: #fff;
+      }
+    }
+  }
+  &__submit{
+    color: #fff
+    font-weight 700
+    font-size 14px
+    line-height 16px
+    width 215px
+    @media(max-width: 992px){
+      width 100%
+    }
+  }
+  &__radiobox {
+    display none
+  }
+  &__label-radio {
+    position relative
+    padding-left 30px
+    p{
+        margin-bottom 10px
+    }
+    span{
+      display inline-block
+      margin-top 5px
+      color: #FF0031;
+      font-weight: 700;
+    }
+    &::before{
+      content: ''
+      position absolute
+      left 0
+      top 3px
+      width 16px
+      height 16px
+      border: 1px solid #272727;
+      border-radius: 50%
+    }
+    &::after{
+      content: ''
+      position absolute
+      left 4px
+      top 7px
+      width 7.5px
+      height 7.5px
+      border-radius: 50%
+      background-color #ff5070
+      transform: scale(0)
+      transition: all 0.3s ease 0s
+    }
+  }
+}
+.input-width{
+  width 300px
+  @media(max-width: 420px) {
+    width initial
+  }
+}
+.radio-block {
+  input[type=checkbox]:checked + label {
+    &::after{
+      transform: scale(1)
+    }
+  }
+}
+.f1-1{
+  flex: 1 1 100%
+}
+.n-row{
+  flex-direction: row
+  flex-wrap: wrap
+}
+.w-110{
+  flex: 0 0 122px
+  max-width: 122px
 }
 </style>
