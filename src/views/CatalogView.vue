@@ -16,7 +16,7 @@
                 </div>
                 <div class="catalog-page__products">
                   <catalog-products :catalogProducts="catalogProducts" :productsLabel="productsLabel" > 
-                    <aside-filter :filterItems="filterItems" v-if="!SidebarWidth"></aside-filter>
+                    <aside-filter :filterItems="filterItems"></aside-filter>
                   </catalog-products>
                 </div>
               </div>

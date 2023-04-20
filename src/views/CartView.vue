@@ -128,40 +128,6 @@ export default {
           quantity: '1'
         },
       ],
-      mainProducts: [
-        {
-          id: 1,
-          image: require('@/assets/img/products/product-1.png'),
-          href: '#',
-          mark: 'Najlepiej sprzedający się',
-          label: 'Profil aluminiowy uniwersalny bezuszczelkowy',
-          price: 75
-        },
-        {
-          id: 2,
-          image: require('@/assets/img/products/product-2.png'),
-          href: '#',
-          mark: '',
-          label: 'Profil aluminiowy uniwersalny bezuszczelkowy',
-          price: 75
-        },
-        {
-          id: 3,
-          image: require('@/assets/img/products/product-3.png'),
-          href: '#',
-          mark: 'Najlepiej sprzedający się',
-          label: 'Profil aluminiowy uniwersalny bezuszczelkowy',
-          price: 75
-        },
-        {
-          id: 4,
-          image: require('@/assets/img/products/product-4.png'),
-          href: '#',
-          mark: '',
-          label: 'Profil aluminiowy uniwersalny bezuszczelkowy',
-          price: 75
-        }
-      ],
     }
   },
 }

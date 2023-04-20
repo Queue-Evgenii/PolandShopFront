@@ -50,7 +50,7 @@
     max-width: 1860px;
     padding 0 30px
     margin: 0 auto;
-    overflow: hidden;
+    // overflow: hidden;
     @media(max-width: 350px) {
       padding 0 20px
     }
@@ -120,7 +120,7 @@
     height 100%
   }
   @media(max-width:1440px){
-    width 100%
+    //width 100%
   }
 }
 

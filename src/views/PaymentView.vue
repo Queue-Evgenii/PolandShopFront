@@ -5,13 +5,13 @@
         <div class="page__payment payment-page">
           <div class="payment-page__container container">
             <div class="login-form">
-              <login-form />
+              <login-form @openForm="openForm"/>
             </div>
             <div class="payment-hidden row">
-              <div :class="isLogged ? 'logged' : ''" class="payment-page__content content">
+              <div :class="isLogged ? 'logged' : ''" class="payment-page__content content" ref="mainForm">
                 <div class="payment-page__title">Zapłata za towary</div>
                 <div class="payment-page__columns">
-                  <payment-form @goBackPopup="goBackPopup"/>
+                  <payment-form @goBackPopup="goBackPopup" :isAuthorized="isAuthorized"/>
                   <div class="payment-page__preview preview-payment">
                     <div class="preview-payment__content">
                       <div class="preview-payment__row flex">
@@ -32,6 +32,7 @@
                         <span>{{ +cartTotalCost + +this.deliveryPrice }} PLN</span>
                       </div>
                     </div>
+                    <div class="sticky-relative"></div>
                   </div>
                 </div>
               </div>
@@ -60,6 +61,9 @@ import PreviewProduct from '@/components/PreviewProduct'
 import PaymentAlert from '@/components/product/PaymentAlert'
 import PageAds from '@/components/PageAds'
 import LoginForm from '@/components/payment/LoginForm'
+
+// import { useVuelidate } from '@vuelidate/core'
+// import { required, email } from '@vuelidate/validators'
 export default {
   name: 'CatalogView',
   layouts: 'default',
@@ -72,8 +76,6 @@ export default {
     PagePopup,
     LoginForm,
   },
-  created () {
-  },
   data() {
     return {
       isLogged: false,
@@ -81,25 +83,23 @@ export default {
       deliveryPrice: "5",
       openPopup: false,
       isExistData: false,
-      productAbout: {
-        image: require('@/assets/img/product/product-img-1.png'),
-        title: 'Profil aluminiowy uniwersalny bezuszczelkowy',
-        offer: 'Bezpłatna dostawa z 500 Pln',
-        categoryNum: 26,
-        cod: '0723314791448',
-        firstPrice: 95,
-        price: 75,
-        status: true,
-        quantity: 1,
-        sale: "-10",
-      },
       onPayment: {
         name: "Do you really want go back??",
         nclass: "on-payment",
       },
+      isAuthorized: {
+        status: false,
+        email: '',
+      },
     }
   },
   methods: {
+    openForm(data) {
+      this.isLogged = true;
+      this.$refs.mainForm.scrollIntoView({behavior: "smooth"});
+      this.isAuthorized.status = data.isAuthorized;
+      this.isAuthorized.email = data.email;
+    },
     goBackPopup() {
       this.openPopup = true;
     },
@@ -163,22 +163,34 @@ export default {
   margin 0 auto
   padding 25px 0
   width fit-content
-  button{
-    min-width initial !important
-  }
-  &__actions{
-    @media(max-width: 768px) {
-      flex-wrap wrap !important
+  &__verify{
+    border-radius: 8px;
+    background-color: rgba(#ff0031, 0.7);
+    min-width: 240px;
+    min-height: 50px;
+    border: 1px solid transparent;
+    justify-content center
+    span{
+      display: inline-block;
+      padding: 16px 5px;
+      font-weight: 700;
+      color: #fff;
     }
   }
-  &__without-log{
+  @media(max-width: 768px) {
+    &__actions{
+      flex-wrap wrap !important
+    }
+    &__verify{
+      width 100%
+    }
   }
 }
   .payment{
     color: #3D3D3D;
   }
   .payment-hidden{
-    overflow: hidden
+    // overflow: hidden
   }
   .payment-page{
     &__title{
@@ -194,7 +206,7 @@ export default {
     &__content{
       max-width: none !important
       flex 100% !important;
-      transition all 0.9s ease 0.1s
+      transition all 0.3s ease 0.1s
       transform: translate(0, -100%)
       height 0
       visibility collapse
@@ -213,13 +225,13 @@ export default {
   .payment-page__preview {
 }
 .preview-payment {
-  position relative
   @media(max-width: 992px){
     display none
   }
   &__content {
+    position: -webkit-sticky;
     position sticky;
-    top: 10px
+    top: 20px;
     background: linear-gradient(179.99deg, rgba(217, 217, 217, 0) -53.9%, rgba(255, 0, 0, 0.2) 280.91%);
     padding 25px 15px
     max-width: 375px
@@ -258,11 +270,12 @@ export default {
   }
 }
 .form-payment {
-  &__sections{
-    display flex
-    @media(max-width: 768px){
-      flex-direction column-reverse
-    }
+  &__section{
+    overflow: hidden;
+    // display flex
+    // @media(max-width: 768px){
+    //   flex-direction column-reverse
+    // }
   }
   &__section-btn {
     justify-content left
@@ -271,7 +284,9 @@ export default {
       flex-wrap: wrap
     }
   }
-  &__title {
+  &__text {
+    color: #8b8b8b
+    max-width: 500px
   }
   &__block {
     padding 40px 0 40px 70px
@@ -295,8 +310,12 @@ export default {
     border: 1px solid #8B8B8B;
     border-radius: 5px
     max-width:300px
+    color: #8B8B8B;
     input{
       background-color transparent
+    }
+    &:focus{
+      box-shadow: 3px 3px 3px #8b8b8b;
     }
   }
   &__button {
@@ -314,7 +333,6 @@ export default {
     color: #ff0031;
     border: 1px solid #ff0031;
     width 190px
-    min-width: initial;
     @media(max-width: 992px){
       width 100%
     }
@@ -342,6 +360,7 @@ export default {
     display none
   }
   &__label-radio {
+    cursor: pointer
     position relative
     padding-left 30px
     p{
@@ -357,7 +376,7 @@ export default {
       content: ''
       position absolute
       left 0
-      top 3px
+      top 1px
       width 16px
       height 16px
       border: 1px solid #272727;
@@ -367,7 +386,7 @@ export default {
       content: ''
       position absolute
       left 4px
-      top 7px
+      top 5px
       width 7.5px
       height 7.5px
       border-radius: 50%
@@ -384,6 +403,11 @@ export default {
   }
 }
 .radio-block {
+  input[type=radio]:checked + label {
+    &::after{
+      transform: scale(1)
+    }
+  }
   input[type=checkbox]:checked + label {
     &::after{
       transform: scale(1)
@@ -396,9 +420,37 @@ export default {
 .n-row{
   flex-direction: row
   flex-wrap: wrap
+  gap: 10px
+  .w-110{
+    height 48px
+  }
 }
 .w-110{
   flex: 0 0 122px
   max-width: 122px
+}
+.fz-24{
+  font-size 24px !important;
+}
+.row-gap{
+  display flex
+  flex-direction: column;
+  row-gap: 5px;
+}
+.invalid-data-mark{
+  color: #FF0031;
+  font-size 14px
+  margin-top 5px
+}
+.valid-data-input{
+  border: 1px solid #098b14;
+  color: #098b14;
+}
+.invalid-data-input{
+  border: 1px solid #FF0031;
+  color: #FF0031;
+}
+.invalid-data-box{
+  margin-top -10px
 }
 </style>
