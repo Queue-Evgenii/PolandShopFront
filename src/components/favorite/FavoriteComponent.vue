@@ -26,7 +26,6 @@ export default {
   },
   methods: {
     getFavoriteItems() {
-      console.log(this.$store.state.favoriteItems)
       this.favoriteItems = this.$store.state.favoriteItems
     },
     addToCart (product) {

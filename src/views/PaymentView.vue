@@ -4,14 +4,14 @@
       <main class="page">
         <div class="page__payment payment-page">
           <div class="payment-page__container container">
-            <div class="login-form">
-              <login-form @openForm="openForm"/>
+            <div v-if="!$store.state.isAuthorized" class="login-form">
+              <login-form @openForm="openForm" />
             </div>
             <div class="payment-hidden row">
-              <div :class="isLogged ? 'logged' : ''" class="payment-page__content content" ref="mainForm">
+              <div :class="isOpen || $store.state.isAuthorized ? 'logged' : ''" class="payment-page__content content" ref="mainForm">
                 <div class="payment-page__title">Zapłata za towary</div>
-                <div class="payment-page__columns">
-                  <payment-form @goBackPopup="goBackPopup" :isAuthorized="isAuthorized"/>
+                <div v-if="isOpen || $store.state.isAuthorized" class="payment-page__columns">
+                  <payment-form @goBackPopup="goBackPopup" @registration="registration" />
                   <div class="payment-page__preview preview-payment">
                     <div class="preview-payment__content">
                       <div class="preview-payment__row flex">
@@ -61,9 +61,6 @@ import PreviewProduct from '@/components/PreviewProduct'
 import PaymentAlert from '@/components/product/PaymentAlert'
 import PageAds from '@/components/PageAds'
 import LoginForm from '@/components/payment/LoginForm'
-
-// import { useVuelidate } from '@vuelidate/core'
-// import { required, email } from '@vuelidate/validators'
 export default {
   name: 'CatalogView',
   layouts: 'default',
@@ -78,7 +75,7 @@ export default {
   },
   data() {
     return {
-      isLogged: false,
+      isOpen: false,
       previewProducts: [],
       deliveryPrice: "5",
       openPopup: false,
@@ -87,18 +84,21 @@ export default {
         name: "Do you really want go back??",
         nclass: "on-payment",
       },
-      isAuthorized: {
-        status: false,
-        email: '',
-      },
     }
   },
   methods: {
-    openForm(data) {
-      this.isLogged = true;
-      this.$refs.mainForm.scrollIntoView({behavior: "smooth"});
-      this.isAuthorized.status = data.isAuthorized;
-      this.isAuthorized.email = data.email;
+    openForm() {
+      this.isOpen = true;
+      if(!this.$store.state.isAuthorized) {
+        this.$refs.mainForm.scrollIntoView({behavior: "smooth"});
+      }
+    },
+    registration(data) {
+      this.$store.dispatch("registration", data).then(res => {
+        localStorage.setItem("access_token", JSON.stringify(res.data.access_token))
+        this.$store.state.isAuthorized = true;
+        this.$refs.mainForm.scrollIntoView({behavior: "smooth"});
+      });
     },
     goBackPopup() {
       this.openPopup = true;
@@ -129,6 +129,9 @@ export default {
   },
   mounted() {
     this.productPreview()
+    if(localStorage.getItem("access_token")) {
+      this.$store.state.isAuthorized = true
+    }
   },
   computed: {
     isQuickBuy () {
@@ -272,24 +275,24 @@ export default {
 .form-payment {
   &__section{
     overflow: hidden;
-    // display flex
-    // @media(max-width: 768px){
-    //   flex-direction column-reverse
-    // }
   }
   &__section-btn {
     justify-content left
     gap: 30px
-    @media(max-width: 475px){
+    @media(max-width: 550px){
       flex-wrap: wrap
     }
   }
-  &__text {
+  &__text,
+  &__slot-text {
     color: #8b8b8b
     max-width: 500px
   }
+  &__slot-text{
+    margin-top -10px
+  }
   &__block {
-    padding 40px 0 40px 70px
+    padding 40px 0 40px 25px
     display flex
     flex-direction: column
     gap: 35px
@@ -301,6 +304,10 @@ export default {
     display flex
     flex-direction: column
     gap: 15px
+  }
+  &__inline{
+    display flex
+    gap: 30px
   }
   &__label{
   }
@@ -397,8 +404,8 @@ export default {
   }
 }
 .input-width{
-  width 300px
-  @media(max-width: 420px) {
+  width: 300px
+  @media(max-width: 500px) {
     width initial
   }
 }

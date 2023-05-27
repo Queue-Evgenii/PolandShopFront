@@ -1,6 +1,11 @@
 import { createStore } from 'vuex'
 import categoryModules from './modules/category.modules'
 import productModules from './modules/product.modules'
+import registrationModules from './modules/registration.modules'
+import authorizationModules from './modules/authorization.modules'
+import updateUserModules from './modules/updateUser.modules'
+import submitDeliveryModules from './modules/submitDelivery.modules'
+import credentialsModules from './modules/credentials.modules'
 
 function getFavoritesFromLocalStorage() {
   const favoriteItems = localStorage.getItem('favoriteItems')
@@ -16,7 +21,6 @@ function getCartFromLocalStorage() {
   } else{
     return JSON.parse(favoriteItems)
   }
-  
 }
 
 const store = createStore({
@@ -25,7 +29,44 @@ const store = createStore({
     quickBuy: [],
     recentList: [],
     isQuickBuy: false,
+    isNewAccount: false,
+    isAuthorized: false,
     favoriteItems: getFavoritesFromLocalStorage(),
+    tempUserData: {
+      userInfo: {
+        email: '',
+        password: '',
+        name: '',
+        gender: '',
+        agree_to_receive_information: false,
+      },
+      deliveryInfo: {
+        fullname: '',
+        business: '',
+        nipue: '',
+        adress: '',
+        mailCod: '',
+        country: '',
+        city: '',
+        phone: '',
+      },
+      otherDeliveryInfo: {
+        fullname: '',
+        business: '',
+        nipue: '',
+        adress: '',
+        mailCod: '',
+        country: '',
+        city: '',
+        phone: '',
+        rulesAgreement: false,
+        policyAgreement: false,
+      },
+      agreements: {
+        rulesAgreement: false,
+        policyAgreement: false,
+      }
+    },
   },
   getters: {
   },
@@ -35,6 +76,11 @@ const store = createStore({
   modules: {
     categoryModules,
     productModules,
+    registrationModules,
+    authorizationModules,
+    updateUserModules,
+    submitDeliveryModules,
+    credentialsModules,
   }
 })
 

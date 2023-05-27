@@ -6,46 +6,50 @@
       <div class="content-commodity__info-row"><span>Numer kategorii: </span>{{ productItem.category_id }}</div>
       <!-- <div class="content-commodity__info-row"><span>Kod EAN: </span>{{ productItem.code }}</div> -->
     </div>
-    <div class="content-commodity__price flex">
-      <div class="content-commodity__new-price flex">{{ productItem.price }}<span>{{ 'PLN ZA ' + productItem.unit_of_measure }}</span></div>
+    <div v-if="productItem.discount" class="content-commodity__price flex">
+      <div class="content-commodity__new-price flex">{{ productItem.price*(100-productItem.discount)/100 }}<span>{{ 'PLN ZA ' + productItem.unit_of_measure }}</span></div>
       <div class="content-commodity__sale-price">
-        <div v-if="productItem.first_price" class="content-commodity__first-price flex">{{ productItem.first_price }}<span>{{ 'PLN ZA ' + productItem.unit_of_measure }}</span></div>
-        <div v-if="productItem.first_price" class="content-commodity__price-info"><span>{{ "do " + Math.ceil(100 - productItem.price/productItem.first_price*100) + "% " }}</span>w hurcie, sprawdz cennik</div>
+        <div class="content-commodity__first-price flex">{{ productItem.price }}<span>{{ 'PLN ZA ' + productItem.unit_of_measure }}</span></div>
+        <div class="content-commodity__price-info"><span>{{ "do " + productItem.discount + "% " }}</span>w hurcie, sprawdz cennik</div>
       </div>
+    </div>
+    <div v-else class="content-commodity__price flex">
+      <div class="content-commodity__new-price flex">{{ productItem.price }}<span>{{ 'PLN ZA ' + productItem.unit_of_measure }}</span></div>
     </div>
     <div class="content-commodity__actions actions-commodity">
       <div class="actions-commodity__row">
         <div class="actions-commodity__quantity quantity-product">
-          <span @click="decrement()">-</span>
+          <span v-if="amountInput > 1" @click="decrement()">-</span>
+          <span v-else class="_disabled">-</span>
           <div class="quantity-product__input">
-            <input type="text" :value="this.getProductQuantity" ref="productInput">
+            <input type="text" v-model="amountInput">
           </div>
-          <span v-if="this.getProductQuantity < productItem.quantity" @click="increment()">+</span>
+          <span v-if="amountInput < productItem.quantity" @click="increment()">+</span>
           <span v-else class="_disabled">+</span>
         </div>
-        <div class="actions-commodity__token flex"><span>Cod Kupon:</span><input type="text" placeholder="_ _ _ _ _ _ _ _ _ _ _ _ _"></div>
+        <div v-if="productItem.promoCod" class="actions-commodity__token flex"><span>Cod Kupon:</span><input type="text" placeholder="_ _ _ _ _ _ _ _ _ _ _ _ _"></div>
       </div>
       <div class="actions-commodity__status flex yes" v-if="productItem.quantity > 0"><span>W magazynie - </span>{{ productItem.labelMark ? productItem.labelMark : productItem.quantity }}</div>
       <div class="actions-commodity__status flex no" v-else><span>W magazynie - </span>{{ productItem.labelMark ? productItem.labelMark : productItem.quantity }}</div>
       <div class="actions-commodity__row">
         <button
-          :class="(getQuantity(productItem) >= productItem.quantity) ? '_disabled' : ''"
+          v-if="isCorrectValue(amountInput)"
           type="button" class="actions-commodity__cart button"
           @click="showAlert(productItem);addToCart(productItem)"
         >
           <span>Dodaj do koszyka</span>
         </button>
+        <button v-else type="button" class="actions-commodity__cart button _disabled">
+          <span>Dodaj do koszyka</span>
+        </button>
         <button
-          v-if="getQuantity(productItem) < productItem.quantity"
+          v-if="isCorrectValue(amountInput)"
           type="button" class="actions-commodity__buy button"
           @click="openAlertPopup()"
         >
           <span>Kup w 1 kliknięciu</span>
         </button>
-        <button
-          v-else
-          type="button" class="actions-commodity__buy button _disabled"
-        >
+        <button v-else type="button" class="actions-commodity__buy button _disabled">
           <span>Kup w 1 kliknięciu</span>
         </button>
       </div>
@@ -124,7 +128,7 @@
         font-size: 20px;
         line-height: 23px;
         display inline-block
-        width 80px
+        //width 80px
       }
       @media(max-width: 375px) {
         font-size 40px
@@ -366,36 +370,52 @@
         required: true,
       }
     },
+    data () {
+      return {
+        amountInput: 1,
+      }
+    },
     methods: {
       increment () {
-        this.$refs.productInput.value++
+        this.amountInput++
       },
       decrement () {
-        if(this.$refs.productInput.value>1){
-          this.$refs.productInput.value--
+        this.amountInput--
+      },
+      isCorrectValue(value) {
+        const number = +value; 
+        const condition = (number instanceof Number||typeof number === 'number') && !isNaN(number);
+        if (condition) {
+          if (number > this.productItem.quantity) {
+            return false;
+          }
+          if (number <= 0) {
+            return false;
+          }
+          return true;
         }
+        return false;
       },
       addToCart (product) {
         const items = this.$store.state.cartList
-        if(this.$store.state.cartList.find(item => item.id === product.id)){
-          const item = items.find(item => item.id === product.id)
-          item.amount = this.$refs.productInput.value
+        const item = items.find(item => item.id === product.id)
+        if(item){
+          item.amount = this.amountInput
         } else {
-          items.push(product)
-          const item = items.find(item => item.id === product.id)
-          item.amount = this.$refs.productInput.value
+          product.amount = this.amountInput;
+          items.push(product);
         }
-        localStorage.setItem('cartItems', JSON.stringify(items))
+        localStorage.setItem('cartItems', JSON.stringify(items));
       },
       showAlert(product) {
-        if(this.getQuantity(product) < product.quantity) {
-          const block = document.querySelector('.access-alert__container')
-          block.classList.add('show-access-alert')
+        if(this.amountInput <= product.quantity) {
+          const block = document.querySelector('.access-alert__container');
+          block.classList.add('show-access-alert');
           setTimeout(() => block.classList.remove('show-access-alert'), 1000);
         }
       },
       openAlertPopup () {
-        this.$emit('openAlertPopup', this.$refs.productInput.value)
+        this.$emit('openAlertPopup', this.amountInput)
       },
       changeFavoriteList() {
         this.$emit('changeFavoriteList')
@@ -409,23 +429,19 @@
           return false
         }
       },
-      getQuantity (product) {
-        if (!this.$store.state.cartList.find(item => item.id === product.id)) {
-          return 0
+      getQuantity () {
+        const item = this.$store.state.cartList.find(item => item.id === this.productItem.id);
+          console.log(this.productItem.quantity)
+        if (!item) {
+          return 1;
         }
-        const item = this.$store.state.cartList.find(item => item.id === product.id)
-        return item.amount
+        return item.amount;
       },
     },
-    computed: {
-      getProductQuantity () {
-        if (!this.$store.state.cartList.find(item => item.id === this.productItem.id)) {
-          return this.productItem.amount
-        } else {
-          const item = this.$store.state.cartList.find(item => item.id === this.productItem.id)
-          return item.amount
-        }
-      },
-    }
+    mounted() {
+      setTimeout(() => {
+        this.amountInput = this.getQuantity();
+      }, 1000)
+    },
   }
 </script>

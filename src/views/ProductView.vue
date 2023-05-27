@@ -171,7 +171,6 @@ export default {
       if(this.productItem.images) {
         let items = this.productItem.images;
         items.unshift(this.productItem.preview)
-        console.log(items)
         return items
       }
       return Array(this.productItem.preview)

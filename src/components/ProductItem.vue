@@ -80,7 +80,6 @@ export default {
       } else {
         this.$store.state.recentList.unshift(product)
       }
-      // this.$store.state.recentList.push(product)
     },
     showAlert(product) {
       if(this.getQuantity(product) < product.quantity) {

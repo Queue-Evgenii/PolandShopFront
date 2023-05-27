@@ -16,7 +16,7 @@
           </div>
         </div>
         <home-catalogue
-          catalogId='13'
+          catalogId='1'
           @addToCart="addToCart"
         />
         <home-catalogue

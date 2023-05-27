@@ -4,7 +4,7 @@
       <div class="preview-product__image"><img :src="item.preview" alt=""></div>
       <div class="preview-product__info">
         <div class="preview-product__label">{{ item.name }}</div>
-        <div class="preview-product__price">{{ item.price }}<span>PLN</span></div>
+        <div class="preview-product__price">{{ item.discount ? item.price*(100-item.discount)/100 : item.price }}<span>PLN</span></div>
         <div class="preview-product__quantity"><span>Ilość:</span>{{ item.amount }}</div>
       </div>
     </li>

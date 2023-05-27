@@ -289,6 +289,9 @@
 .block{
   display block
 }
+.ali-c{
+  align-items: center;
+}
 .big-title{
   text-align center
   font-size 30px
@@ -328,6 +331,7 @@
       }
     }
     .hover-underline{
+      display inline-block
       &:hover{
           text-decoration underline
       }

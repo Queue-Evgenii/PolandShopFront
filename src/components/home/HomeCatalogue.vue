@@ -1,6 +1,6 @@
 <template>
   <div class="page-products">
-    <div class="mainproducts products">
+    <div v-if="catalogProducts" class="mainproducts products">
       <div class="products__container container">
         <div class="products__title"><router-link :to="{name: 'catalogList', params: {id: catalogId}}">{{ productsLabel }}</router-link></div>
         <span v-if="this.notExistProducts" class="products__not-exist">Category does not contain products yet ;(</span>

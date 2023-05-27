@@ -1,5 +1,5 @@
 <template>
-  <div class="subslider">
+  <div class="subslider" :class="subSlides.length < 4 ? 'no-button' : ''">
     <swiper
       v-if="subSlides.length !== 0"
       :modules="modules"
@@ -46,11 +46,19 @@
   </div>
 </template>
 <style lang="stylus">
-@media(min-width: 769px) {
-  .subslider__slide:hover{
-    box-shadow: 2px 2px 4px 2px #d5d5d5
+  @media(min-width: 769px) {
+    .subslider__slide:hover{
+      box-shadow: 2px 2px 4px 2px #d5d5d5
+    }
   }
-}
+  .no-button{
+    padding-right 0px !important
+    .subslider__wrapper{
+      .swiper-button-next{
+        display none !important
+      }
+    }
+  }
     .subslider{
       padding 40px 0
       display flex

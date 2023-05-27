@@ -6,7 +6,7 @@
           <div class="cart-page__container container">
             <div class="cart-page__content flex">
               <cart-component :cartList="cartList" />
-              <div v-if="this.$store.state.cartList.length !== 0" class="cart-page__present present-cart">
+              <!-- <div v-if="this.$store.state.cartList.length !== 0" class="cart-page__present present-cart">
                 <div class="present-cart__title flex">
                   <img src="@/assets/img/main/icons/present.png" alt="">
                   <span>Darmowy prezent do zakupu</span>
@@ -15,7 +15,7 @@
                 <div class="present-cart__footer flex">
                   <button class="present-cart__button"><span>Dodaj do koszyka</span></button>
                 </div>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
@@ -88,7 +88,7 @@
 <script>
 
 import LayoutDefault from '@/layouts/LayoutDefault'
-import PreviewProduct from '@/components/PreviewProduct'
+//import PreviewProduct from '@/components/PreviewProduct'
 import CartComponent from '@/components/cart/CartComponent'
 import RecentProducts from '@/components/home/RecentProducts'
 import PageAds from '@/components/PageAds'
@@ -100,7 +100,7 @@ export default {
     CartComponent,
     RecentProducts,
     PageAds,
-    PreviewProduct,
+    //PreviewProduct,
   },
   computed: {
     cartList () {

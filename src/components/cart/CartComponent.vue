@@ -13,7 +13,7 @@
           <div class="payment-cart__cupon"></div>
           <div class="payment-cart__row flex">
             <div class="payment-cart__label">Razem do zapłaty:</div>
-            <div class="payment-cart__sale item-cart__sale"><span>Rabat</span>{{ sale() + '%' }}</div>
+            <div v-if="sale()" class="payment-cart__sale item-cart__sale"><span>Rabat</span>{{ sale() + '%' }}</div>
             <div class="payment-cart__total-price">{{cartTotalCost}} PLN</div>
           </div>
           <div class="payment-cart__button-box flex">
@@ -41,18 +41,14 @@ export default {
   },
   computed: {
     cartTotalCost() {
-      let result = [];
-      if(this.$store.state.cartList.length > 0){
+      let result = 0;
+      if(this.cartList.length > 0){
         for(let item of this.$store.state.cartList) {
-          result.push(item.price * item.amount);
+          result += item.price*(100-item.discount)/100 * item.amount;
         }
-        result = result.reduce(function (sum, el) {
-          return sum + el;
-        })
-      } else {
-        result = 0;
+        return Math.ceil(result);
       }
-      return result;
+      return 0;
     }
   },
   methods: {
@@ -65,8 +61,8 @@ export default {
     sale(){
       let sumWithout = 0, sumWith = 0
       this.cartList.forEach(element => {
-        sumWithout += +element.price
-        sumWith += +element.first_price
+        sumWithout += +element.price;
+        sumWith += +element.price*(100-element.discount)/100;
       });
       return Math.ceil(100 - sumWithout/sumWith*100)
     },
@@ -79,8 +75,9 @@ export default {
 </script>
 <style lang="stylus">
 .cart-page__component{
-  align-self start
-  flex: 1 1 auto
+  margin 0 auto
+  flex: 0 1 1600px
+  padding 0 30px
 }
 .item-cart {
   padding 45px 0
@@ -90,9 +87,6 @@ export default {
   border-bottom: 1px solid #8B8B8B;
   position relative
   @media(max-width: 992px){
-    grid-template-columns: 185px 1fr 100px
-  }
-  @media(max-width: 768px){
     grid-template-columns: 185px 1fr
   }
   @media(max-width: 540px){
@@ -133,6 +127,9 @@ export default {
     gap: 5px
     order: 1
     flex: 1 1 auto
+    @media(max-width: 992px) {
+      flex: 1 1 100%
+    }
   }
   &__title{
     font-weight: 700;
@@ -172,7 +169,7 @@ export default {
   &__quantity {
     order 2
     @media(max-width: 992px) {
-      flex: 1 1 100%
+      flex: 0 1 50%
       order: 3
     }
     @media(max-width: 540px){
@@ -195,21 +192,14 @@ export default {
     line-height: 28px;
     color: #3D3D3D;
     @media(max-width: 992px) {
-      flex: 1 1 100%
+      flex: 0 1 auto
       order: 2
-      font-weight: 700;
-      font-size: 32px;
+      font-size: 30px;
       line-height: 41px;
-      color: #000000;
     }
   }
   &__trash{
     cursor: pointer
-    @media(max-width: 768px){
-      position absolute
-      right 0
-      bottom 55px
-    }
   }
 }
 .payment-cart {
@@ -244,16 +234,18 @@ export default {
   &__titles {
     padding 65px 0 25px 0
     display grid
-    grid-template-columns minmax(200px, 620px) repeat(2, 150px) 200px
+    grid-template-columns minmax(200px, 1fr) repeat(2, 170px) 200px
     border-bottom: 1px solid #8B8B8B;
     @media(max-width: 992px){
       display none
     }
   }
-  &__title-product,
   &__title-amount,
   &__title-total { 
     text-align center
+  }
+  &__title-product{
+    padding-left 100px
   }
 }
 .popup{

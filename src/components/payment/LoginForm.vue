@@ -34,16 +34,22 @@
               v$.loginForm.password.$dirty ? 'valid-data-input' : '',
             ]"
           >
-          <ul v-if="v$.loginForm.password.$error" class="invalid-data-box">
+          <ul v-if="v$.loginForm.password.$error || error" class="invalid-data-box">
             <li v-if="v$.loginForm.password.$dirty && v$.loginForm.password.required.$invalid" class="invalid-data-mark">This area is required</li>
             <li v-if="v$.loginForm.password.$dirty && v$.loginForm.password.$invalid" class="invalid-data-mark">Might be more than 5 characters</li>
+            <li v-if="error" class="invalid-data-mark">{{ error }}</li>
           </ul>
         </li>
       </ul>
       <div class="login-form__actions form-payment__section-btn flex">
-        <button v-if="!isVerify" @click="submitForm();$event.preventDefault()" class="login-form__submit form-payment__submit button">Zaloguj się</button>
-        <div v-else class="login-form__verify flex"><span>Verify your email</span></div>
-        <button @click="openForm(this.loginForm);$event.preventDefault()" class="login-form__without-log form-payment__cancel button">Zakupy bez rejestracji</button>
+        <button type="button" @click="authorization()" class="login-form__submit form-payment__submit button">Zaloguj się</button>
+      </div>
+    </div>
+    <div class="form-payment__section new-account-section">
+      <div class="form-payment__title fz-24">Nowy Klient</div>
+      <div class="login-form__actions form-payment__section-btn flex">
+        <button type="button" @click="openForm();$store.state.isNewAccount = false" class="login-form__without-log form-payment__cancel button">Zakupy bez rejestracji</button>
+        <button type="button" @click="openForm();$store.state.isNewAccount = true" class="login-form__submit form-payment__cancel button account">Stwórz konto</button>
       </div>
     </div>
   </form>
@@ -60,52 +66,37 @@ export default{
       loginForm: {
         email: '',
         password: '',
-        isAuthorized: false,
       },
-      existAccount: false,
-      isVerify: false,
+      error: '',
+      existAccount: true,
     }
   },
   validations() {
     return {
       loginForm: {
         email: { required, email },
-        password: { required, minLength: minLength(5) },
+        password: { required, minLength: minLength(8) },
       }
     }
   },
   methods: {
-    async submitForm() {
+    async authorization() {
       const isFormCorrect = await this.v$.$validate();
       if (!isFormCorrect) return;
-      this.setLoginForm();
-      if(this.existAccount){
-        this.loginForm.isAuthorized = true;
-        this.openForm(this.loginForm);
-        return;
-      }
-      this.isVerify = true;
+      this.$store.dispatch("authorization", this.loginForm)
+        .then((res) => {
+          localStorage.setItem("access_token", JSON.stringify(res.data.token))
+          this.$store.state.isAuthorized = true;
+          this.$store.state.isNewAccount = false;
+          this.openForm()
+        })
+        .catch(err => {
+          this.error = err.response.data.error
+        })
     },
-    openForm(data) {
-      this.$emit('openForm', data);
+    openForm() {
+      this.$emit('openForm');
     },
-    checkLoginForm() {
-      let data = localStorage.getItem('loginForm');
-      if(data){
-        data = JSON.parse(data);
-        this.loginForm.email = data.email;
-        this.loginForm.password = data.password;
-      }
-    },
-    setLoginForm() {
-      let data = localStorage.getItem('loginForm');
-      if(!data){
-        localStorage.setItem('loginForm', JSON.stringify(this.loginForm));
-      }
-    }
   },
-  mounted() {
-    this.checkLoginForm();
-  }
 }
 </script>

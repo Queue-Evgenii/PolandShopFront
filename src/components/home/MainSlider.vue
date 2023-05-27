@@ -15,9 +15,6 @@
     >
       <swiper-slide v-for="item in mainSlides" :key="item.id">
         <div class="mainslider__image"><img :src="item.image" alt=""></div>
-        <div class="mainslider__button">
-          <router-link :to="item.url">{{ item.label }}</router-link>
-        </div>
       </swiper-slide>
     </swiper>
 
