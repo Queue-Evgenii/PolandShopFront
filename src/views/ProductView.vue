@@ -54,11 +54,10 @@
     display flex
     gap: 20px
     &__images{
-      max-width: 800px
-      flex: 1 1 800px
+      flex: 1 1 50%
     }
     &__content{
-      flex: 0 0 550px
+      flex: 0 0 50%
     }
     @media(min-width: 1201px)&&(max-width: 1460px){
       flex-wrap: wrap

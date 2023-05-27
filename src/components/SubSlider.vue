@@ -101,11 +101,8 @@
         }
       }
       &__slide{
-        min-height: 200px
         display flex !important
         flex-direction column
-        align-items center
-        justify-content center
         gap 15px
         padding 20px
         cursor: pointer
@@ -115,13 +112,9 @@
         margin 5px 0
       }
       &__image{
-        width 174px
-        height 90px
-        position relative
+        width 100%
+        overflow: hidden
         img{
-          position absolute
-          top 0
-          left 0
           width 100%
           height 100%
           object-fit: cover

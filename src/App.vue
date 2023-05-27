@@ -165,12 +165,13 @@
   }
   &__image {
     display block
-    width 225px
-    // max-width 270px
+    width 100%
     height 200px
+    overflow hidden
     img{
       width 100%
       height 100%
+      object-fit: cover
     }
     span{
       display inline-block
