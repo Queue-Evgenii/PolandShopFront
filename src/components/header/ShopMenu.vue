@@ -18,9 +18,9 @@ export default {
   methods: {
     fetchCategory() {
       this.$store.dispatch('getCategories')
-        .then(data => {
-          this.categoryItems = data.data.filter(item => item.children.length === 0);
-          this.categoryItems = this.categoryItems.slice(0, 3);
+        .then(res => {
+          this.categoryItems = res.data;
+          this.categoryItems = res.data.slice(0, 3);
         })
     }
   },

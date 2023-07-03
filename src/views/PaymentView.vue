@@ -11,7 +11,7 @@
               <div :class="isOpen || $store.state.isAuthorized ? 'logged' : ''" class="payment-page__content content" ref="mainForm">
                 <div class="payment-page__title">Zapłata za towary</div>
                 <div v-if="isOpen || $store.state.isAuthorized" class="payment-page__columns">
-                  <payment-form @goBackPopup="goBackPopup" @registration="registration" />
+                  <payment-form @goBackPopup="goBackPopup" @registration="registration" @submitForm="submitForm" />
                   <div class="payment-page__preview preview-payment">
                     <div class="preview-payment__content">
                       <div class="preview-payment__row flex">
@@ -87,6 +87,18 @@ export default {
     }
   },
   methods: {
+    submitForm(value) {
+      // {product_id: 1, count: 1}
+      const items = this.previewProducts.map(item => {
+        return {
+          product_id: item.id,
+          count: item.amount,
+        }
+      });
+      console.log(items);
+      const data = {...value, items};
+      this.$store.dispatch('submitDelivery', data);
+    },
     openForm() {
       this.isOpen = true;
       if(!this.$store.state.isAuthorized) {

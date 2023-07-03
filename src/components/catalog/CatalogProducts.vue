@@ -15,11 +15,13 @@
       </div>
     </div>
       <div v-if="catalogProducts.length === 0" class="catalog-page__notice">Category does not contain products yet ;(</div>
-     <div v-if="catalogProducts.length !== 0" class="products__items" ref="products">
+     <div v-if="catalogProducts.length !== 0" :class="isRowDirection ? 'products-items-row' : ''" class="products__items" ref="products">
       <product-item
         v-for="product in getItems" 
         :key="product.id" 
         :product="product"
+        :class="isRowDirection ? 'item-product-row' : ''"
+        :isRowDirection="isRowDirection"
         @addToCart="addToCart"
       />
     </div>
@@ -42,11 +44,9 @@
 import ProductItem from '@/components/ProductItem'
 import Paginate from 'vuejs-paginate'
 export default {
-  data () {
-    return {
-      currentPage: 1,
-      perPage: 16,
-    }
+  components: {
+    Paginate,
+    ProductItem,
   },
   props: {
     catalogProducts: {
@@ -57,9 +57,26 @@ export default {
       required: true,
     }
   },
-  components: {
-    Paginate,
-    ProductItem,
+  data () {
+    return {
+      currentPage: 1,
+      perPage: 16,
+      isRowDirection: false,
+    }
+  },
+  computed: {
+    getPaginateCount () {
+      return Math.ceil(this.catalogProducts.length / this.perPage);
+    },
+    getItems () {
+      let start = (this.currentPage - 1) * this.perPage;
+      let end = this.currentPage * this.perPage;
+      this.catalogProducts.slice(start, end);
+      return this.catalogProducts.slice(start, end);
+    },
+    isAuthorised() {
+      return localStorage.getItem("access_token");
+    }
   },
   methods: {
     paginateClickCallback (pageNum) {
@@ -74,19 +91,10 @@ export default {
     filtersLayout (e) {
       const column = this.$refs.column;
       const row = column.nextElementSibling;
-      let products = this.$refs.products;
-            // productItems = this.$refs.product
       if (column === e.target) {
-        for (let productItem of products.children) {
-          productItem.classList.remove('item-product-row')
-        }
-        products.classList.remove('products-items-row')
+        this.isRowDirection = false;
       } else if (row === e.target) {
-        for (let productItem of products.children) {
-          //const productItem = products[index];
-          productItem.classList.add('item-product-row');
-        }
-        products.classList.add('products-items-row')
+        this.isRowDirection = true;
       }
     },
     addToCart (product) {
@@ -101,22 +109,12 @@ export default {
         cartItems.push(product)
         localStorage.setItem('cartItems', JSON.stringify(cartItems))
       }
-    }
-  },
-  computed: {
-    getPaginateCount () {
-      return Math.ceil(this.catalogProducts.length / this.perPage);
     },
-    getItems () {
-      let start = (this.currentPage - 1) * this.perPage;
-      let end = this.currentPage * this.perPage;
-      this.catalogProducts.slice(start, end);
-      return this.catalogProducts.slice(start, end);
-    }
   },
 }
 </script>
 <style lang="stylus">
+
 .catalog-page__notice{
   padding-left 10px
   font-size 28px
@@ -310,67 +308,11 @@ export default {
   }
     @media(min-width: 501px) {
       .products-items-row{
-      grid-template-columns: repeat(1, minmax(300px, 1fr)) !important
-    }
+        grid-template-columns: repeat(1, minmax(300px, 1fr)) !important
+      }
       .item-product-row .item-product__body{
         flex-direction: row
-        @media(max-width: 669px){
-          flex-direction: column
-        }
-        .item-product__image{
-          @media(min-width: 670px) {
-            flex 0 0 200px
-            width 200px
-          }
-        }
-        .item-product-row .item-product__image{
-          
-          @media(max-width: 669px){
-            flex: 0 0 100px 
-            width 100px
-            height 100px
-          }
-        }
       }
-      .item-product-row .item-product__info{
-        flex-direction: row
-        align-items: start;
-        margin-top 15px
-        margin-right 60px
-        @media(max-width: 669px){
-          margin-right 0
-          align-items center
-        }
-        .item-product__price{
-          width unset
-        }
-      }
-      .item-product-row .item-product__actions{
-        position absolute
-        left 270px
-        right 30px
-        bottom 60px
-        justify-content space-between
-        width unset
-        @media(max-width: 768px){
-          bottom 55px
-        }
-        @media(max-width: 669px){
-          position relative
-          top 0
-          left 0
-          width 100%
-        }
-      }
-      .item-product-row .item-product__text-row{
-        flex-direction row !important;
-        align-items center
-        @media(max-width: 590px){
-          flex-direction column !important
-          align-items start
-        }
-      }
-
     }
     .catalog-products {
       .products__items{

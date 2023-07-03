@@ -1,9 +1,8 @@
 <template>
   <div 
     class="sidebar-filter__section section-filter" 
-    @click="onSelected(item.id)"
   >
-    <span class="section-filter__title" >{{ item.name }}</span>
+    <span class="section-filter__title sidebar-filter__checkbox" @click="onSelected(item.id)">{{ item.name }}</span>
     <ul class="section-filter__body section-filter__body-line">
       <li class="section-filter__item" v-for="input in item.filterInputs" :key="input.id">
         <input type="checkbox" :id="input.for">

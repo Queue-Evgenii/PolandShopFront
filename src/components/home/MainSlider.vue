@@ -21,46 +21,7 @@
   </div>
 </template> 
 <style lang="stylus">
-  .swiper-button-prev,.swiper-button-next{
-  width 75px
-  height 75px
-  background: rgb(255, 255, 255);
-  opacity 0.7
-  border-radius 50%
-  border: 1px solid #3D3D3D;
-  position absolute
-  z-index 3
-  font-size 0
-  bottom 45px
-  transition opacity 0.3s ease
-  cursor pointer
-  @media(min-width: 769px) {
-    &:hover{
-      background: rgb(255, 255, 255);
-      opacity 0.9
-    }
-  }
-  &::before, &::after{
-    content ''
-    position absolute
-    width 22.5px
-    height 2px
-    background-color #000
-  }
-  &::before{
-    transform rotate(45deg)
-    top: 28.5px
-    left: 28.5px
-  }
-  &::after{
-    transform rotate(-45deg)
-    bottom: 28.5px
-    left: 28.5px
-  }
-  @media(max-width: 768px){
-    display none !important
-  }
-}
+
 .swiper-button-next{
   right 37px
 }

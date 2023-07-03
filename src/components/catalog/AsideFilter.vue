@@ -3,18 +3,29 @@
     <div class="sidebar-filter__title">Filtry produktów</div>
     <form action="" class="sidebar-filter__form">
       <div class="sidebar-filter__section section-filter">
-        <div class="section-filter__title">Cena £</div>
+        <div class="section-filter__title cursor-initial">Cena £</div>
         <div class="section-filter__body active range-filter">
-          <!-- <range-slider
-            class="range-filter__slider"
-            :min="filterSlider.sliderMinValue"
-            :max="filterSlider.sliderMaxValue"
-            v-model="filterSlider.sliderValue">
-          </range-slider> -->
-          <input type="range" name="" id="" :min="filterSlider.sliderMinValue" :max="filterSlider.sliderMaxValue" class="range-slider">
+          <div class="range-filter__inputs">
+            <input
+              type="range"
+              :min="filter.minValue"
+              :max="filter.maxValue"
+              v-model="filter.lowerValue"
+              class="range-slider"
+              @input="onMinChange"
+            >
+            <input
+              type="range"
+              :min="filter.minValue"
+              :max="filter.maxValue"
+              v-model="filter.upperValue"
+              class="range-slider"
+              @input="onMaxChange"
+            >
+          </div>
           <div class="range-filter__values flex">
-            <span class="range-filter__min">{{ filterSlider.sliderMinValue }}</span>
-            <span class="range-filter__max">{{ filterSlider.sliderMaxValue }}</span>
+            <span class="range-filter__min">{{ filter.lowerValue }}</span>
+            <span class="range-filter__max">{{ filter.upperValue }}</span>
           </div>
         </div>
       </div>
@@ -35,19 +46,9 @@
 </template>
 <script>
   import SectionFilter from "@/components/catalog/SectionFilter";
-  // import RangeSlider from 'vue-range-slider'
-  // // you probably need to import built-in style
-  // import 'vue-range-slider/dist/vue-range-slider.css'
   export default {
-    data () {
-      return {
-        filterSlider: {
-          sliderValue: 50,
-          sliderMinValue: 0,
-          sliderMaxValue: 350,
-        },
-        currentNavItem: null
-      }
+    components: {
+      SectionFilter
     },
     props: {
       filterItems: {
@@ -55,17 +56,30 @@
         required: true,
       }
     },
-    components: {
-      // RangeSlider,
-      SectionFilter
+    data () {
+      return {
+        filter: {
+          upperValue: 340,
+          lowerValue: 10,
+          minValue: 0,
+          maxValue: 350,
+        },
+        currentNavItem: null,
+      }
     },
     methods: {
       onSelected (id) {
         if (this.currentNavItem !== id) {
-          this.currentNavItem = id
+          this.currentNavItem = id;
         } else if (this.currentNavItem === id) {
-          this.currentNavItem = null
+          this.currentNavItem = null;
         }
+      },
+      onMinChange(e) {
+        this.filter.lowerValue = ((e.target.value - this.filter.upperValue) < 0 ? e.target.value : this.filter.upperValue);
+      },
+      onMaxChange(e) {
+        this.filter.upperValue = ((e.target.value - this.filter.lowerValue) > 0 ? e.target.value : this.filter.lowerValue);
       }
     }
   }
@@ -102,6 +116,23 @@
     &__form{
       padding-top 20px
     }
+    &__section{
+      &.active .sidebar-filter__checkbox::after{
+        transform rotate(0deg)
+      }
+    }
+    &__checkbox::after{
+        content ''
+        display inline-block
+        width 12px
+        height 12px
+        transition transform 0.3s ease 0s;
+        transform rotate(-90deg)
+        background url('../../assets/img/main/icons/arrow-bottom.png') center no-repeat
+        @media(max-width: 1200px){
+          display none
+        }
+    }
   }
   .section-button{
     border none !important
@@ -124,6 +155,10 @@
       border-bottom 1px solid #CACACA;
     }
     &__title{
+      display flex
+      justify-content space-between
+      align-items center
+      width 100%
       cursor pointer
     }
     &__body{
@@ -136,7 +171,6 @@
         max-height: none
         opacity 1
         visibility visible
-        margin-top 25px
       }
       @media(max-width: 1200px){
         max-height: none
@@ -208,6 +242,12 @@
     }
   }
   .range-filter{
+    &__inputs{
+      padding 35px 0 15px 0
+      position relative
+      width 100%
+      height 10px
+    }
     &__values{
       margin-top 7px
       justify-content space-between
@@ -222,8 +262,13 @@
   }
   .range-slider{
     width 100%
+    height 1px
     padding 0
     background-color transparent
+    position absolute
+    cursor pointer
+    left 0
+    right 0
   }
   .range-slider::-webkit-slider-runnable-track,
   .range-slider::-moz-range-track {
@@ -233,25 +278,14 @@
   }
   .range-slider::-webkit-slider-thumb,
   .range-slider::-moz-range-thumb {
-    height: 10px;
-    width: 10px;
+    height: 15px;
+    width: 15px;
     border: none
     background-color: #000;
+    position relative
+    z-index 5
   }
-  // .range-slider{
-  //   width 100%
-  //   padding 0
-  // }
-  // .range-slider-rail,
-  // .range-slider-fill {
-  //   background-color #000
-  //   height: 1px;
-  //   border-radius: 0;
-  // }
-  // .range-slider-knob {
-  //   height: 10px;
-  //   width: 10px;
-  //   border: none
-  //   background-color: #000;
-  // }
+  .cursor-initial{
+    cursor default
+  }
 </style>

@@ -23,12 +23,9 @@
             920: {
               slidesPerView: 3
             },
-            520: {
+            300: {
               slidesPerView: 2,
             },
-            300: {
-              slidesPerView: 1,
-            }
       }"
       @swiper="onSwiper"
       @slideChange="onSlideChange"
@@ -71,9 +68,10 @@
       min-height: 140px
       @media(max-width: 768px){
         padding-right 0
-        padding 20px 0 50px 0
+        padding 20px 0 20px 0
         display block
       }
+      @media(max-width: 450px) {display: none;}
       &__wrapper{
         display flex !important
         flex: 1 1 auto
@@ -85,7 +83,7 @@
         }
         .swiper-button-next{
           right 20px
-          bottom 105px
+          bottom 40%
         }
         .slick-track{
           display flex !important
@@ -103,7 +101,7 @@
       &__slide{
         display flex !important
         flex-direction column
-        gap 15px
+        gap 20px
         padding 20px
         cursor: pointer
         text-align: center;

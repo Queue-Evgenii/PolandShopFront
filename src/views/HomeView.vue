@@ -20,12 +20,12 @@
           @addToCart="addToCart"
         />
         <home-catalogue
-          catalogId='14'
+          catalogId='2'
           @addToCart="addToCart"
         />
         <page-ads />
         <home-catalogue
-          catalogId='15'
+          catalogId='3'
           @addToCart="addToCart"
         />
         <recent-products v-if="recentList.length !== 0" :recentProducts="recentList" @addToCart="addToCart" />

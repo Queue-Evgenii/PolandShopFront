@@ -166,8 +166,9 @@
   &__image {
     display block
     width 100%
-    height 200px
+    height 250px
     overflow hidden
+    position relative
     img{
       width 100%
       height 100%
@@ -191,9 +192,9 @@
   &__text-row{
     display flex
     flex-direction column;
-    gap: 20px
-    width 100%
-    min-height: 80px
+    gap: 10px
+    align-self: baseline;
+    flex-grow: 1
   }
   &__label {
     font-size 18px
@@ -202,7 +203,6 @@
   }
   &__price {
     flex: 0 0 auto;
-    width 100%
     text-align left
     font-size 33px
     &::after{
@@ -389,5 +389,53 @@
       }
     }
   }
+  .swiper-button-prev,.swiper-button-next{
+  width 75px
+  height 75px
+  background: rgb(255, 255, 255);
+  opacity 0.7
+  border-radius 50%
+  border: 1px solid #3D3D3D;
+  position absolute
+  z-index 3
+  font-size 0
+  bottom 45px
+  transition opacity 0.3s ease
+  cursor pointer
+  @media(min-width: 769px) {
+    &:hover{
+      background: rgb(255, 255, 255);
+      opacity 0.9
+    }
+  }
+  &::before, &::after{
+    content ''
+    position absolute
+    width 22.5px
+    height 2px
+    background-color #000
+  }
+  &::before{
+    transform rotate(45deg)
+    top: 28.5px
+    left: 28.5px
+  }
+  &::after{
+    transform rotate(-45deg)
+    bottom: 28.5px
+    left: 28.5px
+  }
+  @media(max-width: 768px){
+    display none !important
+  }
+}
+.column-container{
+  width: 100%;
+  flex-direction: column;
+  gap: 25px;
+  .item-product__text-row{
+    gap: 20px;
+  }
+}
 </style>
 

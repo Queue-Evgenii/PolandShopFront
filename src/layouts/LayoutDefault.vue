@@ -629,6 +629,15 @@ import PagePopup from '@/components/PagePopup'
 import AccessAlert from '@/components/AccessAlert'
 import CartComponent from '@/components/cart/CartComponent'
 export default {
+  components: {
+    InputHeader,
+    ShopMenu,
+    MainMenu,
+    FooterCopy,
+    PagePopup,
+    AccessAlert,
+    CartComponent
+  },
   data () {
     return {
       activePhones: false,
@@ -790,25 +799,6 @@ export default {
       ],
     }
   },
-  components: {
-    InputHeader,
-    ShopMenu,
-    MainMenu,
-    FooterCopy,
-    PagePopup,
-    AccessAlert,
-    CartComponent
-  },
-  methods: {
-    openPopup () {
-      this.visibilityPopup = 1;
-      document.body.style.overflowY = "hidden"
-    },
-    closePopup () {
-      this.visibilityPopup = null;
-      document.body.style.overflowY = "initial"
-    },
-  },
   computed: {
     cartList () {
       return this.$store.state.cartList
@@ -828,5 +818,30 @@ export default {
       }
     }
   },
+  methods: {
+    openPopup () {
+      this.visibilityPopup = 1;
+      document.body.style.overflowY = "hidden"
+    },
+    closePopup () {
+      this.visibilityPopup = null;
+      document.body.style.overflowY = "initial"
+    },
+    getFavorites() {
+      if (localStorage.getItem('access_token')) {
+        this.$store.dispatch("getFavorites").then(res => {
+          this.$store.state.favoriteItems = res.data;
+        })
+      }
+      const favItems = localStorage.getItem('favoriteItems')
+      if (favItems) {
+        this.$store.state.favoriteItems = JSON.parse(favItems);
+      }
+      this.$store.state.favoriteItems = [];
+    },
+  },
+  mounted() {
+    this.getFavorites();
+  }
 }
 </script>

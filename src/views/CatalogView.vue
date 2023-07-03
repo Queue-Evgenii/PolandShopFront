@@ -8,16 +8,28 @@
             <div class="catalog-page__row row">
               <aside class="catalog-page__sidebar sidebar">
                 <aside-sidebar v-if="SidebarWidth" />
-                <aside-filter :filterItems="filterItems" v-if="SidebarWidth" />
+                <aside-filter v-if="SidebarWidth" :filterItems="filterItems" />
               </aside>
               <div class="catalog-page__content content">
                 <div class="catalog-page__slider">
                   <sub-slider :subSlides="categoryItems" />
                 </div>
                 <div class="catalog-page__products">
-                  <catalog-products :catalogProducts="catalogProducts" :productsLabel="productsLabel" > 
+                  <catalog-products
+                    v-if="isSingleCategory"
+                    :catalogProducts="catalogProducts"
+                    :productsLabel="productsLabel"
+                  > 
                     <aside-filter :filterItems="filterItems"></aside-filter>
                   </catalog-products>
+                  <template v-else>
+                    <home-catalogue
+                      v-for="item in childrenCategoriesId"
+                      :key="item"
+                      :catalogId='item'
+                      @addToCart="addToCart"
+                    />
+                  </template>
                 </div>
               </div>
             </div>
@@ -41,6 +53,7 @@ import CatalogProducts from '@/components/catalog/CatalogProducts'
 import RecentProducts from '@/components/home/RecentProducts'
 import PageAds from '@/components/PageAds'
 import NotFound from '@/components/NotFound'
+import HomeCatalogue from '../components/home/HomeCatalogue'
 export default {
   name: 'CatalogView',
   layouts: 'default',
@@ -56,6 +69,7 @@ export default {
     RecentProducts,
     PageAds,
     NotFound,
+    HomeCatalogue,
   },
   data () {
     return {
@@ -168,8 +182,10 @@ export default {
       ],
       categoryItems: [],
       catalogProducts: [],
+      childrenCategoriesId: [],
       productsLabel: '',
       is404: false,
+      isSingleCategory: true,
     }
   },
   computed: {
@@ -205,12 +221,19 @@ export default {
     fetchProductsByCategoryId(id) {
       this.$store.dispatch('listProductsByIdCategory', id)
         .then(res => {
-          this.is404 = false
-          this.catalogProducts = res.data.products
-          this.productsLabel = res.data.name
+          this.is404 = false;
+          this.isSingleCategory = true;
+          if(res.data.children.length !== 0) {
+            this.isSingleCategory = false;
+            res.data.children.forEach(element => {
+              this.childrenCategoriesId.push(element.id);
+            });
+          }
+          this.catalogProducts = res.data.products;
+          this.productsLabel = res.data.name;
         })
         .catch(() => {
-          this.is404 = true
+          this.is404 = true;
         })
     }
   },

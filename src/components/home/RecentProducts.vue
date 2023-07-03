@@ -4,31 +4,12 @@
       <div class="products__container container">
         <div class="products__title recent-products__title">Niedawno przeglądałeś:</div>
         <div class="products__items">
-          <div class="products__item item-product"  v-for="product in recentProducts" :key="product.id">
-            <router-link :to="{name: 'productItem', params: {id: product.id}}">
-              <div class="item-product__body flex" @click="addToRecent(product)">
-                <div class="item-product__info flex">
-                  <div class="item-product__image">
-                    <img :src="product.preview" alt="">
-                    <span v-if="product.mark">{{ product.mark }}</span>
-                  </div>
-                  <div class="item-product__label">{{ product.name}}</div>
-                  <div class="item-product__price">{{ product.price }}</div>
-                </div>
-                <div class="item-product__actions actions-product flex">
-                  <button
-                    @click="addToCart(product);$event.stopPropagation();$event.preventDefault();showAlert(product)"
-                    type="button"
-                    class="actions-product__button"
-                    :class="(getQuantity(product) >= product.quantity) ? '_disabled' : ''"
-                  >
-                    Dodaj do koszyka
-                  </button>
-                  <button type="button" class="actions-product__favorite"></button>
-                </div>
-              </div>
-            </router-link>
-          </div>
+          <ProductItem
+            v-for="product in recentProducts"
+            :key="product.id"
+            :product="product"
+            @addToCart="addToCart"
+          />
         </div>
       </div>
     </div>
@@ -46,7 +27,9 @@
   }
 </style>
 <script>
+import ProductItem from '../ProductItem'
 export default {
+  components: { ProductItem },
   props: {
     recentProducts: {
       type: Array,

@@ -431,7 +431,6 @@
       },
       getQuantity () {
         const item = this.$store.state.cartList.find(item => item.id === this.productItem.id);
-          console.log(this.productItem.quantity)
         if (!item) {
           return 1;
         }

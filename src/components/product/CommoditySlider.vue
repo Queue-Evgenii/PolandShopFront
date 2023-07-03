@@ -418,10 +418,17 @@ export default {
   &__array{
     display grid
     grid-template-columns: 1fr
+    grid-template-rows: 520px 145px
     column-gap 25px
     row-gap: 5px
     overflow: hidden
     position relative
+    @media(max-width: 1669px){
+      grid-template-rows: 410px 145px
+    }
+    @media(max-width: 500px) {
+      grid-template-rows: 305px
+    }
   } 
   &__thumbs,
   &__carousel{
@@ -456,7 +463,7 @@ export default {
   &__image{
     cursor: pointer;
     border: 1px solid transparent;
-    width 135px
+    width 100%
     height 130px
     position relative
     img{
@@ -464,7 +471,7 @@ export default {
       position absolute
       width 100%
       height 100%
-      object-fit: contain
+      object-fit: cover
     }
     @media(max-width: 500px) {
       min-width 80px
@@ -480,26 +487,21 @@ export default {
   &__image{
     cursor: pointer;
     border: 1px solid rgba(0, 0, 0, 0.2);
-    overflow: hidden
-    // height 558px
+    height 520px
+    position relative
     img{
       padding 16px
-      max-width 100%
+      position absolute
       width 100%
       height 100%
-      @media(max-width: 1669px) {
-        padding 20px
-      }
-      @media(max-width: 400px) {
-        padding 15px
-      }
+      object-fit: contain
     }
-    // @media(max-width: 1669px) {
-    //   height 410px 
-    // }
-    // @media(max-width: 500px) {
-    //   height 300px
-    // }
+    @media(max-width: 1669px) {
+      height 410px 
+    }
+    @media(max-width: 500px) {
+      height 300px
+    }
   }
 }
 </style>

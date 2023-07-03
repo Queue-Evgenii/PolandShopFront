@@ -47,7 +47,7 @@ export default {
   },
   computed: {
     currentFavoriteList() {
-      return localStorage.getItem('favoriteItems')
+      return this.$store.state.favoriteItems;
     }
   },
   watch: {

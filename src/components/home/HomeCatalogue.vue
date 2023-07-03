@@ -9,6 +9,7 @@
             v-for="product in catalogProducts"
             :key="product.id"
             :product="product"
+            :favoriteItems="favoriteItems"
             @addToCart="addToCart"
           />
         </div>
@@ -25,12 +26,29 @@ export default {
       required: true,
     }
   },
+  data () {
+    return {
+      catalogProducts: [],
+      productsLabel: '',
+      notExistProducts: false,
+      favoriteItems: []
+    }
+  },
   components: {
     ProductItem,
   },
   methods: {
     addToCart (product) {
       this.$emit('addToCart', product)
+    },
+    getFavorites() {
+      if (this.isAuthorised) {
+        this.$store.dispatch("getFavorites").then(res => {
+          this.favoriteItems = res.data;
+        })
+        return;
+      }
+      this.favoriteItems = this.$store.state.favoriteItems;
     },
     fetchProductsByCategoryId(id) {
       this.$store.dispatch('listProductsByIdCategory', id)
@@ -48,14 +66,8 @@ export default {
     }
   },
   mounted () {
-    this.fetchProductsByCategoryId(this.catalogId)
+    this.fetchProductsByCategoryId(this.catalogId);
+    this.getFavorites();
   },
-  data () {
-    return {
-      catalogProducts: [],
-      productsLabel: '',
-      notExistProducts: false,
-    }
-  }
 }
 </script>

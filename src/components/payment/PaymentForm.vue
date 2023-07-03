@@ -255,14 +255,6 @@ export default {
               },
             ]
           },
-          {
-            id: 4,
-            type: 'checkbox',
-            name: 'Zapisz się do naszego newslettera.',
-            objId: 'agree_to_receive_information',
-            validation: false,
-            text: 'Wyrażam zgodę na otrzymywanie drogą mailową informacji handlowych, marketingowych, reklamowych (newsletter) od Administratora danych osobowych, którym jest ******* ************* ********, *********, ****. Administrator danych osobowych informuje, że podane przez Panią/Pana dane osobowe będą wykorzystywane jedynie w celu wysyłki newslettera do czasu rezygnacji z newslettera. Podanie danych jest dobrowolne, ale niezbędne w celu wysyłki newslettera, dane osobowe nie będą przekazywane podmiotom trzecim bez uzyskania Pani/Pana odrębnej zgody. Ma Pani/Pan prawo w każdym czasie do przenoszenia danych, dostępu do treść danych osobowych oraz możliwość ich poprawiania, wniesienia sprzeciwu co do przetwarzania danych a także ma Pani/Pana także prawo do wniesienia skargi dot. przetwarzania danych osobowych do Prezesa Urzędu Ochrony Danych Osobowych.'
-          }
         ],
         delivery: [
           {
@@ -429,6 +421,14 @@ export default {
             popupText: '(Przeczytaj Politykę Prywatności)',
             validation: true,
           },
+          {
+            id: 3,
+            type: 'checkbox',
+            name: 'Zapisz się do naszego newslettera.',
+            objId: 'agree_to_receive_information',
+            validation: true,
+            text: 'Wyrażam zgodę na otrzymywanie drogą mailową informacji handlowych, marketingowych, reklamowych (newsletter) od Administratora danych osobowych, którym jest ******* ************* ********, *********, ****. Administrator danych osobowych informuje, że podane przez Panią/Pana dane osobowe będą wykorzystywane jedynie w celu wysyłki newslettera do czasu rezygnacji z newslettera. Podanie danych jest dobrowolne, ale niezbędne w celu wysyłki newslettera, dane osobowe nie będą przekazywane podmiotom trzecim bez uzyskania Pani/Pana odrębnej zgody. Ma Pani/Pan prawo w każdym czasie do przenoszenia danych, dostępu do treść danych osobowych oraz możliwość ich poprawiania, wniesienia sprzeciwu co do przetwarzania danych a także ma Pani/Pana także prawo do wniesienia skargi dot. przetwarzania danych osobowych do Prezesa Urzędu Ochrony Danych Osobowych.'
+          }
         ]
       },
       userInfo: {
@@ -437,22 +437,22 @@ export default {
         name: '',
         surname: '',
         gender: '',
-        agree_to_receive_information: false,
       },
       deliveryInfo: {
-        name: '',
-        surname: '',
-        business: '',
-        nip_ue: '',
-        address: '',
-        zip_code: '',
-        country: 'Polska',
-        city: '',
-        phone: '',
+        name: '1name',
+        surname: '1surname',
+        business: '1business',
+        nip_ue: '1nip_ue',
+        address: '1address',
+        zip_code: '1243',
+        country: 'Poland',
+        city: '1city',
+        phone: '987',
       },
       agreements: {
         confirm_regulations_store: false,
         confirm_privacy_policy: false,
+        agree_to_receive_information: false,
       },
       otherDeliveryInfo: {
         name: '',
@@ -472,71 +472,71 @@ export default {
         },
         {
           id: 2,
-          name: 'Belgia'
+          name: 'Belgium'
         },
         {
           id: 3,
-          name: 'Czechy'
+          name: 'The czech republic'
         },
         {
           id: 4,
-          name: 'Dania'
+          name: 'Denmark'
         },
         {
           id: 5,
-          name: 'Finlandia'
+          name: 'Finland'
         },
         {
           id: 6,
-          name: 'Francja'
+          name: 'France'
         },
         {
           id: 7,
-          name: 'Hiszpania'
+          name: 'Spain'
         },
         {
           id: 8,
-          name: 'Holandia'
+          name: 'Netherlands'
         },
         {
           id: 9,
-          name: 'Irlandia Południowa'
+          name: 'Southern Ireland'
         },
         {
           id: 10,
-          name: 'Litwa'
+          name: 'Lithuania'
         },
         {
           id: 11,
-          name: 'Niemcy'
+          name: 'Germany'
         },
         {
           id: 12,
-          name: 'Polska'
+          name: 'Poland'
         },
         {
           id: 13,
-          name: 'Portugalia'
+          name: 'Portugal'
         },
         {
           id: 14,
-          name: 'Szwecja'
+          name: 'Sweden'
         },
         {
           id: 15,
-          name: 'Słowacja'
+          name: 'Slovakia'
         },
         {
           id: 16,
-          name: 'Węgry'
+          name: 'Hungary'
         },
         {
           id: 17,
-          name: 'Włochy'
+          name: 'Italy'
         },
         {
           id: 18,
-          name: 'Łotwa'
+          name: 'Latvia'
         },
       ],
       isOther: false,
@@ -570,6 +570,7 @@ export default {
       agreements: {
         confirm_regulations_store: { sameAs: sameAs(true) },
         confirm_privacy_policy: { sameAs: sameAs(true) },
+        agree_to_receive_information: { sameAs: sameAs(true) },
       },
       userInfo: {
         email: { required, email },
@@ -585,17 +586,18 @@ export default {
       const isAgreementCorrect = await this.v$.agreements.$validate();
       if (!isDeliveryCorrect || !isAgreementCorrect) return;
       const data = {
+        user_id: JSON.parse(localStorage.getItem('user_id')),
         user_information: {},
         deliver_information: {},
-        items: [],
         confirm_regulations_store: this.agreements.confirm_regulations_store,
         confirm_privacy_policy: this.agreements.confirm_privacy_policy,
       };
       Object.assign(data.user_information, this.userInfo);
+      Object.assign(data.deliver_information, this.deliveryInfo);
       data.user_information.fullname = this.userInfo.name + ' ' + this.userInfo.surname;
       data.deliver_information.fullname = this.deliveryInfo.name + ' ' + this.deliveryInfo.surname;
-      Object.assign(data.deliver_information, this.deliveryInfo);
-      this.$store.dispatch('submitDelivery', data);
+      data.user_information.agree_to_receive_information = this.agreements.agree_to_receive_information;
+      this.$emit('submitForm', data);
     },
     async registration() {
       const isUserCorrect = await this.v$.userInfo.$validate();
@@ -608,7 +610,9 @@ export default {
         for(let key in this.userInfo) {
           this.userInfo[key] = this.$store.state.tempUserData.userInfo[key] = res.data[key];
         }
+        localStorage.setItem('user_id', JSON.stringify(res.data.id));
       });
+      this.$store.dispatch('getDeliveryData')
     },
     async onBlur(value, dest, validation) {
       let isValueCorrect = validation ? await this.v$[dest][value].$validate() : true;

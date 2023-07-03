@@ -6,14 +6,11 @@ import authorizationModules from './modules/authorization.modules'
 import updateUserModules from './modules/updateUser.modules'
 import submitDeliveryModules from './modules/submitDelivery.modules'
 import credentialsModules from './modules/credentials.modules'
+import getDeliveryModules from './modules/getDelivery.modules'
+import getFavoritesModules from './modules/getFavorites.modules'
+import addFavoritesModules from './modules/addFavorites.modules'
+import removeFavoritesModules from './modules/removeFavorites.modules'
 
-function getFavoritesFromLocalStorage() {
-  const favoriteItems = localStorage.getItem('favoriteItems')
-  if (!favoriteItems) {
-    return []
-  }
-  return JSON.parse(favoriteItems)
-}
 function getCartFromLocalStorage() {
   const favoriteItems = localStorage.getItem('cartItems')
   if (!favoriteItems) {
@@ -31,7 +28,7 @@ const store = createStore({
     isQuickBuy: false,
     isNewAccount: false,
     isAuthorized: false,
-    favoriteItems: getFavoritesFromLocalStorage(),
+    favoriteItems: [],
     tempUserData: {
       userInfo: {
         email: '',
@@ -81,6 +78,10 @@ const store = createStore({
     updateUserModules,
     submitDeliveryModules,
     credentialsModules,
+    getDeliveryModules,
+    getFavoritesModules,
+    addFavoritesModules,
+    removeFavoritesModules,
   }
 })
 

@@ -214,20 +214,38 @@ export default {
         })
     },
     changeFavoriteList() {
+      if(localStorage.getItem("access_token")) {
+        const data = {
+          product_id: this.productId,
+        };
+        this.$store.dispatch("getFavorites").then(res => {
+          if(res.data.find(item => item.id === data.product_id)) {
+            this.$store.state.favoriteItems =  this.$store.state.favoriteItems.filter(item => item.id !== data.product_id)
+            this.$store.dispatch("removeFavorites", data);
+          } else {
+            this.$store.state.favoriteItems.push(this.productItem);
+            this.$store.dispatch("addFavorites", data);
+          }
+        })
+        return;
+      }
+      this.changeLocalFavorites();
+    },
+    changeLocalFavorites() {
       if (!this.$store.state.favoriteItems.find(item => item.id === this.productItem.id)) {
         this.productItem.isFavorite = true
         const favoriteItems = this.$store.state.favoriteItems
         favoriteItems.push(this.productItem)
         localStorage.setItem('favoriteItems', JSON.stringify(favoriteItems))
       } else {
-        let item = this.$store.state.favoriteItems.find(item => item.id === this.productItem.id)
+        const item = this.$store.state.favoriteItems.find(item => item.id === this.productItem.id)
         item.isFavorite = false
-        let favoriteItems = this.$store.state.favoriteItems
+        const favoriteItems = this.$store.state.favoriteItems
         const index = favoriteItems.indexOf(favoriteItems.find(item => item.id === this.productItem.id))
         favoriteItems.splice(index, 1)
         localStorage.setItem('favoriteItems', JSON.stringify(favoriteItems))
       }
-    },
+    }
   },
   mounted () {
     this.getProducts()
