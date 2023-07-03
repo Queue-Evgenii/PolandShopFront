@@ -836,6 +836,7 @@ export default {
       const favItems = localStorage.getItem('favoriteItems')
       if (favItems) {
         this.$store.state.favoriteItems = JSON.parse(favItems);
+        return;
       }
       this.$store.state.favoriteItems = [];
     },
