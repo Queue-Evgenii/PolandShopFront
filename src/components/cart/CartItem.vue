@@ -1,5 +1,5 @@
 <template>
-  <div class="cart-page__item item-cart">
+  <div class="cart-page__item item-cart" :class="isSearchList ? 'search-list-item' : ''">
     <router-link class="item-cart__image" :to="{name: 'productItem', params: {id: product.id}}" @click="closePopup()"><img :src="product.preview" alt="" ></router-link>
     <div class="item-cart__row">
       <div class="item-cart__info">
@@ -39,6 +39,9 @@ export default {
   props: {
     product: {
       type: Object,
+    },
+    isSearchList: {
+      type: Boolean,
     }
   },
   methods: {
@@ -73,3 +76,65 @@ export default {
   }
 }
 </script>
+<style lang="stylus">
+  .search-list-item{
+    &.item-cart {
+      gap 16px;
+      padding: 10px;
+      grid-template-columns: 100px 1fr 0;
+    }
+    .item-cart__num, .item-cart__trash, .quantity-product{
+      display none
+    }
+    .item-cart__image{
+      height 100px;
+      align-self center
+    }
+    .item-cart__title, .item-cart__cod{
+      font-size 12px
+      line-height 14px
+    }
+    @media(max-width: 1200px) {
+      &.item-cart {
+        grid-template-columns: 60px 1fr 0;
+      }
+      .item-cart__image{
+        height 60px;
+      }
+    }
+    @media(max-width: 992px) {
+      .item-cart__title, .item-cart__cod{
+        font-size 12px
+        line-height 14px
+      }
+      .item-cart__price{
+        font-size: 20px;
+        line-height: 22px;
+      }
+    }
+    @media(max-width: 768px) {
+      .item-cart__row{
+        flex-wrap: nowrap;
+      }
+      .item-cart__title, .item-cart__cod{
+        position initial !important
+      }
+    }
+    @media(min-width: 428px) and (max-width: 768px) {
+      &.item-cart {
+        grid-template-columns: 80px 1fr 0;
+      }
+      .item-cart__image{
+        height 80px;
+      }
+      .item-cart__title, .item-cart__cod{
+        font-size 18px
+        line-height 20px
+      }
+      .item-cart__price{
+        font-size: 25px;
+        line-height: 27px;
+      }
+    }
+  }
+</style>

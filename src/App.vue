@@ -397,7 +397,7 @@
   border-radius 50%
   border: 1px solid #3D3D3D;
   position absolute
-  z-index 3
+  z-index 1
   font-size 0
   bottom 45px
   transition opacity 0.3s ease

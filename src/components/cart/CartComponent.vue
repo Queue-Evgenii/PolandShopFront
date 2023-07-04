@@ -86,6 +86,7 @@ export default {
   grid-template-columns: 165px 1fr minmax(120px, 200px)
   border-bottom: 1px solid #8B8B8B;
   position relative
+  background-color: #fff;
   @media(max-width: 992px){
     grid-template-columns: 185px 1fr
   }

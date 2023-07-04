@@ -1,22 +1,24 @@
-import { createStore } from 'vuex'
-import categoryModules from './modules/category.modules'
-import productModules from './modules/product.modules'
-import registrationModules from './modules/registration.modules'
-import authorizationModules from './modules/authorization.modules'
-import updateUserModules from './modules/updateUser.modules'
-import submitDeliveryModules from './modules/submitDelivery.modules'
-import credentialsModules from './modules/credentials.modules'
-import getDeliveryModules from './modules/getDelivery.modules'
-import getFavoritesModules from './modules/getFavorites.modules'
-import addFavoritesModules from './modules/addFavorites.modules'
-import removeFavoritesModules from './modules/removeFavorites.modules'
+import { createStore } from 'vuex';
+import categoryModules from './modules/category.modules';
+import productModules from './modules/product.modules';
+import registrationModules from './modules/registration.modules';
+import authorizationModules from './modules/authorization.modules';
+import updateUserModules from './modules/updateUser.modules';
+import submitDeliveryModules from './modules/submitDelivery.modules';
+import credentialsModules from './modules/credentials.modules';
+import getDeliveryModules from './modules/getDelivery.modules';
+import getFavoritesModules from './modules/getFavorites.modules';
+import addFavoritesModules from './modules/addFavorites.modules';
+import removeFavoritesModules from './modules/removeFavorites.modules';
+import searchModules from './modules/search.modules';
+
 
 function getCartFromLocalStorage() {
   const favoriteItems = localStorage.getItem('cartItems')
   if (!favoriteItems) {
-    return []
+    return [];
   } else{
-    return JSON.parse(favoriteItems)
+    return JSON.parse(favoriteItems);
   }
 }
 
@@ -82,7 +84,8 @@ const store = createStore({
     getFavoritesModules,
     addFavoritesModules,
     removeFavoritesModules,
+    searchModules,
   }
-})
+});
 
-export default store
+export default store;
