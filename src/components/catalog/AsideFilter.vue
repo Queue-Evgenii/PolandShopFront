@@ -5,27 +5,10 @@
       <div class="sidebar-filter__section section-filter">
         <div class="section-filter__title cursor-initial">Cena £</div>
         <div class="section-filter__body active range-filter">
-          <div class="range-filter__inputs">
-            <input
-              type="range"
-              :min="filter.minValue"
-              :max="filter.maxValue"
-              v-model="filter.lowerValue"
-              class="range-slider"
-              @input="onMinChange"
-            >
-            <input
-              type="range"
-              :min="filter.minValue"
-              :max="filter.maxValue"
-              v-model="filter.upperValue"
-              class="range-slider"
-              @input="onMaxChange"
-            >
-          </div>
+          <div id="range-slider" class="range-filter__range range-slider"></div>
           <div class="range-filter__values flex">
-            <span class="range-filter__min">{{ filter.lowerValue }}</span>
-            <span class="range-filter__max">{{ filter.upperValue }}</span>
+            <span class="range-filter__min">{{ lowerValue }}</span>
+            <span class="range-filter__max">{{ upperValue }}</span>
           </div>
         </div>
       </div>
@@ -45,44 +28,69 @@
   </div>
 </template>
 <script>
-  import SectionFilter from "@/components/catalog/SectionFilter";
-  export default {
-    components: {
-      SectionFilter
-    },
-    props: {
-      filterItems: {
-        type: Array,
-        required: true,
-      }
-    },
-    data () {
-      return {
-        filter: {
-          upperValue: 340,
-          lowerValue: 10,
-          minValue: 0,
-          maxValue: 350,
-        },
-        currentNavItem: null,
-      }
-    },
-    methods: {
-      onSelected (id) {
-        if (this.currentNavItem !== id) {
-          this.currentNavItem = id;
-        } else if (this.currentNavItem === id) {
-          this.currentNavItem = null;
-        }
-      },
-      onMinChange(e) {
-        this.filter.lowerValue = ((e.target.value - this.filter.upperValue) < 0 ? e.target.value : this.filter.upperValue);
-      },
-      onMaxChange(e) {
-        this.filter.upperValue = ((e.target.value - this.filter.lowerValue) > 0 ? e.target.value : this.filter.lowerValue);
-      }
+import SectionFilter from "@/components/catalog/SectionFilter";
+import noUiSlider from "nouislider";
+import "nouislider/dist/nouislider.css";
+export default {
+  components: {
+    SectionFilter
+  },
+  props: {
+    filterItems: {
+      type: Array,
+      required: true,
     }
+  },
+  data () {
+    return {
+      rangeSlider: undefined,
+      upperValue: 340,
+      lowerValue: 10,
+      minValue: 0,
+      maxValue: 350,
+      currentNavItem: null,
+    }
+  },
+  methods: {
+    onSelected (id) {
+      if (this.currentNavItem !== id) {
+        this.currentNavItem = id;
+      } else if (this.currentNavItem === id) {
+        this.currentNavItem = null;
+      }
+    },
+    createRange() {
+      try{
+        this.rangeSlider = noUiSlider.create(document.getElementById("range-slider"), {
+          start: [this.lowerValue, this.upperValue],
+          range: {
+            min: this.minValue,
+            max: this.maxValue,
+          },
+          connect: true,
+        });
+        this.getValuesOnUpdate();
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    getValuesOnUpdate() {
+      this.rangeSlider.on("update", () => {
+        this.getValues();
+      });
+    },
+    getValues() {
+      if (this.rangeSlider) {
+        const values = this.rangeSlider.get();
+        this.lowerValue = Math.round(values[0]);
+        this.upperValue = Math.round(values[1]);
+      }
+    },
+  },
+  mounted() {
+    this.createRange();
   }
+}
 </script> 
 <style lang="stylus">
   .settings-products__body.active .sidebar-filter{
@@ -242,11 +250,11 @@
     }
   }
   .range-filter{
-    &__inputs{
-      padding 35px 0 15px 0
-      position relative
-      width 100%
-      height 10px
+    display flex
+    flex-direction: column
+    margin-top 24px;
+    gap: 16px
+    &__range{
     }
     &__values{
       margin-top: 7px;
@@ -261,31 +269,33 @@
     }
   }
   .range-slider{
-    width: 100%;
     height: 1px;
-    padding: 0;
     background-color: transparent;
-    position: absolute;
     cursor: pointer;
-    left: 0;
-    right: 0;
-  }
-  .range-slider::-moz-range-track,
-  .range-slider::-webkit-slider-runnable-track {
-    background-color: #000;
-    color: #000;
-    height: 1px;
-    border-radius: 0;
-  }
-  .range-slider::-moz-range-thumb,
-  .range-slider::-webkit-slider-thumb {
-    height: 15px;
-    width: 15px;
-    border: none
-    background-color: #000;
-    color: #000;
-    position: relative;
-    z-index: 5;
+      border: none
+    .noUi-connects {
+      background-color: #888;
+      height: 1px;
+      border-radius: 0;
+    }
+    .noUi-connect {
+      background-color: #000;
+      height: 5px;
+      border-radius: 0;
+    }
+    .noUi-handle{
+      height: 15px;
+      width: 15px;
+      border: none
+      background-color: #000;
+      border-radius: 50%;
+      box-shadow: none
+      top -7.5px
+      right -7.5px
+      &::before, &::after{
+        display none
+      }
+    }
   }
   .cursor-initial{
     cursor: default;
