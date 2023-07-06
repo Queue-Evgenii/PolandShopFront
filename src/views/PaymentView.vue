@@ -95,7 +95,6 @@ export default {
           count: item.amount,
         }
       });
-      console.log(items);
       const data = {...value, items};
       this.$store.dispatch('submitDelivery', data);
     },

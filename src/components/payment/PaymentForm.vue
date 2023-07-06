@@ -626,7 +626,6 @@ export default {
       if ((typeof this[dest][value] === 'boolean' || this[dest][value].length > 0) && this[dest][value] !== this.$store.state.tempUserData[dest][value]) {
         data[value] = this.$store.state.tempUserData[dest][value] = this[dest][value];
         this.$store.dispatch('updateUser', data);
-        console.log(data);
       }
     },
     setLoginForm() {
@@ -652,7 +651,6 @@ export default {
   },
   computed: {
     getData() {
-      console.log(10)
       return this.$store.state.tempUserData.userInfo
     }
   },

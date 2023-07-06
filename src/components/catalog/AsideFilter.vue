@@ -249,43 +249,45 @@
       height 10px
     }
     &__values{
-      margin-top 7px
-      justify-content space-between
+      margin-top: 7px;
+      justify-content: space-between;
     }
     &__min,
     &__max{
       &::after{
-        content 'pln'
-        margin-left 5px
+        content: 'pln';
+        margin-left: 5px;
       }
     }
   }
   .range-slider{
-    width 100%
-    height 1px
-    padding 0
-    background-color transparent
-    position absolute
-    cursor pointer
-    left 0
-    right 0
+    width: 100%;
+    height: 1px;
+    padding: 0;
+    background-color: transparent;
+    position: absolute;
+    cursor: pointer;
+    left: 0;
+    right: 0;
   }
-  .range-slider::-webkit-slider-runnable-track,
-  .range-slider::-moz-range-track {
-    background-color #000
+  .range-slider::-moz-range-track,
+  .range-slider::-webkit-slider-runnable-track {
+    background-color: #000;
+    color: #000;
     height: 1px;
     border-radius: 0;
   }
-  .range-slider::-webkit-slider-thumb,
-  .range-slider::-moz-range-thumb {
+  .range-slider::-moz-range-thumb,
+  .range-slider::-webkit-slider-thumb {
     height: 15px;
     width: 15px;
     border: none
     background-color: #000;
-    position relative
-    z-index 5
+    color: #000;
+    position: relative;
+    z-index: 5;
   }
   .cursor-initial{
-    cursor default
+    cursor: default;
   }
 </style>

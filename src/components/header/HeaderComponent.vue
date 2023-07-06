@@ -483,7 +483,6 @@ export default {
       this.searchProductsRequest(val);
     },
     searchProductsRequest(val) {
-      console.log(val)
       this.$store.dispatch("searchProducts", val).then(data =>{
         this.products = data.data;
         if(data.data.length > 0) {
