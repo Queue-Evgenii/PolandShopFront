@@ -13,11 +13,12 @@
         </div>
       </div>
       <section-filter 
-        v-for="item in filterItems"  
-        :key="item.id" 
-        :item="item"
-        :class="{'active' : currentNavItem === item.id}"
+        name="Rodzaj produktu"
+        :currentCategoryId="currentCategoryId"
+        :items="filters"
+        :class="{'active' : currentNavItem}"
         @onSelected="onSelected"
+        @onChecked="onChecked"
       />
       <div class="sidebar-filter__section section-filter section-button">
         <div class="section-filter__body">
@@ -36,28 +37,78 @@ export default {
     SectionFilter
   },
   props: {
-    filterItems: {
+    filters: {
       type: Array,
       required: true,
     }
   },
   data () {
     return {
+      timeout: null,
       rangeSlider: undefined,
-      upperValue: 340,
-      lowerValue: 10,
       minValue: 0,
-      maxValue: 350,
-      currentNavItem: null,
+      maxValue: undefined,
+      upperValue: undefined,
+      lowerValue: 0,
+      currentNavItem: true,
+      isFirstCall: true,
+    }
+  },
+  computed: {
+    currentCategoryId() {
+      return this.$route.params.id;
     }
   },
   methods: {
-    onSelected (id) {
-      if (this.currentNavItem !== id) {
-        this.currentNavItem = id;
-      } else if (this.currentNavItem === id) {
-        this.currentNavItem = null;
+    onSelected () {
+      this.currentNavItem = !this.currentNavItem;
+    },
+    clearFilters() {
+      let item = this.$store.state.filterParams.find(el => el.includes("category_ids[]"));
+      while(item) {
+        const index = this.$store.state.filterParams.indexOf(item);
+        if (index >= 0) {
+          this.$store.state.filterParams.splice(index, 1);
+        }
+        item = this.$store.state.filterParams.find(el => el.includes("category_ids[]"));
       }
+    },
+    onChecked(id) {
+      const string = `category_ids[]=${id}`;
+      if (this.$store.state.filterParams.find(el => el === string)) {
+        this.removeCategoryString(string);
+        return;
+      }
+      this.addCategoryString(string);
+    },
+    addCategoryString(string) {
+      this.$store.state.filterParams.push(string);
+      this.setFilters();
+    },
+    removeCategoryString(string) {
+      const index = this.$store.state.filterParams.indexOf(string);
+      this.$store.state.filterParams.splice(index, 1);
+      this.setFilters();
+    },
+    addMinPriceString(value) {
+      const string = `price[min]=${value}`;
+      const item = this.$store.state.filterParams.find(el => el.includes("price[min]"));
+      const index = this.$store.state.filterParams.indexOf(item);
+      if (index >= 0) {
+        this.$store.state.filterParams.splice(index, 1);
+      }
+      this.$store.state.filterParams.push(string);
+      this.setFilters();
+    },
+    addMaxPriceString(value) {
+      const string = `price[max]=${value}`;
+      const item = this.$store.state.filterParams.find(el => el.includes("price[max]"));
+      const index = this.$store.state.filterParams.indexOf(item);
+      if (index >= 0) {
+        this.$store.state.filterParams.splice(index, 1);
+      }
+      this.$store.state.filterParams.push(string);
+      this.setFilters();
     },
     createRange() {
       try{
@@ -71,24 +122,55 @@ export default {
         });
         this.getValuesOnUpdate();
       } catch (err) {
-        console.log(err);
+        err;
       }
     },
     getValuesOnUpdate() {
       this.rangeSlider.on("update", () => {
-        this.getValues();
+        if (this.rangeSlider) this.getValues();
       });
     },
     getValues() {
-      if (this.rangeSlider) {
-        const values = this.rangeSlider.get();
+      const values = this.rangeSlider.get();
+      if (this.lowerValue != Math.round(values[0])) {
         this.lowerValue = Math.round(values[0]);
+        if (this.timeout) clearTimeout(this.timeout);
+        this.timeout = setTimeout(() => {
+          this.addMinPriceString(this.lowerValue);
+        }, 300);
+      }
+      if (this.upperValue != Math.round(values[1])) {
         this.upperValue = Math.round(values[1]);
+        if (this.timeout) clearTimeout(this.timeout);
+        this.timeout = setTimeout(() => {
+          this.addMaxPriceString(this.upperValue);
+        }, 300);
       }
     },
+    productsHoisting(data) {
+      this.$emit("productsHoisting", data);
+    },
+    setFilters() {
+      this.$store.dispatch("setFilters", this.$store.state.filterParams.join("&"))
+        .then(res => {
+          if(this.isFirstCall) {
+            console.log(1)
+            this.upperValue = this.maxValue = parseInt(res.meta.max_price, 10);
+            this.createRange();
+            this.isFirstCall = false;
+          }
+          this.productsHoisting(res.data);
+        })
+    }
   },
   mounted() {
-    this.createRange();
+    this.onChecked(this.currentCategoryId);
+  },
+  watch: {
+    currentCategoryId() {
+      this.clearFilters();
+      this.onChecked(this.currentCategoryId);
+    }
   }
 }
 </script> 
@@ -292,6 +374,7 @@ export default {
       box-shadow: none
       top -7.5px
       right -7.5px
+      cursor: pointer;
       &::before, &::after{
         display none
       }

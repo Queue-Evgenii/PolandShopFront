@@ -4,7 +4,7 @@
     <div class="catalog-products__settings settings-products">
       <div class="settings-products__menu flex">
         <button type="button" class="settings-products__filters" @click="filtersToggle">Filtr</button>
-        <button type="button" class="settings-products__order">Cena rosnąco</button>
+        <button @click="changeSortType()" type="button" :class="{asc: isAsc}" class="settings-products__order">Cena rosnąco</button>
         <div class="settings-products__view flex">
           <button type="button" class="settings-products__view-columns" ref="column" @click="filtersLayout"><img src="@/assets/img/catalog/columns.png" alt=""></button>
           <button type="button" class="settings-products__view-rows" @click="filtersLayout"><img src="@/assets/img/catalog/rows.png" alt=""></button>
@@ -14,7 +14,7 @@
         <slot></slot>
       </div>
     </div>
-      <div v-if="catalogProducts.length === 0" class="catalog-page__notice">Category does not contain products yet ;(</div>
+      <div v-if="catalogProducts.length === 0" class="catalog-page__notice">Products not found ;(</div>
      <div v-if="catalogProducts.length !== 0" :class="isRowDirection ? 'products-items-row' : ''" class="products__items" ref="products">
       <product-item
         v-for="product in getItems" 
@@ -62,6 +62,7 @@ export default {
       currentPage: 1,
       perPage: 16,
       isRowDirection: false,
+      isAsc: true,
     }
   },
   computed: {
@@ -110,6 +111,27 @@ export default {
         localStorage.setItem('cartItems', JSON.stringify(cartItems))
       }
     },
+    productsHoisting(data) {
+      this.$emit("productsHoisting", data);
+    },
+    changeSortType() {
+      this.isAsc = !this.isAsc;
+      const value = this.isAsc ? "asc" : "desc";
+      const string = `sort[type]=${value}`;
+      const item = this.$store.state.filterParams.find(el => el.includes("sort[type]"));
+      const index = this.$store.state.filterParams.indexOf(item);
+      if (index >= 0) {
+        this.$store.state.filterParams.splice(index, 1);
+      }
+      this.$store.state.filterParams.push(string);
+      this.setFilters();
+    },
+    setFilters() {
+      this.$store.dispatch("setFilters", this.$store.state.filterParams.join("&"))
+        .then(res => {
+          this.productsHoisting(res.data);
+        })
+    },
   },
 }
 </script>
@@ -122,7 +144,10 @@ export default {
 }
   .settings-products {
     @media(min-width: 1201px){
-      display none
+      &__body,
+      &__filters {
+        display none
+      }
     }
     position relative
     &__menu {

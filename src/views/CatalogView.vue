@@ -8,7 +8,7 @@
             <div class="catalog-page__row row">
               <aside class="catalog-page__sidebar sidebar">
                 <aside-sidebar v-if="SidebarWidth" />
-                <aside-filter v-if="SidebarWidth" :filterItems="filterItems" />
+                <aside-filter v-if="SidebarWidth" :filters="categoryItems" @productsHoisting="getProducts" />
               </aside>
               <div class="catalog-page__content content">
                 <div class="catalog-page__slider">
@@ -19,8 +19,9 @@
                     v-if="isSingleCategory"
                     :catalogProducts="catalogProducts"
                     :productsLabel="productsLabel"
+                    @productsHoisting="getProducts"
                   > 
-                    <aside-filter :filterItems="filterItems"></aside-filter>
+                    <aside-filter v-if="!SidebarWidth" :filters="categoryItems" @productsHoisting="getProducts" />
                   </catalog-products>
                   <template v-else>
                     <home-catalogue
@@ -57,9 +58,6 @@ import HomeCatalogue from '../components/home/HomeCatalogue'
 export default {
   name: 'CatalogView',
   layouts: 'default',
-  created () {
-    this.categoryItems = this.categoryList;
-  },
   components: {
     LayoutDefault,
     AsideSidebar,
@@ -73,113 +71,6 @@ export default {
   },
   data () {
     return {
-      filterItems: [
-        {
-          name: 'Rodzaj produktu',
-          id: 1,
-          filterInputs: [
-            {
-              label: 'Profil',
-              id: 1,
-              for: '1-1'
-            },
-            {
-              label: 'Listwa wykończeniowa',
-              id: 2,
-              for: '1-2'
-            },
-            {
-              label: 'Termo pierścienie',
-              id: 3,
-              for: '1-3'
-            },
-          ]
-        },
-        {
-          name: 'Rodzaj produktu',
-          id: 2,
-          filterInputs: [
-            {
-              label: 'Listwa wykończeniowa',
-              id: 1,
-              for: '2-1'
-            },
-            {
-              label: 'Profil',
-              id: 2,
-              for: '2-2'
-            },
-            {
-              label: 'Termo pierścienie',
-              id: 3,
-              for: '2-3'
-            },
-          ]
-        },
-        {
-          name: 'Rodzaj produktu',
-          id: 3,
-          filterInputs: [
-            {
-              label: 'Listwa wykończeniowa',
-              id: 1,
-              for: '3-1'
-            },
-            {
-              label: 'Profil',
-              id: 2,
-              for: '3-2'
-            },
-            {
-              label: 'Termo pierścienie',
-              id: 3,
-              for: '3-3'
-            },
-          ]
-        },
-        {
-          name: 'Rodzaj produktu',
-          id: 4,
-          filterInputs: [
-            {
-              label: 'Listwa wykończeniowa',
-              id: 1,
-              for: '4-1'
-            },
-            {
-              label: 'Profil',
-              id: 2,
-              for: '4-2'
-            },
-            {
-              label: 'Termo pierścienie',
-              id: 3,
-              for: '4-3'
-            },
-          ]
-        },
-        {
-          name: 'Rodzaj produktu',
-          id: 5,
-          filterInputs: [
-            {
-              label: 'Listwa wykończeniowa',
-              id: 1,
-              for: '5-1'
-            },
-            {
-              label: 'Profil',
-              id: 2,
-              for: '5-2'
-            },
-            {
-              label: 'Termo pierścienie',
-              id: 3,
-              for: '5-3'
-            },
-          ]
-        },
-      ],
       categoryItems: [],
       catalogProducts: [],
       childrenCategoriesId: [],
@@ -210,35 +101,18 @@ export default {
       }
     },
   },
-  watch: {
-    currentCatId() {
-      setTimeout(() => {
-        this.fetchProductsByCategoryId(this.currentCatId)
-      }, 0)
-    }
-  },
   methods: {
-    fetchProductsByCategoryId(id) {
-      this.$store.dispatch('listProductsByIdCategory', id)
-        .then(res => {
-          this.is404 = false;
-          this.isSingleCategory = true;
-          if(res.data.children.length !== 0) {
-            this.isSingleCategory = false;
-            res.data.children.forEach(element => {
-              this.childrenCategoriesId.push(element.id);
-            });
-          }
-          this.catalogProducts = res.data.products;
-          this.productsLabel = res.data.name;
-        })
-        .catch(() => {
-          this.is404 = true;
-        })
+    getProducts(data) {
+      this.catalogProducts = data;
+    },
+    getCategories() {
+      this.$store.dispatch("getCategories").then(res => {
+        this.categoryItems = res.data;
+      })
     }
   },
   mounted () {
-    this.fetchProductsByCategoryId(this.currentCatId)
-  }
+    this.getCategories();
+  },
 }
 </script>

@@ -1,12 +1,18 @@
 <template>
   <div 
-    class="sidebar-filter__section section-filter" 
+    v-if="items" class="sidebar-filter__section section-filter"
   >
-    <span class="section-filter__title sidebar-filter__checkbox" @click="onSelected(item.id)">{{ item.name }}</span>
+    <span class="section-filter__title sidebar-filter__checkbox" @click="onSelected()">{{ name }}</span>
+    {{ categoryFilters }}
     <ul class="section-filter__body section-filter__body-line">
-      <li class="section-filter__item" v-for="input in item.filterInputs" :key="input.id">
-        <input type="checkbox" :id="input.for">
-        <label class="flex" :for="input.for">{{ input.label }}</label>
+      <li class="section-filter__item" v-for="item in items.filter(item => item.children.length == 0)" :key="item.id">
+        <input
+          type="checkbox"
+          :id="item.id"
+          :checked="isChecked(item)"
+          @click="onChecked(item.id)"
+        >
+        <label class="flex" :for="item.id">{{ item.name }}</label>
       </li>
     </ul>
   </div> 
@@ -14,14 +20,27 @@
 <script>
 export default {
   props: {
-    item: {
-      type: Object,
+    items: {
+      type: Array,
       required: true,
+    },
+    name: {
+      type: String,
+      required: true,
+    },
+    currentCategoryId: {
+      type: Number,
     }
   },
   methods: {
-    onSelected (id) {
-      this.$emit('onSelected', id)
+    onSelected () {
+      this.$emit('onSelected');
+    },
+    onChecked(id) {
+      this.$emit('onChecked', id)
+    },
+    isChecked(item) {
+      return this.currentCategoryId == item.id
     }
   },
 }

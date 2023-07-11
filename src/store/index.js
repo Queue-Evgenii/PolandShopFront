@@ -11,6 +11,7 @@ import getFavoritesModules from './modules/getFavorites.modules';
 import addFavoritesModules from './modules/addFavorites.modules';
 import removeFavoritesModules from './modules/removeFavorites.modules';
 import searchModules from './modules/search.modules';
+import filtersModules from './modules/filters.modules';
 
 
 function getCartFromLocalStorage() {
@@ -31,6 +32,7 @@ const store = createStore({
     isNewAccount: false,
     isAuthorized: false,
     favoriteItems: [],
+    filterParams: ["sort[type]=asc", "sort[column]=id"],
     tempUserData: {
       userInfo: {
         email: '',
@@ -85,6 +87,7 @@ const store = createStore({
     addFavoritesModules,
     removeFavoritesModules,
     searchModules,
+    filtersModules,
   }
 });
 
