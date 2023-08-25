@@ -5,7 +5,6 @@ const actions = {
     return new Promise((resolve, reject) => {
       authorization(credentials)
         .then(res => {
-          console.log(res)
           resolve(res)
         })
         .catch(err => {

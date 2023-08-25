@@ -8,7 +8,9 @@
             <div class="catalog-page__row row">
               <aside class="catalog-page__sidebar sidebar">
                 <aside-sidebar v-if="SidebarWidth" />
-                <aside-filter v-if="SidebarWidth" :filters="categoryItems" @productsHoisting="getProducts" />
+                <div class="settings-products__body settings-products" ref="filters">
+                  <aside-filter :filters="categoryItems" @productsHoisting="getProducts" />
+                </div>
               </aside>
               <div class="catalog-page__content content">
                 <div class="catalog-page__slider">
@@ -21,7 +23,7 @@
                     :productsLabel="productsLabel"
                     @productsHoisting="getProducts"
                   > 
-                    <aside-filter v-if="!SidebarWidth" :filters="categoryItems" @productsHoisting="getProducts" />
+                    <!-- <aside-filter v-if="!SidebarWidth" :filters="categoryItems" @productsHoisting="getProducts" /> -->
                   </catalog-products>
                   <template v-else>
                     <home-catalogue
@@ -44,6 +46,19 @@
   </div>
 </template>
 <style lang="stylus">
+@media(max-width: 1200px) {
+  .catalog-page{
+    &__content{
+      order: 1;
+    }
+    &__sidebar{
+      order: 0;
+    }
+    &__slider{
+      display: none;
+    }
+  }
+}
 </style>
 <script>
 import LayoutDefault from '@/layouts/LayoutDefault'
@@ -71,12 +86,12 @@ export default {
   },
   data () {
     return {
-      categoryItems: [],
       catalogProducts: [],
       childrenCategoriesId: [],
       productsLabel: '',
       is404: false,
       isSingleCategory: true,
+      SidebarWidth: !(window.innerWidth <= 1200),
     }
   },
   computed: {
@@ -86,13 +101,6 @@ export default {
     recentList () {
       return this.$store.state.recentList;
     },
-    SidebarWidth () {
-      if (window.innerWidth <= 1200) {
-        return false
-      } else {
-        return true
-      }
-    },
     MobileWidth () {
       if (window.innerWidth <= 768) {
         return false
@@ -100,19 +108,23 @@ export default {
         return true
       }
     },
+    categoryItems() {
+      return this.$store.state.categories;
+    }
   },
   methods: {
     getProducts(data) {
       this.catalogProducts = data;
     },
-    getCategories() {
-      this.$store.dispatch("getCategories").then(res => {
-        this.categoryItems = res.data;
-      })
+    onResize() {
+      this.SidebarWidth = !(window.innerWidth <= 1200);
     }
   },
-  mounted () {
-    this.getCategories();
+  mounted() {
+    window.addEventListener('resize', this.onResize);
+  },
+  beforeUnmount() { 
+    window.removeEventListener('resize', this.onResize); 
   },
 }
 </script>

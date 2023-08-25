@@ -1,5 +1,5 @@
 <template>
-  <div class="commodity-page__images commodity-images">
+  <div class="commodity-page__images commodity-images info-product__block">
     <div class="commodity-images__wrapper">
       <div class="commodity-images__array" v-if="gallerySize > 1" >
         <div class="commodity-images__thumbs">
@@ -294,6 +294,8 @@ export default {
   }
   .commodity-images{
     max-width: 1600px
+    padding: 0;
+    border: none;
     @media(min-width: 1121px){
       margin-right 120px
     }

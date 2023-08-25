@@ -4,17 +4,12 @@
       <div class="form-payment__title">Szybkie zakupy</div>
       <ul class="form-payment__block">
         <FormItem
-          v-if="!$store.state.isAuthorized"
           :destination="'userInfo'"
           :dataItem="formItems.email"
           :vuelidate="v$['userInfo'][formItems.email.objId]"
           v-model="userInfo[formItems.email.objId]"
           @onBlur="onBlur"
         />
-        <li v-else class="form-payment__row">
-          <div class="form-payment__label">Adres e-mail</div>
-          <div class="form-payment__input input-width">{{ userInfo.email }}</div>
-        </li>
         <FormItem
           v-if="$store.state.isNewAccount"
           :destination="'userInfo'"
@@ -37,6 +32,10 @@
     <div v-if="$store.state.isAuthorized" class="form-payment__section">
       <div class="form-payment__title">Adres dostawy</div>
       <ul class="form-payment__block">
+        <li class="form-payment__row">
+          <div class="form-payment__label">Adres e-mail</div>
+          <div class="form-payment__input input-width">{{ $store.state.tempUserData.userInfo.email }}</div>
+        </li>
         <FormItem
           v-for="item in formItems.delivery"
           :key="item.id"

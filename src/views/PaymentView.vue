@@ -214,8 +214,23 @@ export default {
       padding 70px 0
     }
     &__columns{
-      display flex
-      justify-content space-around
+      display flex;
+      justify-content space-between;
+      column-gap: 32px;
+      @media(min-width: 1201px) {
+        padding: 0 10vw;
+      }
+      @media(max-width: 992px){
+        justify-content center
+      }
+      .form-payment__block {
+        flex-wrap: wrap;
+        flex-direction: row;
+        @media(max-width: 768px){
+          flex-wrap: nowrap;
+          flex-direction: column;
+        }
+      }
     }
     &__content{
       max-width: none !important
@@ -239,6 +254,7 @@ export default {
   .payment-page__preview {
 }
 .preview-payment {
+  flex: 0 0 370px;
   @media(max-width: 992px){
     display none
   }
@@ -305,10 +321,13 @@ export default {
   &__block {
     padding 40px 0 40px 25px
     display flex
-    flex-direction: column
-    gap: 35px
+    row-gap: 32px;
+    column-gap: 64px;
+    flex-direction: column;
     @media(max-width: 768px){
       padding 40px 0
+      flex-wrap: nowrap;
+      flex-direction: column;
     }
   }
   &__row {
@@ -318,6 +337,7 @@ export default {
   }
   &__inline{
     display flex
+    align-items center
     gap: 30px
   }
   &__label{

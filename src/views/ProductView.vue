@@ -79,6 +79,9 @@
     }
   }
   .info-product{
+    display: flex;
+    flex-direction: column;
+    row-gap: 45px;
     &__title {
       font-weight 700
       font-size: 30px;
@@ -87,14 +90,11 @@
       margin-bottom 25px
     }
     &__block {
-      width: 100%
       border: 1px solid rgba(0, 0, 0, 0.1);
       border-radius: 20px;
-      padding 25px 30px
+      padding 20px
       background-color: #fff
-      &:not(:last-child) {
-        margin-bottom: 45px
-      }
+      height: min-content;
     }
   }
 </style>
@@ -248,7 +248,7 @@ export default {
     }
   },
   mounted () {
-    this.getProducts()
+    this.getProducts();
   },
   watch: {
     productId() {

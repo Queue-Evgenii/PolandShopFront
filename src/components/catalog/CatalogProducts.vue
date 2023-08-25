@@ -10,9 +10,7 @@
           <button type="button" class="settings-products__view-rows" @click="filtersLayout"><img src="@/assets/img/catalog/rows.png" alt=""></button>
         </div>
       </div>
-      <div class="settings-products__body" ref="filters">
-        <slot></slot>
-      </div>
+      
     </div>
       <div v-if="catalogProducts.length === 0" class="catalog-page__notice">Products not found ;(</div>
      <div v-if="catalogProducts.length !== 0" :class="isRowDirection ? 'products-items-row' : ''" class="products__items" ref="products">
@@ -85,7 +83,7 @@ export default {
     },
     filtersToggle (e) {
       const title = e.target
-      const list = this.$refs.filters
+      const list = document.querySelector(".settings-products__body");
       title.classList.toggle('active')
       list.classList.toggle('active')
     },
@@ -144,7 +142,6 @@ export default {
 }
   .settings-products {
     @media(min-width: 1201px){
-      &__body,
       &__filters {
         display none
       }

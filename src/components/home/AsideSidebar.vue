@@ -2,7 +2,7 @@
   <div class="sidebar-category">
     <div class="sidebar-category__title" @click="mobileCategory">Kategorie</div>
      <ul class="sidebar-category__list">
-      <span class="loading" v-if="isLoading"></span>
+      <span class="loading" v-if="!listCategory.length"></span>
       <category-item
         v-for="item in filterListCategory" 
         :key="item.id"
@@ -149,6 +149,17 @@ export default {
   components: {
     CategoryItem,
   },
+  data () {
+    return {
+      filterSlider: {
+        sliderValue: 50,
+        sliderMinValue: 0,
+        sliderMaxValue: 350,
+      },
+      //listCategory: [],
+      isLoading: false,
+    }
+  },
   methods: {
     mobileCategory (e) {
       const categoriesTitle = e.target
@@ -159,33 +170,14 @@ export default {
         categoriesTitle.parentNode.classList.toggle('active')
       }
     },
-    fetchCategory () {
-      this.isLoading = true
-      this.$store.dispatch("getCategories")
-      .then(data => {
-        this.isLoading = false
-        this.listCategory = data.data
-      })
-    }
-  },
-  data () {
-    return {
-      filterSlider: {
-        sliderValue: 50,
-        sliderMinValue: 0,
-        sliderMaxValue: 350,
-      },
-      listCategory: [],
-      isLoading: false,
-    }
-  },
-  mounted () {
-    this.fetchCategory()
   },
   computed: {
     filterListCategory() {
       return this.listCategory.filter(item => item.parent_id === null)
+    },
+    listCategory() {
+      return this.$store.state.categories;
     }
-  }
+  },
 }
 </script>

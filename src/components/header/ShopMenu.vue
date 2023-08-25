@@ -15,22 +15,10 @@ export default {
       type: Array,
     }
   },
-  methods: {
-    fetchCategory() {
-      this.$store.dispatch('getCategories')
-        .then(res => {
-          this.categoryItems = res.data;
-          this.categoryItems = res.data.slice(0, 3);
-        })
-    }
+  computed: {
+    categoryItems() {
+      return this.$store.state.categories.slice(0, 3);
+    },
   },
-  mounted() {
-    this.fetchCategory()
-  },
-  data() {
-    return {
-      categoryItems: []
-    }
-  }
 }
 </script>

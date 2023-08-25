@@ -114,9 +114,23 @@ export default {
       }
       this.$store.state.favoriteItems = [];
     },
+    getCategories() {
+      this.$store.dispatch("getCategories")
+        .then(data => {
+          this.$store.state.categories = data.data;
+        })
+    },
+    getProductDeliveries() {
+        this.$store.dispatch('getProductDeliveries')
+          .then(data => {
+            this.$store.state.deliveriesData = data;
+          });
+      },
   },
   mounted() {
     this.getFavorites();
+    this.getCategories();
+    this.getProductDeliveries();
   }
 }
 </script>

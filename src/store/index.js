@@ -7,6 +7,7 @@ import updateUserModules from './modules/updateUser.modules';
 import submitDeliveryModules from './modules/submitDelivery.modules';
 import credentialsModules from './modules/credentials.modules';
 import getDeliveryModules from './modules/getDelivery.modules';
+import getProductDeliveriesModules from './modules/getProductDeliveries.modules';
 import getFavoritesModules from './modules/getFavorites.modules';
 import addFavoritesModules from './modules/addFavorites.modules';
 import removeFavoritesModules from './modules/removeFavorites.modules';
@@ -32,6 +33,8 @@ const store = createStore({
     isNewAccount: false,
     isAuthorized: false,
     favoriteItems: [],
+    categories: [],
+    deliveriesData: null,
     filterParams: ["sort[type]=asc", "sort[column]=id"],
     tempUserData: {
       userInfo: {
@@ -83,6 +86,7 @@ const store = createStore({
     submitDeliveryModules,
     credentialsModules,
     getDeliveryModules,
+    getProductDeliveriesModules,
     getFavoritesModules,
     addFavoritesModules,
     removeFavoritesModules,

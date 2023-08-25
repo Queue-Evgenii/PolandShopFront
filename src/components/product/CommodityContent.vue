@@ -1,72 +1,126 @@
 <template>
   <div class="commodity-page__content content-commodity">
-    <div class="content-commodity__title">{{ productItem.name }}</div>
-    <!-- <div class="content-commodity__offer">{{ productItem.offer }}</div> -->
-    <div class="content-commodity__info">
-      <div class="content-commodity__info-row"><span>Numer kategorii: </span>{{ productItem.category_id }}</div>
-      <!-- <div class="content-commodity__info-row"><span>Kod EAN: </span>{{ productItem.code }}</div> -->
-    </div>
-    <div v-if="productItem.discount" class="content-commodity__price flex">
-      <div class="content-commodity__new-price flex">{{ productItem.price*(100-productItem.discount)/100 }}<span>{{ 'PLN ZA ' + productItem.unit_of_measure }}</span></div>
-      <div class="content-commodity__sale-price">
-        <div class="content-commodity__first-price flex">{{ productItem.price }}<span>{{ 'PLN ZA ' + productItem.unit_of_measure }}</span></div>
-        <div class="content-commodity__price-info"><span>{{ "do " + productItem.discount + "% " }}</span>w hurcie, sprawdz cennik</div>
+    <div class="info-product__block">
+      <div class="content-commodity__title">{{ productItem.name }}</div>
+      <!-- <div class="content-commodity__offer">{{ productItem.offer }}</div> -->
+      <div class="content-commodity__info">
+        <div class="content-commodity__info-row"><span>Kod: </span>{{ productItem.code }}</div>
+        <div v-if="productItem.category" class="content-commodity__info-row"><span>Kategori: </span>{{ productItem.category.name }}</div>
       </div>
-    </div>
-    <div v-else class="content-commodity__price flex">
-      <div class="content-commodity__new-price flex">{{ productItem.price }}<span>{{ 'PLN ZA ' + productItem.unit_of_measure }}</span></div>
-    </div>
-    <div class="content-commodity__actions actions-commodity">
-      <div class="actions-commodity__row">
-        <div class="actions-commodity__quantity quantity-product">
-          <span v-if="amountInput > 1" @click="decrement()">-</span>
-          <span v-else class="_disabled">-</span>
-          <div class="quantity-product__input">
-            <input type="text" v-model="amountInput">
-          </div>
-          <span v-if="amountInput < productItem.quantity" @click="increment()">+</span>
-          <span v-else class="_disabled">+</span>
+      <div v-if="productItem.discount" class="content-commodity__price flex">
+        <div class="content-commodity__new-price flex">{{ productItem.price*(100-productItem.discount)/100 }}<span>{{ 'PLN ZA ' + productItem.unit_of_measure }}</span></div>
+        <div class="content-commodity__sale-price">
+          <div class="content-commodity__first-price flex">{{ productItem.price }}<span>{{ 'PLN ZA ' + productItem.unit_of_measure }}</span></div>
+          <div class="content-commodity__price-info"><span>{{ productItem.discount + "% " }}</span>{{ productItem.discount_label }}</div>
         </div>
-        <div v-if="productItem.promoCod" class="actions-commodity__token flex"><span>Cod Kupon:</span><input type="text" placeholder="_ _ _ _ _ _ _ _ _ _ _ _ _"></div>
       </div>
-      <div class="actions-commodity__status flex yes" v-if="productItem.quantity > 0"><span>W magazynie - </span>{{ productItem.labelMark ? productItem.labelMark : productItem.quantity }}</div>
-      <div class="actions-commodity__status flex no" v-else><span>W magazynie - </span>{{ productItem.labelMark ? productItem.labelMark : productItem.quantity }}</div>
-      <div class="actions-commodity__row">
-        <button
-          v-if="isCorrectValue(amountInput)"
-          type="button" class="actions-commodity__cart button"
-          @click="showAlert(productItem);addToCart(productItem)"
-        >
-          <span>Dodaj do koszyka</span>
-        </button>
-        <button v-else type="button" class="actions-commodity__cart button _disabled">
-          <span>Dodaj do koszyka</span>
-        </button>
-        <button
-          v-if="isCorrectValue(amountInput)"
-          type="button" class="actions-commodity__buy button"
-          @click="openAlertPopup()"
-        >
-          <span>Kup w 1 kliknięciu</span>
-        </button>
-        <button v-else type="button" class="actions-commodity__buy button _disabled">
-          <span>Kup w 1 kliknięciu</span>
-        </button>
+      <div v-else class="content-commodity__price flex">
+        <div class="content-commodity__new-price flex">{{ productItem.price }}<span>{{ 'PLN ZA ' + productItem.unit_of_measure }}</span></div>
       </div>
-      <div class="actions-commodity__row">
-        <button
-          @click="changeFavoriteList()"
-          type="button"
-          class="actions-commodity__favorite flex"
-          :class="{'favorite' : checkIsFavorite(productItem) === true}"
-        >
-          Dodaj do uratowanego
-        </button>
+      <div class="content-commodity__wat"><span>{{ Math.floor(getWat) + ' PLN' }}</span> netto, 23% WAT</div>
+      <div class="content-commodity__actions actions-commodity">
+        <div class="actions-commodity__row">
+          <div class="actions-commodity__quantity quantity-product">
+            <span v-if="amountInput > 1" @click="decrement()">-</span>
+            <span v-else class="_disabled">-</span>
+            <div class="quantity-product__input">
+              <input type="text" v-model="amountInput">
+            </div>
+            <span v-if="amountInput < productItem.quantity" @click="increment()">+</span>
+            <span v-else class="_disabled">+</span>
+          </div>
+          <div v-if="productItem.promoCod" class="actions-commodity__token flex"><span>Cod Kupon:</span><input type="text" placeholder="_ _ _ _ _ _ _ _ _ _ _ _ _"></div>
+        </div>
+        <div class="actions-commodity__status flex yes" v-if="productItem.quantity > 0"><span>W magazynie - </span>{{ productItem.labelMark ? productItem.labelMark : productItem.quantity }}</div>
+        <div class="actions-commodity__status flex no" v-else><span>W magazynie - </span>{{ productItem.labelMark ? productItem.labelMark : productItem.quantity }}</div>
+        <div class="actions-commodity__row">
+          <button
+            v-if="isCorrectValue(amountInput)"
+            type="button" class="actions-commodity__cart button"
+            @click="showAlert(productItem);addToCart(productItem)"
+          >
+            <span>Dodaj do koszyka</span>
+          </button>
+          <button v-else type="button" class="actions-commodity__cart button _disabled">
+            <span>Dodaj do koszyka</span>
+          </button>
+          <button
+            v-if="isCorrectValue(amountInput)"
+            type="button" class="actions-commodity__buy button"
+            @click="openAlertPopup()"
+          >
+            <span>Kup w 1 kliknięciu</span>
+          </button>
+          <button v-else type="button" class="actions-commodity__buy button _disabled">
+            <span>Kup w 1 kliknięciu</span>
+          </button>
+        </div>
+        <div class="actions-commodity__row">
+          <button
+            @click="changeFavoriteList()"
+            type="button"
+            class="actions-commodity__favorite flex"
+            :class="{'favorite' : checkIsFavorite(productItem) === true}"
+          >
+            Dodaj do uratowanego
+          </button>
+        </div>
+      </div>
+    </div>
+    <div v-if="$store.state.deliveriesData" class="delivery-commodity info-product__block">
+      <div v-if="$store.state.deliveriesData.time" class="delivery-commodity__row flex delivery-commodity__time">
+        {{ $store.state.deliveriesData.time }}
+      </div>
+      <div v-if="$store.state.deliveriesData.payment" class="delivery-commodity__row flex delivery-commodity__delivery">
+        {{ $store.state.deliveriesData.payment }}
+      </div>
+      <div v-if="$store.state.deliveriesData.protected" class="delivery-commodity__row flex delivery-commodity__protected">
+        {{ $store.state.deliveriesData.protected }}
+      </div>
+      <div v-if="$store.state.deliveriesData.methodPayment" class="delivery-commodity__row flex delivery-commodity__payment">
+        {{ $store.state.deliveriesData.methodPayment }}
       </div>
     </div>
   </div>
 </template>
 <style lang="stylus">
+.delivery-commodity {
+  padding: 24px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  font-size 18px;
+  color: #3d3d3d;
+  &__row {
+    &::before {
+      content: '';
+      display: block;
+      width: 28px;
+      height: 28px;
+      margin-right: 16px;
+    }
+  }
+  &__time{
+    &::before{
+      background: url('../../assets/img/product/icon/clock.svg') 0 0 / 100% no-repeat;
+    }
+  }
+  &__delivery{
+    &::before{
+      background: url('../../assets/img/product/icon/delivery.svg') 0 0 / 100% no-repeat;
+    }
+  }
+  &__protected{
+    &::before{
+      background: url('../../assets/img/product/icon/protected.svg') 0 0 / 100% no-repeat;
+    }
+  }
+  &__payment{
+    &::before{
+      background: url('../../assets/img/product/icon/wallet.svg') 0 0 / 100% no-repeat;
+    }
+  }
+}
 .actions-commodity__favorite.favorite{
   color: #FF0031
   &::before{
@@ -74,16 +128,26 @@
   }
 }
   .content-commodity{
-    padding 0 20px
+    display: flex;
+    flex-direction: column
+    row-gap: 20px 
     &__title{
       font-weight: 700;
       font-size: 30px;
       line-height: 34px;
       color: #3D3D3D;
-      margin-bottom 30px
+      margin-bottom 20px
       @media(max-width: 375px) {
         font-size 25px
         margin-bottom 20px
+      }
+    }
+    &__wat {
+      font-size: 18px;
+      margin-bottom 30px;
+      margin-top: -10px;
+      span{
+        font-weight 700;
       }
     }
     &__offer{
@@ -294,14 +358,16 @@
     }
   }
   .popup{
-    .content-commodity{
+    .info-product__block{
+      padding 0;
+      border: none;
       max-width: 260px
       padding 0
       right 0
       @media(max-width: 1120px){
         max-width: none
         display flex
-        &__actions{
+        .content-commodity__actions{
           margin 0
           margin-left 25px
         }
@@ -309,10 +375,10 @@
       @media(max-width: 481px){
         flex-direction column
         align-items center
-        &__price{
+        .content-commodity__price{
           margin-top 0
         }
-        &__actions{
+        .content-commodity__actions{
           margin 0
           .actions-commodity__row{
             padding 0
@@ -321,6 +387,8 @@
       }
     }
     .content-commodity__title,
+    .content-commodity__wat,
+    .delivery-commodity,
     .content-commodity__info,
     .content-commodity__offer,
     .content-commodity__price-info,
@@ -373,6 +441,14 @@
     data () {
       return {
         amountInput: 1,
+      }
+    },
+    computed: {
+      getWat() {
+        if (this.productItem.discount) {
+          return (this.productItem.price*(100-this.productItem.discount)/100) * 77 / 100;
+        }
+        return this.productItem.price * 77 / 100;
       }
     },
     methods: {
@@ -440,7 +516,7 @@
     mounted() {
       setTimeout(() => {
         this.amountInput = this.getQuantity();
-      }, 1000)
+      }, 1000);
     },
   }
 </script>

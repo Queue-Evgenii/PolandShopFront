@@ -131,22 +131,10 @@ import { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
 import 'swiper/swiper.css';
 
 export default {
-  data () {
-    return {
-      subSlides: [],
+  computed: {
+    subSlides () {
+      return this.$store.state.categories.filter(item => item.children.length === 0);
     }
-  },
-  // components: { VueSlickCarousel },
-  methods: {
-    fetchCategory () {
-      this.$store.dispatch('getCategories')
-      .then(data => {
-        this.subSlides = data.data.filter(item => item.children.length === 0)
-      })
-    }
-  },
-  mounted () {
-    this.fetchCategory()
   },
   components: {
     Swiper,

@@ -5,7 +5,6 @@ const actions = {
     return new Promise((resolve, reject) => {
       registration(credentials)
         .then(res => {
-          console.log(res)
           resolve(res)
         })
         .catch(err => {

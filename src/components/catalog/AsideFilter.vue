@@ -122,7 +122,7 @@ export default {
         });
         this.getValuesOnUpdate();
       } catch (err) {
-        err;
+        console.log(err);
       }
     },
     getValuesOnUpdate() {
@@ -154,7 +154,6 @@ export default {
       this.$store.dispatch("setFilters", this.$store.state.filterParams.join("&"))
         .then(res => {
           if(this.isFirstCall) {
-            console.log(1)
             this.upperValue = this.maxValue = parseInt(res.meta.max_price, 10);
             this.createRange();
             this.isFirstCall = false;
@@ -176,7 +175,7 @@ export default {
 </script> 
 <style lang="stylus">
   .settings-products__body.active .sidebar-filter{
-    transform translate(0, 0)
+    transform translate(0, 140px)
   }
   .sidebar-filter{
     @media(min-width: 1201px){
@@ -364,6 +363,8 @@ export default {
       background-color: #000;
       height: 5px;
       border-radius: 0;
+      width 94%;
+      right 7px;
     }
     .noUi-handle{
       height: 15px;
@@ -377,6 +378,32 @@ export default {
       cursor: pointer;
       &::before, &::after{
         display none
+      }
+    }
+    .noUi-origin{
+      width 94%;
+      &:not(:last-child) {
+        right 15px;
+      }
+    }
+    @media(max-width: 1200px) {
+      .noUi-origin, .noUi-connect{
+        width 98%;
+      }
+    }
+    @media(max-width: 830px) {
+      .noUi-origin, .noUi-connect{
+        width 97%;
+      }
+    }
+    @media(max-width: 640px) {
+      .noUi-origin, .noUi-connect{
+        width 96%;
+      }
+    }
+    @media(max-width: 450px) {
+      .noUi-origin, .noUi-connect{
+        width 94%;
       }
     }
   }
