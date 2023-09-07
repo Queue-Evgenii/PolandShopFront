@@ -3,12 +3,13 @@
     <layout-default>
       <main class="page">
         <div class="page__payment payment-page">
-          <div class="payment-page__container container">
+          <div v-if="!isConfirm" class="payment-page__container container">
             <div v-if="!$store.state.isAuthorized" class="login-form">
               <login-form @openForm="openForm" />
             </div>
             <div class="payment-hidden row">
-              <div :class="isOpen || $store.state.isAuthorized ? 'logged' : ''" class="payment-page__content content" ref="mainForm">
+              <div :class="isOpen || $store.state.isAuthorized ? 'logged' : ''" class="payment-page__content content"
+                ref="mainForm">
                 <div class="payment-page__title">Zapłata za towary</div>
                 <div v-if="isOpen || $store.state.isAuthorized" class="payment-page__columns">
                   <payment-form @goBackPopup="goBackPopup" @registration="registration" @submitForm="submitForm" />
@@ -23,13 +24,9 @@
                         </div>
                       </div>
                       <preview-product :Items="this.previewProducts" />
-                      <div class="preview-payment__delivery-price flex">
-                        <span class="preview-payment__label">Koszt przesyłki</span>
-                        <span>{{ this.deliveryPrice }} PLN</span>
-                      </div>
                       <div class="preview-payment__total-price flex">
                         <span class="preview-payment__label">Całkowity</span>
-                        <span>{{ +cartTotalCost + +this.deliveryPrice }} PLN</span>
+                        <span>{{ cartTotalCost }} PLN</span>
                       </div>
                     </div>
                     <div class="sticky-relative"></div>
@@ -38,17 +35,26 @@
               </div>
             </div>
           </div>
+          <div v-else class="confirm-page__container container">
+            <preview-product :Items="previewProducts" />
+            <div class="preview-payment__total-price flex">
+              <span class="preview-payment__label">Delivery total price</span>
+              <span>{{ confirmData.deliver_price }} PLN</span>
+            </div>
+            <div class="preview-payment__total-price flex">
+              <span class="preview-payment__label">Całkowity</span>
+              <span>{{ confirmData.price }} PLN</span>
+            </div>
+            <div class="confirm-button">
+              <button class="form-payment__submit button" type="button">Confirm</button>
+            </div>
+          </div>
         </div>
         <page-ads />
       </main>
     </layout-default>
-    <page-popup
-     v-if="openPopup"
-     @goBackPopup="goBackPopup"
-     @closePopup="closePopup"
-     :popupOutput="this.onPayment"
-    >
-      <payment-alert @goBack="goBack" :popupOutput="this.onPayment" @closePopup="closePopup"/>
+    <page-popup v-if="openPopup" @goBackPopup="goBackPopup" @closePopup="closePopup" :popupOutput="this.onPayment">
+      <payment-alert @goBack="goBack" :popupOutput="this.onPayment" @closePopup="closePopup" />
     </page-popup>
   </div>
 </template>
@@ -84,45 +90,50 @@ export default {
         name: "Do you really want go back??",
         nclass: "on-payment",
       },
+      isConfirm: false,
+      confirmData: {},
     }
   },
   methods: {
     submitForm(value) {
-      // {product_id: 1, count: 1}
       const items = this.previewProducts.map(item => {
         return {
           product_id: item.id,
           count: item.amount,
         }
       });
-      const data = {...value, items};
-      this.$store.dispatch('submitDelivery', data);
+      const data = { ...value, items };
+      this.$store.dispatch('submitDelivery', data).then(res => {
+        this.confirmData = res.data.data;
+      });
+      this.isConfirm = true;
+      window.scrollTo(0, 0);
     },
     openForm() {
       this.isOpen = true;
-      if(!this.$store.state.isAuthorized) {
-        this.$refs.mainForm.scrollIntoView({behavior: "smooth"});
+      if (!this.$store.state.isAuthorized) {
+        this.$refs.mainForm.scrollIntoView({ behavior: "smooth" });
       }
     },
     registration(data) {
       this.$store.dispatch("registration", data).then(res => {
         localStorage.setItem("access_token", JSON.stringify(res.data.access_token))
         this.$store.state.isAuthorized = true;
-        this.$refs.mainForm.scrollIntoView({behavior: "smooth"});
+        this.$refs.mainForm.scrollIntoView({ behavior: "smooth" });
       });
     },
     goBackPopup() {
       this.openPopup = true;
     },
-    closePopup(){
+    closePopup() {
       this.openPopup = false;
     },
     goBack() {
       this.$store.state.quickBuy = [];// this is a question
       this.openPopup = false;
     },
-    productPreview () {
-      if(this.isQuickBuy) {
+    productPreview() {
+      if (this.isQuickBuy) {
         this.previewProducts = this.$store.state.quickBuy;
       } else if (!this.isQuickBuy) {
         this.previewProducts = this.$store.state.cartList;
@@ -132,7 +143,7 @@ export default {
     },
   },
   watch: {
-    isQuickBuy () {
+    isQuickBuy() {
       setTimeout(() => {
         this.productPreview()
       }, 0)
@@ -140,25 +151,25 @@ export default {
   },
   mounted() {
     this.productPreview()
-    if(localStorage.getItem("access_token")) {
+    if (localStorage.getItem("access_token")) {
       this.$store.state.isAuthorized = true
     }
   },
   computed: {
-    isQuickBuy () {
+    isQuickBuy() {
       return this.$store.state.isQuickBuy
     },
     cartTotalCost() {
       let result = [];
-      if(this.$store.state.quickBuy.length > 0){
-        for(let item of this.$store.state.quickBuy) {
+      if (this.$store.state.quickBuy.length > 0) {
+        for (let item of this.$store.state.quickBuy) {
           result.push(item.price * item.amount);
         }
         result = result.reduce(function (sum, el) {
           return sum + el;
         })
       } else if (this.$store.state.cartList.length > 0) {
-        for(let item of this.$store.state.cartList) {
+        for (let item of this.$store.state.cartList) {
           result.push(item.price * item.amount);
         }
         result = result.reduce(function (sum, el) {
@@ -173,6 +184,42 @@ export default {
 }
 </script>
 <style lang="stylus">
+.confirm-page__container {
+  max-width: 992px;
+  .confirm-button{
+    text-align center
+    margin-top 24px;
+  }
+  .preview-product__item {
+    grid-template-columns: auto 1fr;
+  }
+  .preview-product__image {
+    width 150px
+    img {
+      padding 0
+    }
+  }
+  .preview-product__info {
+    flex-direction: row;
+    align-items center
+    flex-wrap: wrap
+  }
+  .preview-product__label,
+  .preview-product__price,
+  .preview-product__quantity  {
+    font-size 24px
+  }
+  @media(min-width: 679px) {
+    .preview-product__label,
+    .preview-product__price,
+    .preview-product__quantity  {
+      font-size 28px
+    }
+  }
+  .preview-payment__total-price {
+    font-size 32px
+  }
+}
 .login-form{
   margin 0 auto
   padding 25px 0
@@ -295,7 +342,7 @@ export default {
     font-weight: 700;
     justify-content space-between
     gap: 10px
-    padding 17px 0
+    padding 24px 0
     border-top 1px solid rgba(#8B8B8B, 0.3)
   }
 }

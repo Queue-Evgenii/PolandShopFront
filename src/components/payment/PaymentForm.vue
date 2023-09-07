@@ -611,7 +611,14 @@ export default {
         }
         localStorage.setItem('user_id', JSON.stringify(res.data.id));
       });
-      this.$store.dispatch('getDeliveryData')
+      this.getDeliveryData();
+    },
+    getDeliveryData() {
+      this.$store.dispatch('getDeliveryData').then(res => {
+        for(let key in this.deliveryInfo) {
+          this.deliveryInfo[key] = this.$store.state.tempUserData.deliveryInfo[key] = res.data.deliver_information[key];
+        }
+      });
     },
     async onBlur(value, dest, validation) {
       let isValueCorrect = validation ? await this.v$[dest][value].$validate() : true;

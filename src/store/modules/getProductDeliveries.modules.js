@@ -5,7 +5,6 @@ const actions = {
     return new Promise((resolve, reject) => {
       getProductDeliveries()
         .then(res => {
-          console.log(res.data.data[0])
           resolve(res.data.data[0]);
         })
         .catch(err => {
