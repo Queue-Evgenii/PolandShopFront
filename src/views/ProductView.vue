@@ -10,7 +10,7 @@
               </aside>
               <div class="product-page__content content">
                 <div class="product-page__commodity commodity-page">
-                  <commodity-slider :galleryItems="galleryItems" @openPopup="openPopup" :isPopup="false"/>
+                  <commodity-slider v-if="galleryItems" :galleryItems="galleryItems" @openPopup="openPopup" :isPopup="false"/>
                   <commodity-content :productItem="this.productItem" @openAlertPopup="openAlertPopup" @inputValue="inputValue" @changeFavoriteList="changeFavoriteList"/>
                 </div>
                 <div class="product-page__info info-product">
@@ -33,7 +33,7 @@
      @closePopup="closePopup"
      :popupOutput="this.productItem"
     >
-      <commodity-slider :galleryItems="galleryItems" :isPopup="true"/>
+      <commodity-slider v-if="galleryItems" :galleryItems="galleryItems" :isPopup="true"/>
       <commodity-content :productItem="this.productItem" />
     </page-popup>
     <page-popup 
@@ -172,7 +172,8 @@ export default {
         items.unshift(this.productItem.preview)
         return items
       }
-      return Array(this.productItem.preview)
+      if (this.productItem.preview) return Array(this.productItem.preview)
+      return null;
     }
   },
   methods: {
@@ -198,9 +199,24 @@ export default {
       }
     },
     getProducts () {
-      this.$store.dispatch('getProducts')
+      // this.$store.dispatch('getProducts')
+      //   .then(res => {
+      //     this.productItem = res.data.find(item => item.id === this.productId)
+      //     if (this.productItem.quantity !== 0) {
+      //       this.productItem.amount = 1
+      //     } else {
+      //       this.productItem.amount = 0
+      //     }
+      //     if (this.$store.state.favoriteItems.find(item => item.id === this.productItem.id)) {
+      //       this.productItem.isFavorite = true
+      //     } else {
+      //       this.productItem.isFavorite = false
+      //     }
+      //   })
+
+      this.$store.dispatch('getProduct', this.productId)
         .then(res => {
-          this.productItem = res.data.find(item => item.id === this.productId)
+          this.productItem = res.data
           if (this.productItem.quantity !== 0) {
             this.productItem.amount = 1
           } else {

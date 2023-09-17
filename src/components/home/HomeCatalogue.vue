@@ -53,13 +53,10 @@ export default {
     fetchProductsByCategoryId(id) {
       this.$store.dispatch('listProductsByIdCategory', id)
         .then(res => {
-          if (res.data.products.length > 4) {
-            this.catalogProducts = res.data.products.slice(0,4)
-          } else if (res.data.products.length === 0) {
+          if (res.data.products.length === 0) {
             this.notExistProducts = true;
-          }
-          else {
-            this.catalogProducts = res.data.products
+          } else {
+            this.catalogProducts = res.data.products.filter(item => item.status !== false);
           }
           this.productsLabel = res.data.name
         })

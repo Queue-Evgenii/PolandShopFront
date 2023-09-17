@@ -8,16 +8,16 @@
         <div v-if="productItem.category" class="content-commodity__info-row"><span>Kategori: </span>{{ productItem.category.name }}</div>
       </div>
       <div v-if="productItem.discount" class="content-commodity__price flex">
-        <div class="content-commodity__new-price flex">{{ productItem.price*(100-productItem.discount)/100 }}<span>{{ 'PLN ZA ' + productItem.unit_of_measure }}</span></div>
+        <div class="content-commodity__new-price flex">{{ (productItem.price*(100-productItem.discount)/100).toFixed(2) }}<span>{{ 'PLN ZA ' + productItem.unit_of_measure }}</span></div>
         <div class="content-commodity__sale-price">
-          <div class="content-commodity__first-price flex">{{ productItem.price }}<span>{{ 'PLN ZA ' + productItem.unit_of_measure }}</span></div>
+          <div class="content-commodity__first-price flex">{{ (productItem.price) }}<span>{{ 'PLN ZA ' + productItem.unit_of_measure }}</span></div>
           <div class="content-commodity__price-info"><span>{{ productItem.discount + "% " }}</span>{{ productItem.discount_label }}</div>
-        </div>
+        </div>s
       </div>
       <div v-else class="content-commodity__price flex">
-        <div class="content-commodity__new-price flex">{{ productItem.price }}<span>{{ 'PLN ZA ' + productItem.unit_of_measure }}</span></div>
+        <div class="content-commodity__new-price flex">{{ productItem.price }}<span>{{ 'PLN za ' + productItem.unit_of_measure }}</span></div>
       </div>
-      <div class="content-commodity__wat"><span>{{ Math.floor(getWat) + ' PLN' }}</span> netto, 23% WAT</div>
+      <div class="content-commodity__wat"><span>{{ getWat.toFixed(2) + ' PLN' }}</span> netto, 23% VAT</div>
       <div class="content-commodity__actions actions-commodity">
         <div class="actions-commodity__row">
           <div class="actions-commodity__quantity quantity-product">
@@ -446,9 +446,9 @@
     computed: {
       getWat() {
         if (this.productItem.discount) {
-          return (this.productItem.price*(100-this.productItem.discount)/100) * 77 / 100;
+          return (this.productItem.price*(100-this.productItem.discount)/100) / 1.23;
         }
-        return this.productItem.price * 77 / 100;
+        return this.productItem.price / 1.23;
       }
     },
     methods: {
