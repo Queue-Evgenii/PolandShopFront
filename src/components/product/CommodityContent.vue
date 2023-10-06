@@ -77,7 +77,7 @@
       <div v-if="$store.state.deliveriesData.protected" class="delivery-commodity__row flex delivery-commodity__protected">
         {{ $store.state.deliveriesData.protected }}
       </div>
-      <div v-if="$store.state.deliveriesData.boxes[productItem.box_id].methodPayment" class="delivery-commodity__row flex delivery-commodity__payment">
+      <div v-if="productItem && $store.state.deliveriesData.boxes[productItem.box_id].methodPayment" class="delivery-commodity__row flex delivery-commodity__payment">
         {{ $store.state.deliveriesData.boxes[productItem.box_id].methodPayment }}
       </div>
     </div>
