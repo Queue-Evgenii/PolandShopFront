@@ -72,13 +72,13 @@
         {{ $store.state.deliveriesData.time }}
       </div>
       <div v-if="$store.state.deliveriesData.payment" class="delivery-commodity__row flex delivery-commodity__delivery">
-        {{ $store.state.deliveriesData.boxes[productItem.box_id].methodPayment }}
+        {{ $store.state.deliveriesData.payment }}
       </div>
       <div v-if="$store.state.deliveriesData.protected" class="delivery-commodity__row flex delivery-commodity__protected">
         {{ $store.state.deliveriesData.protected }}
       </div>
-      <div v-if="$store.state.deliveriesData.methodPayment" class="delivery-commodity__row flex delivery-commodity__payment">
-        {{ $store.state.deliveriesData.methodPayment }}
+      <div v-if="$store.state.deliveriesData.boxes[productItem.box_id].methodPayment" class="delivery-commodity__row flex delivery-commodity__payment">
+        {{ $store.state.deliveriesData.boxes[productItem.box_id].methodPayment }}
       </div>
     </div>
   </div>
