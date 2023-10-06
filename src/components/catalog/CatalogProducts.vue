@@ -10,7 +10,6 @@
           <button type="button" class="settings-products__view-rows" @click="filtersLayout"><img src="@/assets/img/catalog/rows.png" alt=""></button>
         </div>
       </div>
-      
     </div>
       <div v-if="catalogProducts.length === 0" class="catalog-page__notice">Products not found ;(</div>
      <div v-if="catalogProducts.length !== 0" :class="isRowDirection ? 'products-items-row' : ''" class="products__items" ref="products">
@@ -190,6 +189,13 @@ export default {
         height 17px
         width 12px
         margin-left 9px
+        transform: rotate(180deg);
+        transition: transform ease 0.3s 0s;
+      }
+      &.asc{
+        &::after {
+          transform: rotate(0);
+        }
       }
       @media(max-width: 560px){
         width 147px

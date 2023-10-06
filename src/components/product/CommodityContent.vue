@@ -62,7 +62,7 @@
             class="actions-commodity__favorite flex"
             :class="{'favorite' : checkIsFavorite(productItem) === true}"
           >
-            Dodaj do uratowanego
+            Dodaj do Ulubionych
           </button>
         </div>
       </div>
@@ -72,7 +72,7 @@
         {{ $store.state.deliveriesData.time }}
       </div>
       <div v-if="$store.state.deliveriesData.payment" class="delivery-commodity__row flex delivery-commodity__delivery">
-        {{ $store.state.deliveriesData.payment }}
+        {{ $store.state.deliveriesData.boxes[productItem.box_id].methodPayment }}
       </div>
       <div v-if="$store.state.deliveriesData.protected" class="delivery-commodity__row flex delivery-commodity__protected">
         {{ $store.state.deliveriesData.protected }}

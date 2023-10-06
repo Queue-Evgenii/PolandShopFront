@@ -203,21 +203,31 @@ export default {
     flex-direction: row;
     align-items center
     flex-wrap: wrap
+    .preview-product__label {
+      flex: 1 1 auto;
+    }
+    .preview-product__price,
+    .preview-product__quantity  {
+      flex: 0 1 150px;
+    }
   }
   .preview-product__label,
   .preview-product__price,
   .preview-product__quantity  {
+    line-height 1
     font-size 24px
+  }
+  .preview-payment__total-price {
+    line-height 1
+    font-size 28px
   }
   @media(min-width: 679px) {
     .preview-product__label,
     .preview-product__price,
-    .preview-product__quantity  {
-      font-size 28px
+    .preview-product__quantity,
+    .preview-payment__total-price  {
+      font-size 32px
     }
-  }
-  .preview-payment__total-price {
-    font-size 32px
   }
 }
 .login-form{
