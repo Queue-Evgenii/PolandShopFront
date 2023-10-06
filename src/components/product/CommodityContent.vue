@@ -77,7 +77,7 @@
       <div v-if="$store.state.deliveriesData.protected" class="delivery-commodity__row flex delivery-commodity__protected">
         {{ $store.state.deliveriesData.protected }}
       </div>
-      <div v-if="productItem && $store.state.deliveriesData.boxes[productItem.box_id].methodPayment" class="delivery-commodity__row flex delivery-commodity__payment">
+      <div v-if="isMethodPayment" class="delivery-commodity__row flex delivery-commodity__payment">
         {{ $store.state.deliveriesData.boxes[productItem.box_id].methodPayment }}
       </div>
     </div>
@@ -438,6 +438,9 @@
         required: true,
       }
     },
+    created() {
+      console.log(this.productItem);
+    },
     data () {
       return {
         amountInput: 1,
@@ -449,6 +452,12 @@
           return (this.productItem.price*(100-this.productItem.discount)/100) / 1.23;
         }
         return this.productItem.price / 1.23;
+      },
+      isMethodPayment() {
+        if (this.productItem.id && this.$store.state.deliveriesData.boxes[this.productItem.box_id].methodPayment) {
+          return true;
+        }
+        return false;
       }
     },
     methods: {
