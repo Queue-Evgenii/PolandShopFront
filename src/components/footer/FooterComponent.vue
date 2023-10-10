@@ -44,8 +44,8 @@
     <div class="footer__links">
       <div class="footer__container container flex">
         <router-link :to="{name: 'regulamin'}">Regulamin</router-link>
-        <router-link :to="{name: 'polityka-prywatności'}">Reklamacje</router-link>
-        <router-link :to="{name: 'reklamacje'}">Polityka prywatności</router-link>
+        <router-link :to="{name: 'reklamacje'}">Reklamacje</router-link>
+        <router-link :to="{name: 'polityka-prywatności'}">Polityka prywatności</router-link>
       </div>
     </div>
   </footer>
