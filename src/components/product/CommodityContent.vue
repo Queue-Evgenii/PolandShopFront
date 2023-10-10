@@ -438,9 +438,6 @@
         required: true,
       }
     },
-    created() {
-      console.log(this.productItem);
-    },
     data () {
       return {
         amountInput: 1,

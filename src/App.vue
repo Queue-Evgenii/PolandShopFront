@@ -437,5 +437,22 @@
     gap: 20px;
   }
 }
+
+.text__container {
+  padding-top 30px;
+  padding-bottom 30px;
+  display flex
+  flex-direction column
+  row-gap: 18px;
+  h2 {
+    font-weight 700
+  }
+  h3 {
+    text-align center
+  }
+  h2, h3 {
+    margin-top 15px
+  }
+}
 </style>
 

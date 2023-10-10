@@ -37,28 +37,43 @@
               <a href="mailto:sufitypolandgroup@gmail.com" class="contact-footer__email hover-underline">sufitypolandgroup@gmail.com</a>
             </div>
           </div>
+
         </div>
+      </div>
+    </div>
+    <div class="footer__links">
+      <div class="footer__container container flex">
+        <router-link :to="{name: 'regulamin'}">Regulamin</router-link>
+        <router-link :to="{name: 'polityka-prywatności'}">Reklamacje</router-link>
+        <router-link :to="{name: 'reklamacje'}">Polityka prywatności</router-link>
       </div>
     </div>
   </footer>
 </template>
 <style lang="stylus">
-  .footer {
-  &__top {
+.footer {
+  &__top,
+  &__bottom,
+  &__links {
+    padding 30px 0;
+  }
+  &__top,
+  &__links {
     border-top 1px solid #8B8B8B85
-    padding 35px 0 50px 0
   }
   &__bottom {
-    padding 50px 0 200px 0
     @media(min-width: 689px){
       border-top 1px solid #8B8B8B85
     }
   }
+  &__container {
+    column-gap: 12px;
+    row-gap: 16px;
+    flex-wrap: wrap;
+  }
 }
 
 .top-footer {
-  &__container {
-  }
   &__row {
     align-items start !important
     flex-wrap wrap

@@ -44,6 +44,21 @@ const routes = [
     name: 'PageNotFound',
     component: () => import('../views/PageNotFound.vue')
   },
+  {
+    path: '/regulamin',
+    name: 'regulamin',
+    component: () => import('../views/ReglamentView.vue')
+  },
+  {
+    path: '/polityka-prywatności',
+    name: 'polityka-prywatności',
+    component: () => import('../views/PolicyView.vue')
+  },
+  {
+    path: '/reklamacje',
+    name: 'reklamacje',
+    component: () => import('../views/ReklamaciView.vue')
+  },
 ]
 
 // const router = createRouter({
