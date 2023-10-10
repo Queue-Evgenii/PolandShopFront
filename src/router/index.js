@@ -50,8 +50,8 @@ const routes = [
     component: () => import('../views/ReglamentView.vue')
   },
   {
-    path: '/polityka-prywatności',
-    name: 'polityka-prywatności',
+    path: '/polityka-prywatnosci',
+    name: 'polityka-prywatnosci',
     component: () => import('../views/PolicyView.vue')
   },
   {
