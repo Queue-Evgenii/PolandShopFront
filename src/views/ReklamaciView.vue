@@ -4,7 +4,7 @@
       <div class="text__container container">
         <h2>Reklamacje:</h2>
 
-        <p>a. Wszystkie towary oferowane w Sklepie internetowym Dosufitu.pl posiadają odpowiednią gwarancję sprzedawcy i producenta. Gwarancji nie podlegają produkty użyte niezgodnie z instrukcją zastosowania.</p>
+        <p>a. Wszystkie towary oferowane w Sklepie internetowym Shop.Polandgroups posiadają odpowiednią gwarancję sprzedawcy i producenta. Gwarancji nie podlegają produkty użyte niezgodnie z instrukcją zastosowania.</p>
 
         <p>b. Podstawą reklamacji mogą być wady techniczne produktu.</p>
 

@@ -14,7 +14,7 @@
 
         <p>b. Poprzez zapisywanie w urządzeniach końcowych pliki cookie (tzw. "ciasteczka").</p>
 
-        <p>c. Poprzez gromadzenie logów serwera www przez operatora hostingowego [pełna nazwa operatora], funkcjonującego pod adresem dosufitu.pl</p>
+        <p>c. Poprzez gromadzenie logów serwera www przez operatora hostingowego [pełna nazwa operatora], funkcjonującego pod adresem Shop.Polandgroups</p>
 
         <p> </p>
 

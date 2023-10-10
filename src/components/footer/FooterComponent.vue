@@ -7,7 +7,7 @@
           <div class="top-footer__column" v-for="column in footerColumn" :key="column.id">
             <h5 class="top-footer__title">{{ column.title }}</h5>
             <ul class="top-footer__list" v-for="item in column.items" :key="item.id">
-              <li class="top-footer__item hover-underline"><a :href="item.href" class="top-footer__link">{{ item.label }}</a></li>
+              <li class="top-footer__item hover-underline"><router-link :to="item.href" class="top-footer__link">{{ item.label }}</router-link></li>
             </ul>
           </div>
         </div>
@@ -258,11 +258,6 @@ export default {
               href: '#'
             },
             {
-              id: 2,
-              label: 'Polityka prywatności',
-              href: '#'
-            },
-            {
               id: 3,
               label: 'Informacje o pliku plików cookie',
               href: '#'
@@ -271,7 +266,22 @@ export default {
               id: 4,
               label: 'Inne wyjątki',
               href: '#'
-            }
+            },
+            {
+              id: 5,
+              label: 'Regulamin',
+              href: '/regulamin'
+            },
+            {
+              id: 6,
+              label: 'Reklamacje',
+              href: '/reklamacje'
+            },
+            {
+              id: 7,
+              label: 'Polityka prywatności',
+              href: '/polityka-prywatnosci'
+            },
           ]
         },
         {
@@ -281,11 +291,6 @@ export default {
             {
               id: 1,
               label: 'IWarunki korzystania',
-              href: '#'
-            },
-            {
-              id: 2,
-              label: 'Polityka prywatności',
               href: '#'
             },
             {

@@ -4,7 +4,7 @@
       <div class="text__container container">
           <h2>WPROWADZENIE</h2>
 
-          <p>Sklep dosufitu.pl oferuje szeroki sortyment akcesorji do sufitów napinanych w takich grupach produktowych jak: chemia budowlana, zamocowania, narzędzia ręczne, elektronarzędzia i akcesoria, taśmy, folie i membrany, artykuły instalacyjne, artykuły elektryczne, BHP, oraz materiały budowlane.</p>
+          <p>Sklep Shop.Polandgroups oferuje szeroki sortyment akcesorji do sufitów napinanych w takich grupach produktowych jak: chemia budowlana, zamocowania, narzędzia ręczne, elektronarzędzia i akcesoria, taśmy, folie i membrany, artykuły instalacyjne, artykuły elektryczne, BHP, oraz materiały budowlane.</p>
 
           <p>Wszystkie ceny podane na stronie są cenami brutto (zawierają 23% podatek VAT). Do ceny prezentowanej należy doliczyć koszty dostawy wg cennika.</p>
 
@@ -74,7 +74,7 @@
 
           <p>Spółka wystawia dokument sprzedaży – fakturę Vat</p>
 
-          <p>Zamawiający dokonujący zakupu w Sklepie dosufitu.pl, wyraża zgodę na przetwarzanie jego danych osobowych przez operatora platformy sklepowej, na której funkcjonuje Sklep - wyłącznie w celu wysyłania do niego zapytań dotyczących badania poziomu satysfakcji z zakupów w tym sklepie.</p>
+          <p>Zamawiający dokonujący zakupu w Sklepie Shop.Polandgroups, wyraża zgodę na przetwarzanie jego danych osobowych przez operatora platformy sklepowej, na której funkcjonuje Sklep - wyłącznie w celu wysyłania do niego zapytań dotyczących badania poziomu satysfakcji z zakupów w tym sklepie.</p>
 
           <p>Złożenie zamówienia stanowi ofertę w rozumieniu kodeksu cywilnego, złożoną przez Nabywcę Sprzedawcy. Po otrzymaniu zamówienia Sprzedawca weryfikuje czy zamówienie zostało złożone prawidłowo (zgodnie z postanowieniami Regulaminu). W przypadku stwierdzenia przez Sprzedawcę, iż zamówienie zostało złożone nieprawidłowo, Sprzedawca poinformuje o tym Nabywcę.</p>
 
@@ -150,7 +150,7 @@
 
           <h2>REKLAMACJE</h2>
 
-          <p>a. Wszystkie towary oferowane w Sklepie internetowym Dosufitu.pl posiadają odpowiednią gwarancję sprzedawcy i producenta. Gwarancji nie podlegają produkty użyte niezgodnie z instrukcją zastosowania.</p>
+          <p>a. Wszystkie towary oferowane w Sklepie internetowym Shop.Polandgroups posiadają odpowiednią gwarancję sprzedawcy i producenta. Gwarancji nie podlegają produkty użyte niezgodnie z instrukcją zastosowania.</p>
 
           <p>b. Podstawą reklamacji mogą być wady techniczne produktu.</p>
 
