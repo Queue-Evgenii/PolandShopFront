@@ -438,15 +438,15 @@ export default {
         gender: '',
       },
       deliveryInfo: {
-        name: '1name',
-        surname: '1surname',
-        business: '1business',
-        nip_ue: '1nip_ue',
-        address: '1address',
-        zip_code: '1243',
-        country: 'Poland',
-        city: '1city',
-        phone: '987',
+        name: '',
+        surname: '',
+        business: '',
+        nip_ue: '',
+        address: '',
+        zip_code: '',
+        country: '',
+        city: '',
+        phone: '',
       },
       agreements: {
         confirm_regulations_store: false,
@@ -569,7 +569,6 @@ export default {
       agreements: {
         confirm_regulations_store: { sameAs: sameAs(true) },
         confirm_privacy_policy: { sameAs: sameAs(true) },
-        agree_to_receive_information: { sameAs: sameAs(true) },
       },
       userInfo: {
         email: { required, email },
@@ -601,7 +600,10 @@ export default {
     async registration() {
       const isUserCorrect = await this.v$.userInfo.$validate();
       if (!isUserCorrect) return;
-      const data = {...this.userInfo}
+      const data = {
+        ...this.userInfo,
+        agree_to_receive_information: this.agreements.agree_to_receive_information
+      }
       this.$emit('registration', data);
     },
     getUserData() {
