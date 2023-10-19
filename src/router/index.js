@@ -17,7 +17,7 @@ const routes = [
   {
     path: '/catalog/:id',
     name: 'catalogList',
-    component: () => import('../views/CatalogView.vue')
+    component: () => import('../views/CatalogView.vue'),
   },
   {
     path: '/product/:id',

@@ -9,7 +9,7 @@
               <aside class="catalog-page__sidebar sidebar">
                 <aside-sidebar v-if="SidebarWidth" />
                 <div class="settings-products__body settings-products" ref="filters">
-                  <aside-filter :filters="categoryItems" @productsHoisting="getProducts" />
+                  <aside-filter />
                 </div>
               </aside>
               <div class="catalog-page__content content">
@@ -19,12 +19,8 @@
                 <div class="catalog-page__products">
                   <catalog-products
                     v-if="isSingleCategory"
-                    :catalogProducts="catalogProducts"
                     :productsLabel="productsLabel"
-                    @productsHoisting="getProducts"
-                  > 
-                    <!-- <aside-filter v-if="!SidebarWidth" :filters="categoryItems" @productsHoisting="getProducts" /> -->
-                  </catalog-products>
+                  />
                   <template v-else>
                     <home-catalogue
                       v-for="item in childrenCategoriesId"
@@ -108,17 +104,11 @@ export default {
         return true
       }
     },
-    categoryItems() {
-      return this.$store.state.categories;
-    }
   },
   methods: {
-    getProducts(data) {
-      this.catalogProducts = data;
-    },
     onResize() {
       this.SidebarWidth = !(window.innerWidth <= 1200);
-    }
+    },
   },
   mounted() {
     window.addEventListener('resize', this.onResize);

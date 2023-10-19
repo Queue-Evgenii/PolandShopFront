@@ -1,13 +1,28 @@
 <template>
-  <!-- instead of this array "products" should be another -->
   <li class="sidebar-category__item"
      :class="[{'withoutArr': item.children.length === 0},{'active': isVisible}]"
   >
-     <router-link v-if="item.children.length === 0" :to="{name: 'catalogList', params: {id: item.id}}" class="sidebar-category__item-title" ref="title"><span>{{ item.name }}</span></router-link>
+     <router-link
+      v-if="item.children.length === 0"
+      :to="{name: 'catalogList', params: {id: item.id}}"
+      class="sidebar-category__item-title" ref="title"
+      @click="filterReset(item.id)"
+    >
+      <span>{{ item.name }}</span>
+    </router-link>
      <div v-else class="sidebar-category__item-title" @click="categoryToggle()" ref="title"><span>{{ item.name }}</span></div>
      <ul class="sidebar-category__sublist" ref="sublist">
-        <li class="sidebar-category__subitem" v-for="link in item.children" :key="link.id">
-          <router-link :to="{name: 'catalogList', params: {id: link.id}}"><span>{{ link.name }}</span></router-link>
+        <li
+          class="sidebar-category__subitem"
+          v-for="link in item.children"
+          :key="link.id"
+        >
+          <router-link
+            :to="{name: 'catalogList', params: {id: link.id}}"
+            @click="filterReset(link.id)"
+          >
+            <span>{{ link.name }}</span>
+          </router-link>
         </li>
     </ul>
   </li>
@@ -19,14 +34,48 @@ export default {
       type: Object,
     }
   },
-  data () {
+  data() {
     return {
       isVisible: false,
-    }
+    };
   },
   methods: {
-    categoryToggle () {
-      this.isVisible = !this.isVisible
+    categoryToggle() {
+      this.isVisible = !this.isVisible;
+    },
+    filterReset(id) {
+      this.$store.state.filterParams = ["sort[type]=asc", "sort[column]=price", "page=1", `category_ids[]=${id}`];
+      this.$store.state.categories.forEach(el => {
+        el.isChecked = false;
+        if (el.id == id) {
+          el.isChecked = true;
+        }
+      })
+      this.setFilters();
+    },
+    setFilters() {
+      this.setStartupPage();
+      this.$store.dispatch("setFilters", this.$store.state.filterParams.join("&"))
+        .then(res => {
+          this.setDefaultCatalogValues(res);
+        })
+    },
+    setDefaultCatalogValues(res) {
+      this.$store.state.catalog = res.data;
+      this.$store.state.currentPage = 1;
+      this.$store.state.maxCategoryPage = res.meta.last_page;
+    },
+    setStartupPage() {
+      this.$store.state.currentPage = 1;
+
+      const item = this.$store.state.filterParams.find(el => el.includes("page="));
+      const index = this.$store.state.filterParams.indexOf(item);
+
+      if (index >= 0) {
+        this.$store.state.filterParams.splice(index, 1);
+      }
+      
+      this.$store.state.filterParams.push("page=1");
     }
   },
 }

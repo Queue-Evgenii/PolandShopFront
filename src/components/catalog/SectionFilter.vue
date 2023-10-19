@@ -1,15 +1,16 @@
 <template>
   <div 
-    v-if="items" class="sidebar-filter__section section-filter"
+    v-if="getCategories" class="sidebar-filter__section section-filter"
   >
     <span class="section-filter__title sidebar-filter__checkbox" @click="onSelected()">{{ name }}</span>
-    {{ categoryFilters }}
     <ul class="section-filter__body section-filter__body-line">
-      <li class="section-filter__item" v-for="item in items.filter(item => item.children.length == 0)" :key="item.id">
+      <li class="section-filter__item" v-for="item in getCategories" :key="item.id">
         <input
           type="checkbox"
           :id="item.id"
-          :checked="isChecked(item)"
+          :disabled="item.id == currentCategoryId"
+          :class="item.id == currentCategoryId ? '_current' : ''"
+          :checked="item.isChecked"
           @click="onChecked(item.id)"
         >
         <label class="flex" :for="item.id">{{ item.name }}</label>
@@ -20,10 +21,6 @@
 <script>
 export default {
   props: {
-    items: {
-      type: Array,
-      required: true,
-    },
     name: {
       type: String,
       required: true,
@@ -32,16 +29,35 @@ export default {
       type: Number,
     }
   },
+  data () {
+    return {
+    }
+  },
+  computed: {
+    getCategories() {
+      const list = this.$store.state.categories.filter(item => item.children.length == 0)
+      list.forEach(el => {
+        el.isChecked = false;
+        if (el.id == this.currentCategoryId) {
+          el.isChecked = true;
+        }
+      })
+      return list;
+    },
+  },
   methods: {
     onSelected () {
       this.$emit('onSelected');
     },
     onChecked(id) {
-      this.$emit('onChecked', id)
+      const list = this.$store.state.categories.filter(item => item.children.length == 0)
+      this.$emit('onChecked', id);
+      list.forEach(el => {
+        if (el.id == id) {
+          el.isChecked = !el.isChecked;
+        }
+      })
     },
-    isChecked(item) {
-      return this.currentCategoryId == item.id
-    }
   },
 }
 </script>

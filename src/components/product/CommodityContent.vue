@@ -77,8 +77,8 @@
       <div v-if="$store.state.deliveriesData.protected" class="delivery-commodity__row flex delivery-commodity__protected">
         {{ $store.state.deliveriesData.protected }}
       </div>
-      <div v-if="isMethodPayment" class="delivery-commodity__row flex delivery-commodity__payment">
-        {{ $store.state.deliveriesData.boxes[productItem.box_id].methodPayment }}
+      <div v-if="MethodPayment" class="delivery-commodity__row flex delivery-commodity__payment">
+        {{ MethodPayment }}
       </div>
     </div>
   </div>
@@ -450,9 +450,10 @@
         }
         return this.productItem.price / 1.23;
       },
-      isMethodPayment() {
-        if (this.productItem.id && this.$store.state.deliveriesData.boxes[this.productItem.box_id].methodPayment) {
-          return true;
+      MethodPayment() {
+        if (this.productItem.id && this.$store.state.deliveriesData.boxes[Number(this.productItem.box_id)].methodPayment) {
+          const item = this.$store.state.deliveriesData.boxes.find(el =>  el.id === Number(this.productItem.box_id))
+          return item.methodPayment;
         }
         return false;
       }

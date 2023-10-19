@@ -118,7 +118,8 @@ export default {
       this.$store.dispatch("getCategories")
         .then(data => {
           this.$store.state.categories = data.data;
-        })
+          this.$store.state.categories.forEach(el => el.isChecked = false);
+        });
     },
     getProductDeliveries() {
         this.$store.dispatch('getProductDeliveries')

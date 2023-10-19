@@ -11,10 +11,10 @@
         </div>
       </div>
     </div>
-      <div v-if="catalogProducts.length === 0" class="catalog-page__notice">Products not found ;(</div>
-     <div v-if="catalogProducts.length !== 0" :class="isRowDirection ? 'products-items-row' : ''" class="products__items" ref="products">
+      <div v-if="getProducts.length === 0" class="catalog-page__notice">Products not found ;(</div>
+     <div v-if="getProducts.length !== 0" :class="isRowDirection ? 'products-items-row' : ''" class="products__items" ref="products">
       <product-item
-        v-for="product in getItems" 
+        v-for="product in getProducts" 
         :key="product.id" 
         :product="product"
         :class="isRowDirection ? 'item-product-row' : ''"
@@ -22,33 +22,25 @@
         @addToCart="addToCart"
       />
     </div>
-    <div v-if="catalogProducts.length > this.perPage" class="products__navi navi-products">
-      <div class="navi-products__button"><button type="button">Załaduj jeszcze 10 produktów</button></div>
-      <paginate
-        :page-count="getPaginateCount"
-        :page-range="1"
-        :container-class="'paginate-products'"
-        :page-class="'paginate-products__number'"
-        :prev-class="'paginate-products__prev'"
-        :next-class="'paginate-products__next'"
-        :break-view-text="'●'"
-        :click-handler="paginateClickCallback"
-      ></paginate>
+    <div v-if="getProducts.length && hasNextPage" class="products__navi navi-products">
+      <div class="navi-products__button">
+        <button
+          @click="getNextPage()"
+          type="button"
+        >
+          Załaduj jeszcze produktów
+        </button>
+      </div>
     </div>
   </div>
 </template>
 <script>
 import ProductItem from '@/components/ProductItem'
-import Paginate from 'vuejs-paginate'
 export default {
   components: {
-    Paginate,
     ProductItem,
   },
   props: {
-    catalogProducts: {
-      type: Array,
-    },
     productsLabel: {
       type: String,
       required: true,
@@ -57,29 +49,25 @@ export default {
   data () {
     return {
       currentPage: 1,
-      perPage: 16,
       isRowDirection: false,
       isAsc: true,
     }
   },
   computed: {
     getPaginateCount () {
-      return Math.ceil(this.catalogProducts.length / this.perPage);
-    },
-    getItems () {
-      let start = (this.currentPage - 1) * this.perPage;
-      let end = this.currentPage * this.perPage;
-      this.catalogProducts.slice(start, end);
-      return this.catalogProducts.slice(start, end);
+      return Math.ceil(this.getProducts.length / this.perPage);
     },
     isAuthorised() {
       return localStorage.getItem("access_token");
+    },
+    getProducts() {
+      return this.$store.state.catalog;
+    },
+    hasNextPage() {
+      return this.$store.state.currentPage < this.$store.state.maxCategoryPage
     }
   },
   methods: {
-    paginateClickCallback (pageNum) {
-      this.currentPage = Number(pageNum);
-    },
     filtersToggle (e) {
       const title = e.target
       const list = document.querySelector(".settings-products__body");
@@ -108,26 +96,57 @@ export default {
         localStorage.setItem('cartItems', JSON.stringify(cartItems))
       }
     },
-    productsHoisting(data) {
-      this.$emit("productsHoisting", data);
-    },
-    changeSortType() {
-      this.isAsc = !this.isAsc;
-      const value = this.isAsc ? "asc" : "desc";
-      const string = `sort[type]=${value}`;
-      const item = this.$store.state.filterParams.find(el => el.includes("sort[type]"));
+    clearAnyFilter(param) {
+      const item = this.$store.state.filterParams.find(el => el.includes(param));
       const index = this.$store.state.filterParams.indexOf(item);
       if (index >= 0) {
         this.$store.state.filterParams.splice(index, 1);
       }
-      this.$store.state.filterParams.push(string);
-      this.setFilters();
     },
-    setFilters() {
+    setNewSortFilter(string) {
+      this.clearAnyFilter("sort[type]");
+      this.$store.state.filterParams.push(string);
+      this.setFilters(false);
+    },
+    setNextProductsPage(string) {
+      this.clearAnyFilter("page");
+      this.$store.state.filterParams.push(string);
+      this.setFilters(true);
+    },
+    changeSortType() {
+      this.isAsc = !this.isAsc;
+
+      const value = this.isAsc ? "asc" : "desc";
+      const string = `sort[type]=${value}`;
+
+      this.setNewSortFilter(string);
+    },
+    setFilters(isNextPage) {
       this.$store.dispatch("setFilters", this.$store.state.filterParams.join("&"))
         .then(res => {
-          this.productsHoisting(res.data);
+          this.$store.state.maxCategoryPage = res.meta.last_page;
+          if (isNextPage) {
+            this.$store.state.catalog.push(...res.data);
+            return;
+          }
+          this.clearAnyFilter("page=");
+          this.setDefaultCatalogValues(res);
         })
+    },
+    setDefaultCatalogValues(res) {
+      this.$store.state.currentPage = 1;
+      this.$store.state.catalog = res.data;
+      this.$store.state.filterParams.push("page=1");
+    },
+    getNextPage() {
+      if (!this.hasNextPage) return;
+
+      this.$store.state.currentPage++;
+
+
+      const string = `page=${this.$store.state.currentPage}`;
+
+      this.setNextProductsPage(string);
     },
   },
 }
@@ -235,105 +254,7 @@ export default {
       }
     }
   }
-  .paginate-products{
-    display flex
-    align-items center
-    justify-content space-between
-    max-width 466px
-    width 100%
-    margin 0 auto
-    position relative
-    z-index 1
-    &__number{
-      position relative
-      width 37px
-      height 37px
-      border-radius 50%
-      z-index 3
-      display flex
-      align-items center
-      justify-content center
-      a{
-        font-size: 40px;
-        line-height: 46px;
-        color: #9E9B9B
-      }
-      &.active{
-        background-color: #FF0031;
-        a{
-          color: #FFFFFF;
-          font-size: 24px;
-          line-height: 28px;
-        }
-      }
-      @media(max-width: 420px) {
-        a{
-          font-size 24px
-        }
-      }
-    }
-    
-  }
-  .paginate-products__next,
-  .paginate-products__prev{
-    width 75px
-    height 75px
-    background: rgb(255, 255, 255);
-    border-radius 50%
-    position relative
-    z-index 3
-    border: 1px solid #3D3D3D;
-    opacity: 0.4
-    @media(min-width: 769px) {
-      &:hover{
-        background: rgb(255, 255, 255);
-        opacity: 0.9
-      }
-    }
-    &::before, &::after{
-      content ''
-      position absolute
-      // width 22.5px
-      // height 2px
-      width 30%
-      height 2.666%
-      background-color #000
-    }
-    &::before{
-      transform rotate(45deg)
-      // top: 28.5px
-      // left: 28.5px
-      top 38%
-      left 38%
-    }
-    &::after{
-      transform rotate(-45deg)
-      // bottom: 28.5px
-      // left: 28.5px
-      bottom 38%
-      left 38%
-    }
-    a{
-      font-size 0
-      position absolute
-      width 100%
-      height 100%
-      z-index 2
-    }
-    @media(max-width: 420px) {
-      width 50px
-      height 50px
-    }
-  }
-  .paginate-products__prev{
-    transform rotate(180deg)
-  }
-  .item-product__info-text{
-    display flex
-    align-items center
-    flex-wrap wrap
-    gap: 20px
-  }
+
     @media(min-width: 501px) {
       .products-items-row{
         grid-template-columns: repeat(1, minmax(300px, 1fr)) !important

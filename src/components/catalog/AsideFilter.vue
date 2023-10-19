@@ -15,7 +15,6 @@
       <section-filter 
         name="Rodzaj produktu"
         :currentCategoryId="currentCategoryId"
-        :items="filters"
         :class="{'active' : currentNavItem}"
         @onSelected="onSelected"
         @onChecked="onChecked"
@@ -36,12 +35,6 @@ export default {
   components: {
     SectionFilter
   },
-  props: {
-    filters: {
-      type: Array,
-      required: true,
-    }
-  },
   data () {
     return {
       timeout: null,
@@ -57,26 +50,27 @@ export default {
   computed: {
     currentCategoryId() {
       return this.$route.params.id;
-    }
+    },
   },
   methods: {
     onSelected () {
       this.currentNavItem = !this.currentNavItem;
     },
     clearFilters() {
-      let item = this.$store.state.filterParams.find(el => el.includes("category_ids[]"));
-      while(item) {
+      let item;
+      do {
+        item = this.$store.state.filterParams.find(el => el.includes("category_ids[]"));
         const index = this.$store.state.filterParams.indexOf(item);
         if (index >= 0) {
           this.$store.state.filterParams.splice(index, 1);
         }
-        item = this.$store.state.filterParams.find(el => el.includes("category_ids[]"));
-      }
+      } while(item);
     },
     onChecked(id) {
       const string = `category_ids[]=${id}`;
       if (this.$store.state.filterParams.find(el => el === string)) {
-        this.removeCategoryString(string);
+        this.clearAnyFilter(string);
+        this.setFilters();
         return;
       }
       this.addCategoryString(string);
@@ -85,10 +79,11 @@ export default {
       this.$store.state.filterParams.push(string);
       this.setFilters();
     },
-    removeCategoryString(string) {
-      const index = this.$store.state.filterParams.indexOf(string);
-      this.$store.state.filterParams.splice(index, 1);
-      this.setFilters();
+    clearAnyFilter(param) {
+      const index = this.$store.state.filterParams.indexOf(param);
+      if (index >= 0) {
+        this.$store.state.filterParams.splice(index, 1);
+      }
     },
     addMinPriceString(value) {
       const string = `price[min]=${value}`;
@@ -132,34 +127,54 @@ export default {
     },
     getValues() {
       const values = this.rangeSlider.get();
+
       if (this.lowerValue != Math.round(values[0])) {
+
         this.lowerValue = Math.round(values[0]);
+
         if (this.timeout) clearTimeout(this.timeout);
+
         this.timeout = setTimeout(() => {
           this.addMinPriceString(this.lowerValue);
         }, 300);
       }
+
       if (this.upperValue != Math.round(values[1])) {
+
         this.upperValue = Math.round(values[1]);
+
         if (this.timeout) clearTimeout(this.timeout);
+        
         this.timeout = setTimeout(() => {
           this.addMaxPriceString(this.upperValue);
         }, 300);
       }
     },
-    productsHoisting(data) {
-      this.$emit("productsHoisting", data);
+    setRangeValues(res) {
+      this.lowerValue = this.minValue = parseInt(res.meta.min_price, 10);
+      this.upperValue = this.maxValue = parseInt(res.meta.max_price, 10);
+      this.createRange();
     },
     setFilters() {
+      this.setStartupPage();
       this.$store.dispatch("setFilters", this.$store.state.filterParams.join("&"))
         .then(res => {
           if(this.isFirstCall) {
-            this.upperValue = this.maxValue = parseInt(res.meta.max_price, 10);
-            this.createRange();
+            this.setRangeValues(res);
             this.isFirstCall = false;
           }
-          this.productsHoisting(res.data);
+          this.setDefaultCatalogValues(res);
         })
+    },
+    setStartupPage()  {
+      this.clearAnyFilter("page=");
+      this.$store.state.currentPage = 1;
+      this.$store.state.filterParams.push("page=1");
+    },
+    setDefaultCatalogValues(res) {
+      this.$store.state.catalog = res.data;
+      this.$store.state.currentPage = 1;
+      this.$store.state.maxCategoryPage = res.meta.last_page;
     }
   },
   mounted() {
@@ -169,6 +184,9 @@ export default {
     currentCategoryId() {
       this.clearFilters();
       this.onChecked(this.currentCategoryId);
+    },
+    currentProducts() {
+      this.clearFilters();
     }
   }
 }
@@ -317,7 +335,7 @@ export default {
           display inline-block
           width 14px
           height 14px
-          background-color #cacaca
+          background-color #adadad
           left 3px
           transform scale(0)
           transition transform 0.3s ease 0s
@@ -326,6 +344,13 @@ export default {
       input[type=checkbox]:checked + label{
         &::after{
           transform scale(1)
+        }
+      }
+      input[type=checkbox]._current + label{
+        color: #818181;
+        cursor: default;
+        &::after{
+          background-color: #dadada;
         }
       }
     }

@@ -14,7 +14,6 @@ import removeFavoritesModules from './modules/removeFavorites.modules';
 import searchModules from './modules/search.modules';
 import filtersModules from './modules/filters.modules';
 
-
 function getCartFromLocalStorage() {
   const favoriteItems = localStorage.getItem('cartItems')
   if (!favoriteItems) {
@@ -35,7 +34,10 @@ const store = createStore({
     favoriteItems: [],
     categories: [],
     deliveriesData: null,
-    filterParams: ["sort[type]=asc", "sort[column]=id"],
+    filterParams: ["sort[type]=asc", "sort[column]=price", "page=1"],
+    maxCategoryPage: 1,
+    currentPage: 1,
+    catalog: [],
     tempUserData: {
       userInfo: {
         email: '',
