@@ -19,11 +19,11 @@
         @onSelected="onSelected"
         @onChecked="onChecked"
       />
-      <div class="sidebar-filter__section section-filter section-button">
+      <!-- <div class="sidebar-filter__section section-filter section-button">
         <div class="section-filter__body">
           <button class="section-filter__button button"><span>Stosować</span></button>
         </div>
-      </div>
+      </div> -->
     </form>
   </div>
 </template>

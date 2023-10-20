@@ -10,7 +10,7 @@
               <span></span>
             </button>
             <div v-bind:class="{active: burgerActive}" class="menu__body" >
-              <main-menu v-if="!MobileWidth" :mainMenu="mainMenu" />
+              <!-- <main-menu v-if="!MobileWidth" :mainMenu="mainMenu" /> -->
               <span></span>
               <shop-menu v-if="!MobileWidth" :shopMenu="shopMenu" />
             </div>
@@ -433,12 +433,12 @@
 <script>
 import InputHeader from '@/components/header/InputHeader'
 import ShopMenu from '@/components/header/ShopMenu'
-import MainMenu from '@/components/header/MainMenu'
+//import MainMenu from '@/components/header/MainMenu'
 import SearchList from './SearchList';
 export default {
   components: {
     ShopMenu,
-    MainMenu,
+    //MainMenu,
     InputHeader,
     SearchList
   },

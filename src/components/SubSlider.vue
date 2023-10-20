@@ -1,5 +1,5 @@
 <template>
-  <div class="subslider" :class="subSlides.length < 4 ? 'no-button' : ''">
+  <div class="subslider" :class="(subSlides.length < 4 || subSlides.length === 0) ? 'no-button' : ''">
     <swiper
       v-if="subSlides.length !== 0"
       :modules="modules"
@@ -39,10 +39,17 @@
       </swiper-slide>
     </swiper>
 
-    <span class="loading" v-if="subSlides.length === 0"></span>
+    <!-- <span class="loading" v-if="subSlides.length === 0"></span> -->
+    <div v-else class="skeleton">
+      <div class="skeleton-item"></div>
+      <div class="skeleton-item"></div>
+      <div class="skeleton-item"></div>
+      <div class="skeleton-item"></div>
+    </div>
   </div>
 </template>
 <style lang="stylus">
+  
   @media(min-width: 769px) {
     .subslider__slide:hover{
       box-shadow: 2px 2px 4px 2px #d5d5d5
@@ -85,20 +92,9 @@
           right 20px
           bottom 40%
         }
-        .slick-track{
-          display flex !important
-          gap 15px
-          min-height: 181px
-          padding 5px 0
-        }
-        .slick-slide{
-          transition: all 0.2s ease 0s
-          &:hover{
-            box-shadow: 1px 1px 5px 1px #000;
-          }
-        }
       }
       &__slide{
+        border-radius: 5px;
         display flex !important
         flex-direction column
         gap 20px
@@ -110,17 +106,41 @@
         margin 5px 0
       }
       &__image{
-        width 100%
-        overflow: hidden
+        width: 100%;
+        overflow: hidden;
         img{
-          width 100%
-          height 100%
-          object-fit: cover
+          width 100%;
+          height 100%;
+          object-fit: cover;
         }
       }
       &__label{
         font-weight: 700;
         font-size: 20px;
+      }
+      .skeleton {
+        display flex
+        gap: 16px;
+        width 100%
+      }
+      .skeleton-item{
+        border-radius: 5px;
+        flex: 1 1 auto;
+        height 200px
+      }
+      @media(max-width: 992px) {
+        .skeleton-item {
+          &:nth-child(4) {
+            display none;
+          }
+        }
+      }
+      @media(max-width: 768px) {
+        .skeleton-item {
+          &:nth-child(3) {
+            display none;
+          }
+        }
       }
     }
 </style>

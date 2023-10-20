@@ -1,9 +1,13 @@
 <template>
-  <div v-if="catalogProducts.length !== 0" class="page-products">
+  <div class="page-products">
     <div class="mainproducts products">
       <div class="products__container container">
-        <div class="products__title"><router-link :to="{name: 'catalogList', params: {id: catalogId}}">{{ productsLabel }}</router-link></div>
-        <div class="products__items">
+        <div v-if="catalogProducts.length !== 0" class="products__title">
+          <router-link :to="{name: 'catalogList', params: {id: catalogId}}">
+            {{ productsLabel }}
+          </router-link>
+        </div>
+        <div v-if="catalogProducts.length !== 0" class="products__items">
           <product-item
             v-for="product in catalogProducts"
             :key="product.id"
@@ -12,11 +16,13 @@
             @addToCart="addToCart"
           />
         </div>
+        <SkeletonProduct v-else />
       </div>
     </div>
   </div>
 </template>
 <script>
+import SkeletonProduct from '../SkeletonProduct'
 import ProductItem from '@/components/ProductItem'
 export default {
   props: {
@@ -34,6 +40,7 @@ export default {
   },
   components: {
     ProductItem,
+    SkeletonProduct,
   },
   methods: {
     addToCart (product) {

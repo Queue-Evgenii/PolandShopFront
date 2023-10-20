@@ -1,17 +1,45 @@
 <template>
   <div class="sidebar-category">
     <div class="sidebar-category__title" @click="mobileCategory">Kategorie</div>
-     <ul class="sidebar-category__list">
-      <span class="loading" v-if="!listCategory.length"></span>
+     <ul v-if="listCategory.length" class="sidebar-category__list">
+      <!-- <span class="loading" v-if="!listCategory.length"></span> -->
       <category-item
         v-for="item in filterListCategory" 
         :key="item.id"
         :item="item"
       />
     </ul>
+    <ul v-else class="sidebar-category__list skeleton">
+      <li class="skeleton-item"></li>
+      <li class="skeleton-item"></li>
+      <li class="skeleton-item"></li>
+      <li class="skeleton-item"></li>
+    </ul>
   </div>
 </template>
 <style lang="stylus">
+ .sidebar-category {
+    .skeleton-item {
+      border-radius: 5px
+      margin 10px 0
+      height: 24px;
+      animation: skeletonShine 3s ease 0s infinite normal forwards;
+      background: #fbc6d9;
+      background-image: linear-gradient(135deg, #fbc6d9 0%, #d4c6db 20%, #fbc6d9 40%, #fbc6d9 100%);
+      &:nth-child(1) {
+        width: 35%;
+      }
+      &:nth-child(2) {
+        width: 25%;
+      }
+      &:nth-child(3) {
+        width: 33%;
+      }
+      &:nth-child(4) {
+        width: 32%;
+      }
+    }
+  }
 .loading{
   background: url('../../assets/img/main/icons/loader-new.gif') no-repeat
   background-size: contain
@@ -141,6 +169,7 @@
       }
     }
   }
+ 
 }
 </style>
 <script>

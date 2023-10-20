@@ -10,7 +10,7 @@
               </aside>
               <div class="product-page__content content">
                 <div class="product-page__commodity commodity-page">
-                  <commodity-slider v-if="galleryItems" :galleryItems="galleryItems" @openPopup="openPopup" :isPopup="false"/>
+                  <commodity-slider :galleryItems="galleryItems" @openPopup="openPopup" :isPopup="false"/>
                   <commodity-content :productItem="this.productItem" @openAlertPopup="openAlertPopup" @inputValue="inputValue" @changeFavoriteList="changeFavoriteList"/>
                 </div>
                 <div class="product-page__info info-product">

@@ -1,7 +1,7 @@
 <template>
   <div class="catalog-products products">
     <div class="products__title">{{productsLabel}}</div>
-    <div class="catalog-products__settings settings-products">
+    <div v-if="getProducts.length !== 0" class="catalog-products__settings settings-products">
       <div class="settings-products__menu flex">
         <button type="button" class="settings-products__filters" @click="filtersToggle">Filtr</button>
         <button @click="changeSortType()" type="button" :class="{asc: isAsc}" class="settings-products__order">Cena rosnąco</button>
@@ -11,8 +11,8 @@
         </div>
       </div>
     </div>
-      <div v-if="getProducts.length === 0" class="catalog-page__notice">Products not found ;(</div>
-     <div v-if="getProducts.length !== 0" :class="isRowDirection ? 'products-items-row' : ''" class="products__items" ref="products">
+    <!-- <div v-if="getProducts.length === 0" class="catalog-page__notice">Products not found ;(</div> -->
+    <div v-if="getProducts.length !== 0" :class="isRowDirection ? 'products-items-row' : ''" class="products__items" ref="products">
       <product-item
         v-for="product in getProducts" 
         :key="product.id" 
@@ -21,7 +21,9 @@
         :isRowDirection="isRowDirection"
         @addToCart="addToCart"
       />
+    
     </div>
+    <SkeletonProduct v-else />
     <div v-if="getProducts.length && hasNextPage" class="products__navi navi-products">
       <div class="navi-products__button">
         <button
@@ -35,10 +37,12 @@
   </div>
 </template>
 <script>
+import SkeletonProduct from '../SkeletonProduct';
 import ProductItem from '@/components/ProductItem'
 export default {
   components: {
     ProductItem,
+    SkeletonProduct,
   },
   props: {
     productsLabel: {
@@ -169,6 +173,9 @@ export default {
       padding 50px 0 20px 0
       justify-content space-between
       gap: 20px
+      @media (max-width: 992px) {
+        padding-top 20px;
+      }
     }
     &__body {
     }

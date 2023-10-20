@@ -1,6 +1,6 @@
 <template>
   <div class="commodity-page__images commodity-images info-product__block">
-    <div class="commodity-images__wrapper">
+    <div v-if="this.galleryItems" class="commodity-images__wrapper">
       <div class="commodity-images__array" v-if="gallerySize > 1" >
         <div class="commodity-images__thumbs">
           <swiper
@@ -103,6 +103,9 @@
           <img v-if="gallerySize === 1" :src="galleryItems[0]" alt="" @click="openPopup()">
         </div>
       </div>
+    </div>
+    <div v-else class="skeleton">
+      <div class="skeleton-item"></div>
     </div>
   </div>
 </template>
@@ -247,6 +250,16 @@ export default {
 } 
 </script>
 <style lang="stylus">
+.commodity-page__images {
+  .skeleton-item {
+    height: 520px;
+  }
+  @media(max-width: 600px) {
+    .skeleton-item {
+      height: 450px;
+    }
+  }
+}
 .swiper-pagination{
   display: inline-flex !important;
   align-items: center;

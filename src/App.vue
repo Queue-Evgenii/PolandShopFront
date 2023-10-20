@@ -454,5 +454,25 @@
     margin-top 15px
   }
 }
+.skeleton-item{
+  background-position: -500px 0;
+  animation: skeletonShine 3s ease 0s infinite normal forwards;
+  background: #e8e8e8;
+  background-image: linear-gradient(135deg, #e8e8e8 0%, #edeef1 20%, #e8e8e8 40%, #e8e8e8 100%);
+  // background: #fbc6d9;
+  // background-image: linear-gradient(135deg, #fbc6d9 0%, #d4c6db 20%, #fbc6d9 40%, #fbc6d9 100%);
+  background-repeat: no-repeat;
+  background-size: 1000px 100%;
+}
+@keyframes skeletonShine {
+  to {
+    background-position: 500px 0;
+  }
+}
+@keyframes smallSkeletonShine {
+  to {
+    background-position: 50px 0;
+  }
+}
 </style>
 

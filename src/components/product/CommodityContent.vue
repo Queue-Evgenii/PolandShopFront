@@ -4,15 +4,17 @@
       <div class="content-commodity__title">{{ productItem.name }}</div>
       <!-- <div class="content-commodity__offer">{{ productItem.offer }}</div> -->
       <div class="content-commodity__info">
-        <div class="content-commodity__info-row"><span>Kod: </span>{{ productItem.code }}</div>
+        <div v-if="productItem.code" class="content-commodity__info-row"><span>Kod: </span>{{ productItem.code }}</div>
+        <div v-else class="skeleton-item"></div>
         <div v-if="productItem.category" class="content-commodity__info-row"><span>Kategori: </span>{{ productItem.category.name }}</div>
+        <div v-else class="skeleton-item"></div>
       </div>
       <div v-if="productItem.discount" class="content-commodity__price flex">
         <div class="content-commodity__new-price flex">{{ (productItem.price*(100-productItem.discount)/100).toFixed(2) }}<span>{{ 'PLN ZA ' + productItem.unit_of_measure }}</span></div>
         <div class="content-commodity__sale-price">
           <div class="content-commodity__first-price flex">{{ (productItem.price) }}<span>{{ 'PLN ZA ' + productItem.unit_of_measure }}</span></div>
           <div class="content-commodity__price-info"><span>{{ productItem.discount + "% " }}</span>{{ productItem.discount_label }}</div>
-        </div>s
+        </div>
       </div>
       <div v-else class="content-commodity__price flex">
         <div class="content-commodity__new-price flex">{{ productItem.price }}<span>{{ 'PLN za ' + productItem.unit_of_measure }}</span></div>
