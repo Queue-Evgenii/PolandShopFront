@@ -59,6 +59,9 @@ export default {
         .then(res => {
           this.setDefaultCatalogValues(res);
         })
+        .finally(() => {
+          this.$store.state.isCatalogSkeleton;
+        })
     },
     setDefaultCatalogValues(res) {
       this.$store.state.catalog = res.data;

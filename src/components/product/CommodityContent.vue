@@ -10,14 +10,25 @@
         <div v-else class="skeleton-item"></div>
       </div>
       <div v-if="productItem.discount" class="content-commodity__price flex">
-        <div class="content-commodity__new-price flex">{{ (productItem.price*(100-productItem.discount)/100).toFixed(2) }}<span>{{ 'PLN ZA ' + productItem.unit_of_measure }}</span></div>
+        <div class="content-commodity__new-price flex">
+          {{ (productItem.price*(100-productItem.discount)/100).toFixed(2) }}
+          <span>{{ 'PLN ZA ' + productItem.unit_of_measure }}</span>
+        </div>
         <div class="content-commodity__sale-price">
-          <div class="content-commodity__first-price flex">{{ (productItem.price) }}<span>{{ 'PLN ZA ' + productItem.unit_of_measure }}</span></div>
-          <div class="content-commodity__price-info"><span>{{ productItem.discount + "% " }}</span>{{ productItem.discount_label }}</div>
+          <div class="content-commodity__first-price flex">
+            {{ (productItem.price) }}
+            <span>{{ 'PLN ZA ' + productItem.unit_of_measure }}</span>
+          </div>
+          <div class="content-commodity__price-info">
+            <span>{{ productItem.discount + "% " }}</span>
+            {{ productItem.discount_label }}
+          </div>
         </div>
       </div>
       <div v-else class="content-commodity__price flex">
-        <div class="content-commodity__new-price flex">{{ productItem.price }}<span>{{ 'PLN za ' + productItem.unit_of_measure }}</span></div>
+        <div class="content-commodity__new-price flex">
+          {{ productItem.price }}<span>{{ 'PLN za ' + productItem.unit_of_measure }}</span>
+        </div>
       </div>
       <div class="content-commodity__wat"><span>{{ getWat.toFixed(2) + ' PLN' }}</span> netto, 23% VAT</div>
       <div class="content-commodity__actions actions-commodity">

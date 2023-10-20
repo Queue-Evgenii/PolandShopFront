@@ -165,6 +165,9 @@ export default {
           }
           this.setDefaultCatalogValues(res);
         })
+        .finally(() => {
+          this.$store.state.isCatalogSkeleton  = false;
+        })
     },
     setStartupPage()  {
       this.clearAnyFilter("page=");

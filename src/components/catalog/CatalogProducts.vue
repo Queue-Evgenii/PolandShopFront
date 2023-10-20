@@ -11,8 +11,8 @@
         </div>
       </div>
     </div>
-    <!-- <div v-if="getProducts.length === 0" class="catalog-page__notice">Products not found ;(</div> -->
-    <div v-if="getProducts.length !== 0" :class="isRowDirection ? 'products-items-row' : ''" class="products__items" ref="products">
+    <SkeletonProduct v-if="$store.state.isCatalogSkeleton" />
+    <div v-else-if="getProducts.length !== 0" :class="isRowDirection ? 'products-items-row' : ''" class="products__items" ref="products">
       <product-item
         v-for="product in getProducts" 
         :key="product.id" 
@@ -23,7 +23,7 @@
       />
     
     </div>
-    <SkeletonProduct v-else />
+    <div v-else class="products__title">Not exist product...</div>
     <div v-if="getProducts.length && hasNextPage" class="products__navi navi-products">
       <div class="navi-products__button">
         <button
@@ -135,6 +135,9 @@ export default {
           }
           this.clearAnyFilter("page=");
           this.setDefaultCatalogValues(res);
+        })
+        .finally(() => {
+          this.$store.state.isCatalogSkeleton = false;
         })
     },
     setDefaultCatalogValues(res) {

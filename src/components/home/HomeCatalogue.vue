@@ -7,6 +7,7 @@
             {{ productsLabel }}
           </router-link>
         </div>
+        <SkeletonProduct v-if="isSkeleton"/>
         <div v-if="catalogProducts.length !== 0" class="products__items">
           <product-item
             v-for="product in catalogProducts"
@@ -16,7 +17,6 @@
             @addToCart="addToCart"
           />
         </div>
-        <SkeletonProduct v-else />
       </div>
     </div>
   </div>
@@ -35,7 +35,8 @@ export default {
     return {
       catalogProducts: [],
       productsLabel: '',
-      favoriteItems: []
+      favoriteItems: [],
+      isSkeleton: true,
     }
   },
   components: {
@@ -59,10 +60,11 @@ export default {
       const data = `category_ids[]=${id}&sort[column]=id&sort[type]=desc&perPage=4`
       this.$store.dispatch('setFilters', data)
         .then(res => {
-            if (res.data.length !== 0) {
-              this.catalogProducts = res.data;
-              this.productsLabel = res.data[0].category.name;
-            }
+          this.catalogProducts = res.data;
+          this.productsLabel = res.data[0].category.name;
+        })
+        .finally(() => {
+          this.isSkeleton = false;
         })
     }
   },

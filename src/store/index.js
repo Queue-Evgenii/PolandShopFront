@@ -38,6 +38,7 @@ const store = createStore({
     maxCategoryPage: 1,
     currentPage: 1,
     catalog: [],
+    isCatalogSkeleton: true,
     tempUserData: {
       userInfo: {
         email: '',
