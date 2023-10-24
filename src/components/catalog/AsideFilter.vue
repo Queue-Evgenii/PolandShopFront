@@ -80,9 +80,11 @@ export default {
       this.setFilters();
     },
     clearAnyFilter(param) {
+      console.log(param);
       const index = this.$store.state.filterParams.indexOf(param);
       if (index >= 0) {
         this.$store.state.filterParams.splice(index, 1);
+        console.log(this.$store.state.filterParams);
       }
     },
     addMinPriceString(value) {
@@ -156,7 +158,8 @@ export default {
       this.createRange();
     },
     setFilters() {
-      this.setStartupPage();
+      this.clearAnyFilter(`page=${this.$store.state.currentPage}`)
+      this.$store.state.filterParams.push("page=1");
       this.$store.dispatch("setFilters", this.$store.state.filterParams.join("&"))
         .then(res => {
           if(this.isFirstCall) {
@@ -169,16 +172,15 @@ export default {
           this.$store.state.isCatalogSkeleton  = false;
         })
     },
-    setStartupPage()  {
-      this.clearAnyFilter("page=");
-      this.$store.state.currentPage = 1;
-      this.$store.state.filterParams.push("page=1");
-    },
     setDefaultCatalogValues(res) {
       this.$store.state.catalog = res.data;
       this.$store.state.currentPage = 1;
       this.$store.state.maxCategoryPage = res.meta.last_page;
-    }
+    },
+    isExistFilter(param) {
+      const item = this.$store.state.filterParams.find(el => el.includes(param));
+      return this.$store.state.filterParams.indexOf(item);
+    },
   },
   mounted() {
     this.onChecked(this.currentCategoryId);

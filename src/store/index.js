@@ -34,7 +34,7 @@ const store = createStore({
     favoriteItems: [],
     categories: [],
     deliveriesData: null,
-    filterParams: ["sort[type]=asc", "sort[column]=price", "page=1"],
+    filterParams: ["sort[type]=desc", "sort[column]=id"],
     maxCategoryPage: 1,
     currentPage: 1,
     catalog: [],

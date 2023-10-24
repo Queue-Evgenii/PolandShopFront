@@ -32,14 +32,15 @@
       class="subslider__wrapper"
     >
       <swiper-slide v-for="item in subSlides" :key="item.id">
-        <router-link  class="subslider__slide" :to="{name: 'catalogList', params: {id: item.id}}">
+        <router-link
+          class="subslider__slide"
+          :to="{name: 'catalogList', params: {id: item.id}}"
+          @click="filterReset()">
           <div class="subslider__image"><img v-if="item.preview" :src="item.preview" alt=""></div>
           <div class="subslider__label">{{ item.name }}</div>
         </router-link>
       </swiper-slide>
     </swiper>
-
-    <!-- <span class="loading" v-if="subSlides.length === 0"></span> -->
     <div v-else class="skeleton">
       <div class="skeleton-item"></div>
       <div class="skeleton-item"></div>
@@ -154,6 +155,11 @@ export default {
   computed: {
     subSlides () {
       return this.$store.state.categories.filter(item => item.children.length === 0);
+    }
+  },
+  methods: {
+    filterReset() {
+      this.$store.state.filterParams = ["sort[type]=desc", "sort[column]=id"]
     }
   },
   components: {

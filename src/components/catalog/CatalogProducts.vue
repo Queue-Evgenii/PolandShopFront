@@ -100,15 +100,22 @@ export default {
         localStorage.setItem('cartItems', JSON.stringify(cartItems))
       }
     },
-    clearAnyFilter(param) {
+    isExistFilter(param) {
       const item = this.$store.state.filterParams.find(el => el.includes(param));
-      const index = this.$store.state.filterParams.indexOf(item);
+      return this.$store.state.filterParams.indexOf(item);
+    },
+    clearAnyFilter(param) {
+      const index = this.isExistFilter(param)
       if (index >= 0) {
         this.$store.state.filterParams.splice(index, 1);
       }
     },
     setNewSortFilter(string) {
       this.clearAnyFilter("sort[type]");
+      if (!this.isExistFilter("sort[column]")) {
+        this.clearAnyFilter("sort[column]");
+        this.$store.state.filterParams.push("sort[column]=price");
+      }
       this.$store.state.filterParams.push(string);
       this.setFilters(false);
     },
@@ -149,6 +156,7 @@ export default {
       if (!this.hasNextPage) return;
 
       this.$store.state.currentPage++;
+      this.clearAnyFilter("page=");
 
 
       const string = `page=${this.$store.state.currentPage}`;

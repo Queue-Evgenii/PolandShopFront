@@ -57,7 +57,7 @@ export default {
       this.favoriteItems = this.$store.state.favoriteItems;
     },
     getProductsByCategoryId(id) {
-      const data = `category_ids[]=${id}&sort[column]=id&sort[type]=desc&perPage=4`
+      const data = `category_ids[]=${id}&perPage=4`
       this.$store.dispatch('setFilters', data)
         .then(res => {
           this.catalogProducts = res.data;

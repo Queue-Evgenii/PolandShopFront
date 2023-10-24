@@ -44,7 +44,8 @@ export default {
       this.isVisible = !this.isVisible;
     },
     filterReset(id) {
-      this.$store.state.filterParams = ["sort[type]=asc", "sort[column]=price", "page=1", `category_ids[]=${id}`];
+      this.$store.state.filterParams = ["sort[type]=desc", "sort[column]=id", "page=1", `category_ids[]=${id}`];
+      console.log(this.$store.state.filterParams)
       this.$store.state.categories.forEach(el => {
         el.isChecked = false;
         if (el.id == id) {
@@ -54,7 +55,6 @@ export default {
       this.setFilters();
     },
     setFilters() {
-      this.setStartupPage();
       this.$store.dispatch("setFilters", this.$store.state.filterParams.join("&"))
         .then(res => {
           this.setDefaultCatalogValues(res);
@@ -68,18 +68,6 @@ export default {
       this.$store.state.currentPage = 1;
       this.$store.state.maxCategoryPage = res.meta.last_page;
     },
-    setStartupPage() {
-      this.$store.state.currentPage = 1;
-
-      const item = this.$store.state.filterParams.find(el => el.includes("page="));
-      const index = this.$store.state.filterParams.indexOf(item);
-
-      if (index >= 0) {
-        this.$store.state.filterParams.splice(index, 1);
-      }
-      
-      this.$store.state.filterParams.push("page=1");
-    }
   },
 }
 </script>

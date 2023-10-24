@@ -84,14 +84,14 @@
       <div v-if="$store.state.deliveriesData.time" class="delivery-commodity__row flex delivery-commodity__time">
         {{ $store.state.deliveriesData.time }}
       </div>
-      <div v-if="$store.state.deliveriesData.payment" class="delivery-commodity__row flex delivery-commodity__delivery">
-        {{ $store.state.deliveriesData.payment }}
+      <div v-if="box.price" class="delivery-commodity__row flex delivery-commodity__delivery">
+        {{ box.price + ' zl' }}
       </div>
       <div v-if="$store.state.deliveriesData.protected" class="delivery-commodity__row flex delivery-commodity__protected">
         {{ $store.state.deliveriesData.protected }}
       </div>
-      <div v-if="MethodPayment" class="delivery-commodity__row flex delivery-commodity__payment">
-        {{ MethodPayment }}
+      <div v-if="box.methodPayment" class="delivery-commodity__row flex delivery-commodity__payment">
+        {{ box.methodPayment }}
       </div>
     </div>
   </div>
@@ -463,10 +463,10 @@
         }
         return this.productItem.price / 1.23;
       },
-      MethodPayment() {
+      box() {
         if (this.productItem.id && this.$store.state.deliveriesData.boxes[Number(this.productItem.box_id)].methodPayment) {
           const item = this.$store.state.deliveriesData.boxes.find(el =>  el.id === Number(this.productItem.box_id))
-          return item.methodPayment;
+          return item;
         }
         return false;
       }

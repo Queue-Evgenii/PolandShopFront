@@ -1,8 +1,7 @@
 <template>
   <div class="info-product__about about-product info-product__block">
     <h3 class="about-product__title  info-product__title">Opis</h3>
-    <p class="about-product__text">
-      {{aboutText}}
+    <p v-html="aboutText" class="about-product__text">
     </p>
   </div>
 </template>
