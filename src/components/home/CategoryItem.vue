@@ -19,7 +19,7 @@
         >
           <router-link
             :to="{name: 'catalogList', params: {id: link.id}}"
-            @click="filterReset(link.id)"
+            @click="filterReset()"
           >
             <span>{{ link.name }}</span>
           </router-link>
@@ -43,30 +43,8 @@ export default {
     categoryToggle() {
       this.isVisible = !this.isVisible;
     },
-    filterReset(id) {
-      this.$store.state.filterParams = ["sort[type]=desc", "sort[column]=id", "page=1", `category_ids[]=${id}`];
-      console.log(this.$store.state.filterParams)
-      this.$store.state.categories.forEach(el => {
-        el.isChecked = false;
-        if (el.id == id) {
-          el.isChecked = true;
-        }
-      })
-      this.setFilters();
-    },
-    setFilters() {
-      this.$store.dispatch("setFilters", this.$store.state.filterParams.join("&"))
-        .then(res => {
-          this.setDefaultCatalogValues(res);
-        })
-        .finally(() => {
-          this.$store.state.isCatalogSkeleton;
-        })
-    },
-    setDefaultCatalogValues(res) {
-      this.$store.state.catalog = res.data;
-      this.$store.state.currentPage = 1;
-      this.$store.state.maxCategoryPage = res.meta.last_page;
+    filterReset() {
+      this.$store.state.filterParams = ["sort[type]=asc", "sort[column]=name"];
     },
   },
 }

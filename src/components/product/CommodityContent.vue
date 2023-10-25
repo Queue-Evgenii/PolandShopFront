@@ -5,9 +5,9 @@
       <!-- <div class="content-commodity__offer">{{ productItem.offer }}</div> -->
       <div class="content-commodity__info">
         <div v-if="productItem.code" class="content-commodity__info-row"><span>Kod: </span>{{ productItem.code }}</div>
-        <div v-else class="skeleton-item"></div>
+        <div v-else class="skeleton-item skeleton-line"></div>
         <div v-if="productItem.category" class="content-commodity__info-row"><span>Kategori: </span>{{ productItem.category.name }}</div>
-        <div v-else class="skeleton-item"></div>
+        <div v-else class="skeleton-item skeleton-line"></div>
       </div>
       <div v-if="productItem.discount" class="content-commodity__price flex">
         <div class="content-commodity__new-price flex">
@@ -97,6 +97,19 @@
   </div>
 </template>
 <style lang="stylus">
+.content-commodity {
+  .skeleton-line {
+    height: 24px;
+    margin 6px 0
+    border-radius: 5px;
+    &:nth-child(1) {
+      width: 35%;
+    }
+    &:nth-child(2) {
+      width: 25%;
+    }
+  }
+}
 .delivery-commodity {
   padding: 24px 0;
   display: flex;
@@ -143,7 +156,7 @@
   .content-commodity{
     display: flex;
     flex-direction: column
-    row-gap: 20px 
+    row-gap: 20px
     &__title{
       font-weight: 700;
       font-size: 30px;
@@ -479,7 +492,7 @@
         this.amountInput--
       },
       isCorrectValue(value) {
-        const number = +value; 
+        const number = +value;
         const condition = (number instanceof Number||typeof number === 'number') && !isNaN(number);
         if (condition) {
           if (number > this.productItem.quantity) {

@@ -50,7 +50,7 @@
   </div>
 </template>
 <style lang="stylus">
-  
+
   @media(min-width: 769px) {
     .subslider__slide:hover{
       box-shadow: 2px 2px 4px 2px #d5d5d5
@@ -159,7 +159,7 @@ export default {
   },
   methods: {
     filterReset() {
-      this.$store.state.filterParams = ["sort[type]=desc", "sort[column]=id"]
+      this.$store.state.filterParams = ["sort[type]=asc", "sort[column]=name"]
     }
   },
   components: {

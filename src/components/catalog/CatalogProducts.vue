@@ -14,14 +14,14 @@
     <SkeletonProduct v-if="$store.state.isCatalogSkeleton" />
     <div v-else-if="getProducts.length !== 0" :class="isRowDirection ? 'products-items-row' : ''" class="products__items" ref="products">
       <product-item
-        v-for="product in getProducts" 
-        :key="product.id" 
+        v-for="product in getProducts"
+        :key="product.id"
         :product="product"
         :class="isRowDirection ? 'item-product-row' : ''"
         :isRowDirection="isRowDirection"
         @addToCart="addToCart"
       />
-    
+
     </div>
     <div v-else class="products__title">Not exist product...</div>
     <div v-if="getProducts.length && hasNextPage" class="products__navi navi-products">
@@ -58,9 +58,6 @@ export default {
     }
   },
   computed: {
-    getPaginateCount () {
-      return Math.ceil(this.getProducts.length / this.perPage);
-    },
     isAuthorised() {
       return localStorage.getItem("access_token");
     },
@@ -133,6 +130,11 @@ export default {
       this.setNewSortFilter(string);
     },
     setFilters(isNextPage) {
+      if (!isNextPage) {
+        this.clearAnyFilter(`page=${this.$store.state.currentPage}`);
+
+        this.$store.state.filterParams.push("page=1");
+      }
       this.$store.dispatch("setFilters", this.$store.state.filterParams.join("&"))
         .then(res => {
           this.$store.state.maxCategoryPage = res.meta.last_page;
@@ -140,7 +142,6 @@ export default {
             this.$store.state.catalog.push(...res.data);
             return;
           }
-          this.clearAnyFilter("page=");
           this.setDefaultCatalogValues(res);
         })
         .finally(() => {
@@ -210,7 +211,7 @@ export default {
         width 100px
       }
       &.active{
-        background-color #fff  
+        background-color #fff
         color: #FF0031;
       }
     }

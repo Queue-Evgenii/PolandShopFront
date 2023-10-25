@@ -12,7 +12,7 @@
           </div>
         </div>
       </div>
-      <section-filter 
+      <section-filter
         name="Rodzaj produktu"
         :currentCategoryId="currentCategoryId"
         :class="{'active' : currentNavItem}"
@@ -80,11 +80,9 @@ export default {
       this.setFilters();
     },
     clearAnyFilter(param) {
-      console.log(param);
       const index = this.$store.state.filterParams.indexOf(param);
       if (index >= 0) {
         this.$store.state.filterParams.splice(index, 1);
-        console.log(this.$store.state.filterParams);
       }
     },
     addMinPriceString(value) {
@@ -146,7 +144,7 @@ export default {
         this.upperValue = Math.round(values[1]);
 
         if (this.timeout) clearTimeout(this.timeout);
-        
+
         this.timeout = setTimeout(() => {
           this.addMaxPriceString(this.upperValue);
         }, 300);
@@ -195,7 +193,7 @@ export default {
     }
   }
 }
-</script> 
+</script>
 <style lang="stylus">
   .settings-products__body.active .sidebar-filter{
     transform translate(0, 140px)
