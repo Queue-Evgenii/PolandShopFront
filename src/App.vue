@@ -35,6 +35,7 @@
   img{vertical-align: top;}
   h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight: 400;}
   a{color: inherit;}
+
   body {
     font-family Arial, "Helvetica Neue", Helvetica, sans-serif
     margin 0;
@@ -42,6 +43,9 @@
     font-size 16px
     line-height 18px
     overflow-x: hidden
+    &._scroll-lock {
+      overflow: hidden;
+    }
   }
   .wrapper{
     position relative
@@ -234,8 +238,11 @@
     max-width 195px
     text-align center
     font-size: 16px;
-    border: 2px solid #000000;
+    //border: 2px solid #000000;
+    border: 2px solid transparent;
     border-radius: 10px;
+    background-color: rgb(255, 90, 0);
+    color: #fff !important;
   }
   &__favorite {
     width 28px
@@ -353,7 +360,7 @@
         box-shadow: 10px 10px 40px rgba(0, 0, 0, 0.2);
         border: 2px solid #FF0031;
         .actions-product__button:not(._disabled){
-          border: 2px solid #FF0031;
+          //border: 2px solid #FF0031;
           color: #FF0031
           transition all 0.3s ease 0s
         }

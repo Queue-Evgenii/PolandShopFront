@@ -4,20 +4,27 @@
       <div class="top-header__container container">
         <div class="top-header__content flex">
           <nav class="menu">
-            <button v-bind:class="{active: burgerActive}" @click="burgerActive = !burgerActive" type="button" class="menu__icon icon-menu">
+            <button :class="{active: burgerActive}" @click="burgerActive ? burgerClose() : burgerOpen()" type="button" class="menu__icon icon-menu">
               <span></span>
               <span></span>
               <span></span>
             </button>
-            <div v-bind:class="{active: burgerActive}" class="menu__body" >
+            <div :class="{active: burgerActive}" class="menu__body" >
               <!-- <main-menu v-if="!MobileWidth" :mainMenu="mainMenu" /> -->
               <span></span>
               <shop-menu v-if="!MobileWidth" :shopMenu="shopMenu" />
             </div>
+            <div :class="{active: burgerActive}" @click="burgerClose()" class="menu__background"></div>
           </nav>
           <a href="/" class="top-header__logo"><img src="@/assets/img/header/logo.png" alt=""></a>
           <div class="top-header__phones phones-header flex">
-            <button @click="activePhones = !activePhones" type="button" class="phones-header__icon"><img src="@/assets/img/header/icon/phone.png" alt=""></button>
+            <button
+              @click="activePhones = !activePhones"
+              type="button"
+              class="phones-header__icon"
+            >
+              <img src="@/assets/img/header/icon/phone.png" alt="">
+            </button>
             <div class="phones-header__items" v-bind:class="{active: activePhones}">
               <a href="tel:48884074848" class="phones-header__item hover-underline">+48 884 074 848</a>
             </div>
@@ -42,8 +49,17 @@
             </div>
           </div>
         </div>
-        <input-header v-if="!MobileWidth" @searchProducts="searchProducts" :class="searchActive ? 'active' : ''" />
-        <SearchList v-if="!MobileWidth" :products="products" @closeSearchList="closeSearchList" :class="searchListActive ? 'active' : ''" />
+        <input-header
+          v-if="!MobileWidth"
+          @searchProducts="searchProducts"
+          :class="searchActive ? 'active' : ''"
+        />
+        <SearchList
+          v-if="!MobileWidth"
+          :products="products"
+          @closeSearchList="closeSearchList"
+          :class="searchListActive ? 'active' : ''"
+        />
       </div>
     </div>
     <div class="header__bottom bottom-header">
@@ -345,75 +361,91 @@
     }
   }
   .menu{
-  display: none;
-  @media(max-width: 768px){
-    display: block;
-  }
-  &__body{
-    position: fixed;
-    width: 85%;
-    height: 100%;
-    background: #ead9ea;
-    z-index: 11;
-    transition: all 0.5s ease 0s;
-    top 0
-    left: -100%;
-    overflow: auto;
-    padding: 80px 20px 70px 20px;
-    &.active{
-      left: 0;
-    }
-    span{
-      display block
-      width 100%
-      height 2px
-      background-color rgba(139,139,139,0.522)
-      margin 25px 0
-    }
-  }
-  &__icon {
     display: none;
-    @media(max-width: 992px){
-      background: transparent;
+    @media(max-width: 768px){
       display: block;
-      position: relative;
-      flex: 0 0 28px;
-      width: 28px;
-      height: 20px;
-      cursor: pointer;
-      z-index: 12;
-      background-color: transparent;
-      span{
-        transition: all 0.5s ease 0s;
+      &__background {
+        content: '';
+        display none;
         position: absolute;
-        top: calc( 50% - 1.55px);
+        top: 0;
         left: 0;
-        width: 100%;
-        height: 3px;
-        background-color: #3d3d3d;
-        &:first-child{
-          top: 0;
-        }
-        &:last-child{
-          top: auto;
-          bottom: 0;
+        right: 0;
+        width: 100vw;
+        height 100vh;
+        z-index: 2;
+        background-color: rgba(0,0,0,0.5);
+        &.active {
+          display: block;
+          cursor: pointer;
         }
       }
+    }
+    &__body {
+      position: absolute;
+      width: 85%;
+      height: 100vh;
+      background: #ead9ea;
+      z-index: 11;
+      transition: all 0.5s ease 0s;
+      top 0
+      left: -100%;
+      padding: 70px 20px 70px 20px;
       &.active{
+        left: 0;
+        overflow: auto;
+      }
+      span{
+        display block
+        width 100%
+        height 2px
+        background-color rgba(139,139,139,0.522)
+        margin 25px 0
+      }
+    }
+    &__icon {
+      display: none;
+      @media(max-width: 992px){
+        background: transparent;
+        display: block;
+        position: relative;
+        flex: 0 0 28px;
+        width: 28px;
+        height: 20px;
+        cursor: pointer;
+        z-index: 12;
+        background-color: transparent;
         span{
-          transform: scale(0);
+          transition: all 0.5s ease 0s;
+          position: absolute;
+          top: calc( 50% - 1.55px);
+          left: 0;
+          width: 100%;
+          height: 3px;
+          background-color: #3d3d3d;
           &:first-child{
-            transform: rotate(-45deg);
-            top: calc(50% - 2px);
+            top: 0;
           }
           &:last-child{
-            transform: rotate(45deg);
-            bottom: calc(50% - 1px);
+            top: auto;
+            bottom: 0;
+          }
+        }
+        &.active{
+          span{
+            transform: scale(0);
+            &:first-child{
+              transform: rotate(-45deg);
+              top: calc(50% - 2px);
+            }
+            &:last-child{
+              transform: rotate(45deg);
+              bottom: calc(50% - 1px);
+            }
           }
         }
       }
     }
-  }
 }
 .navigation{
   a{
@@ -492,6 +524,15 @@ export default {
     },
     closeSearchList() {
       this.searchListActive = false;
+    },
+    burgerOpen() {
+      this.burgerActive = true;
+      window.scrollTo(0, 0);
+      document.querySelector("body").classList.add("_scroll-lock");
+    },
+    burgerClose() {
+      this.burgerActive = false;
+      document.querySelector("body").classList.remove("_scroll-lock");
     }
   }
 }

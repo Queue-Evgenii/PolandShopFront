@@ -11,7 +11,12 @@
               <div class="product-page__content content">
                 <div class="product-page__commodity commodity-page">
                   <commodity-slider :galleryItems="galleryItems" @openPopup="openPopup" :isPopup="false"/>
-                  <commodity-content :productItem="this.productItem" @openAlertPopup="openAlertPopup" @inputValue="inputValue" @changeFavoriteList="changeFavoriteList"/>
+                  <commodity-content
+                    :productItem="this.productItem"
+                    @openAlertPopup="openAlertPopup"
+                    @inputValue="inputValue"
+                    @changeFavoriteList="changeFavoriteList"
+                  />
                 </div>
                 <div class="product-page__info info-product">
                   <about-product v-if="this.productItem.description" :aboutText="this.productItem.description" />
