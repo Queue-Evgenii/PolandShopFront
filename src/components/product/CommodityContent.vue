@@ -8,7 +8,7 @@
         <div v-if="!productItem.code" class="skeleton-item skeleton-line"></div>
         <div v-else class="content-commodity__info-row"><span>Kod: </span>{{ productItem.code }}</div>
         <div v-if="!productItem.category" class="skeleton-item skeleton-line"></div>
-        <div v-else class="content-commodity__info-row"><span>Kategori: </span>{{ productItem.category.name }}</div>
+        <div v-else class="content-commodity__info-row"><span>Kategoria: </span>{{ productItem.category.name }}</div>
       </div>
       <div v-if="!productItem.price" class="skeleton-item skeleton-line sk_price"></div>
       <div v-else-if="productItem.discount" class="content-commodity__price flex">
@@ -46,8 +46,8 @@
           </div>
           <div v-if="productItem.promoCod" class="actions-commodity__token flex"><span>Cod Kupon:</span><input type="text" placeholder="_ _ _ _ _ _ _ _ _ _ _ _ _"></div>
         </div>
-        <div v-if="productItem.quantity > 0" class="actions-commodity__status flex yes"><span>W magazynie - </span>{{ productItem.labelMark ? productItem.labelMark : productItem.quantity }}</div>
-        <div v-else-if="productItem.quantity" class="actions-commodity__status flex no"><span>W magazynie - </span>{{ productItem.labelMark ? productItem.labelMark : productItem.quantity }}</div>
+        <div v-if="productItem.quantity > 0" class="actions-commodity__status flex yes"><span>Na magazynie - </span>{{ productItem.labelMark ? productItem.labelMark : productItem.quantity }}</div>
+        <div v-else-if="productItem.quantity" class="actions-commodity__status flex no"><span>Na magazynie - </span>{{ productItem.labelMark ? productItem.labelMark : productItem.quantity }}</div>
         <div class="actions-commodity__row">
           <button
             v-if="isCorrectValue(amountInput)"
@@ -65,10 +65,10 @@
             class="actions-commodity__cart button"
             @click="openAlertPopup()"
           >
-            <span>Kup w 1 kliknięciu</span>
+            <span>Kup w 1 Kliknięcie</span>
           </button>
           <button v-else type="button" class="actions-commodity__buy button _disabled">
-            <span>Kup w 1 kliknięciu</span>
+            <span>Kup w 1 kliknięcie</span>
           </button>
         </div>
         <div class="actions-commodity__row">
