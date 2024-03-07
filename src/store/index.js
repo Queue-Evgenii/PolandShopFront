@@ -13,6 +13,7 @@ import addFavoritesModules from './modules/addFavorites.modules';
 import removeFavoritesModules from './modules/removeFavorites.modules';
 import searchModules from './modules/search.modules';
 import filtersModules from './modules/filters.modules';
+import checkoutModules from './modules/checkout.modules';
 
 function getCartFromLocalStorage() {
   const favoriteItems = localStorage.getItem('cartItems')
@@ -95,6 +96,7 @@ const store = createStore({
     removeFavoritesModules,
     searchModules,
     filtersModules,
+    checkoutModules,
   }
 });
 

@@ -46,7 +46,7 @@
               <span>{{ confirmData.price }} PLN</span>
             </div>
             <div class="confirm-button">
-              <button class="form-payment__submit button" type="button">Confirm</button>
+              <button @click="confirmPayment()" class="form-payment__submit button" type="button">Confirm</button>
             </div>
           </div>
         </div>
@@ -95,6 +95,12 @@ export default {
     }
   },
   methods: {
+    confirmPayment() {
+      this.$store.dispatch('submitCheckout', this.confirmData.id)
+        .then(res => {
+          window.location.replace(`https://sandbox-go.przelewy24.pl/trnRequest/${res.data.token}`);
+        });
+    },
     submitForm(value) {
       const items = this.previewProducts.map(item => {
         return {
@@ -103,11 +109,12 @@ export default {
         }
       });
       const data = { ...value, items };
-      this.$store.dispatch('submitDelivery', data).then(res => {
-        this.confirmData = res.data.data;
-      });
-      this.isConfirm = true;
-      window.scrollTo(0, 0);
+      this.$store.dispatch('submitDelivery', data)
+        .then(res => {
+          this.confirmData = res.data.data;
+          this.isConfirm = true;
+          window.scrollTo(0, 0);
+        });
     },
     openForm() {
       this.isOpen = true;
@@ -129,7 +136,7 @@ export default {
       this.openPopup = false;
     },
     goBack() {
-      this.$store.state.quickBuy = [];// this is a question
+      this.$store.state.quickBuy = [];
       this.openPopup = false;
     },
     productPreview() {

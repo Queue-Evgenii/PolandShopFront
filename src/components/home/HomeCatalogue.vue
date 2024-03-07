@@ -61,7 +61,7 @@ export default {
       this.$store.dispatch('setFilters', data)
         .then(res => {
           this.catalogProducts = res.data;
-          this.productsLabel = res.data[0].category.name;
+          this.productsLabel = res.data.length !== 0 ? res.data[0].category.name : null;
         })
         .finally(() => {
           this.isSkeleton = false;
