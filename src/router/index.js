@@ -59,6 +59,11 @@ const routes = [
     name: 'reklamacje',
     component: () => import('../views/ReklamaciView.vue')
   },
+  {
+    path: '/confirmed',
+    name: 'confirmed',
+    component: () => import('../views/ConfirmedView.vue')
+  },
 ]
 
 // const router = createRouter({
