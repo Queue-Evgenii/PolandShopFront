@@ -40,6 +40,11 @@ const routes = [
     component: () => import('../views/PaymentView.vue')
   },
   {
+    path: '/log-out/',
+    name: 'logout',
+    component: () => import('../views/LogOutView.vue')
+  },
+  {
     path: '/:pathMatch(.*)',
     name: 'PageNotFound',
     component: () => import('../views/PageNotFound.vue')
@@ -66,16 +71,7 @@ const routes = [
   },
 ]
 
-// const router = createRouter({
-//   history: createWebHistory(process.env.BASE_URL),
-//   routes
-// })
-
-// export default router
-
 const router = createRouter({
-  // mode: 'history',
-  // base: process.env.BASE_URL,
   history: createWebHistory(process.env.BASE_URL),
   routes,
   linkActiveClass: 'current',

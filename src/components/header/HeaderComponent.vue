@@ -4,7 +4,12 @@
       <div class="top-header__container container">
         <div class="top-header__content flex">
           <nav class="menu">
-            <button :class="{active: burgerActive}" @click="burgerActive ? burgerClose() : burgerOpen()" type="button" class="menu__icon icon-menu">
+            <button
+              :class="{active: burgerActive}"
+              @click="burgerActive ? burgerClose() : burgerOpen()"
+              type="button"
+              class="menu__icon icon-menu"
+            >
               <span></span>
               <span></span>
               <span></span>
@@ -36,17 +41,21 @@
           </form>
           <div class="top-header__actions actions-header flex">
             <router-link :to="{name: 'favorite'}" class="actions-header__favorite actions-header__item flex">
-              <div href="#" class="actions-header__link hover-underline">Uratowany</div>
-              <div href="#" class="actions-header__favorite-icon"><span>{{ this.$store.state.favoriteItems.length }}</span></div>
+              <div class="actions-header__link hover-underline">Uratowany</div>
+              <div class="actions-header__favorite-icon"><span>{{ this.$store.state.favoriteItems.length }}</span></div>
             </router-link>
             <div class="actions-header__cart actions-header__item flex" @click="openPopup">
-              <div href="#" class="actions-header__link hover-underline">Moje zakupy</div>
-              <div href="#" class="actions-header__cart-icon"><span>{{ this.$store.state.cartList.length }}</span></div>
+              <div class="actions-header__link hover-underline">Moje zakupy</div>
+              <div class="actions-header__cart-icon"><span>{{ this.$store.state.cartList.length }}</span></div>
             </div>
-            <div class="actions-header__user actions-header__item flex">
-              <a href="#" class="actions-header__link hover-underline">Obszar osobisty</a>
-              <a href="#" class="actions-header__user-icon"></a>
-            </div>
+            <router-link :to="{name: 'logout'}" v-if="this.$store.state.isAuthorized" class="actions-header__user actions-header__item flex">
+              <div class="actions-header__link hover-underline">Log Out</div>
+              <div class="actions-header__logout-icon"></div>
+            </router-link>
+            <router-link :to="{name: 'payment'}" v-else class="actions-header__user actions-header__item flex">
+              <div class="actions-header__link hover-underline">Log In</div>
+              <div class="actions-header__user-icon"></div>
+            </router-link>
           </div>
         </div>
         <input-header
@@ -319,6 +328,14 @@
       height 27px
       flex 0 0 26px
     }
+    &__logout-icon{
+      background-image url('../../../src/assets/img/header/icon/logout.png')
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+      height 27px
+      flex 0 0 26px
+    }
     &__link{
       color: #3D3D3D;
       white-space nowrap
@@ -534,6 +551,6 @@ export default {
       this.burgerActive = false;
       document.querySelector("body").classList.remove("_scroll-lock");
     }
-  }
+  },
 }
 </script>

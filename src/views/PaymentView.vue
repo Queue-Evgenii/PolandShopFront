@@ -1,5 +1,5 @@
 <template>
-  <div class="payment">
+  <div :class="( isLoading ? 'ov-hidden' : '') + ' payment'">
     <layout-default>
       <main class="page">
         <div class="page__payment payment-page">
@@ -46,7 +46,12 @@
               <span>{{ confirmData.price }} PLN</span>
             </div>
             <div class="confirm-button">
-              <button @click="confirmPayment()" class="form-payment__submit button" type="button">Confirm</button>
+              <template v-if="isLoading">
+                <div class="loader">
+                  <img style="max-width: 400px;" src="./../assets/img/main/icons/loader-new.gif" alt="">
+                </div>
+              </template>
+              <button v-else @click="confirmPayment()" class="form-payment__submit button" type="button">Confirm</button>
             </div>
           </div>
         </div>
@@ -86,6 +91,7 @@ export default {
       deliveryPrice: "5",
       openPopup: false,
       isExistData: false,
+      isLoading: false,
       onPayment: {
         name: "Do you really want go back??",
         nclass: "on-payment",
@@ -96,6 +102,7 @@ export default {
   },
   methods: {
     confirmPayment() {
+      this.isLoading = true;
       this.$store.dispatch('submitCheckout', this.confirmData.id)
         .then(res => {
           window.location.replace(`https://sandbox-go.przelewy24.pl/trnRequest/${res.data.token}`);
@@ -157,10 +164,7 @@ export default {
     }
   },
   mounted() {
-    this.productPreview()
-    if (localStorage.getItem("access_token")) {
-      this.$store.state.isAuthorized = true
-    }
+    this.productPreview();
   },
   computed: {
     isQuickBuy() {
@@ -194,7 +198,9 @@ export default {
 .confirm-page__container {
   max-width: 992px;
   .confirm-button{
-    text-align center
+    display flex
+    justify-content center
+    align-items center
     margin-top 24px;
   }
   .preview-product__item {
@@ -449,6 +455,7 @@ export default {
     }
   }
   &__submit{
+    text-align center
     color: #fff
     font-weight 700
     font-size 14px

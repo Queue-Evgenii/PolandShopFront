@@ -132,6 +132,9 @@ export default {
     this.getFavorites();
     this.getCategories();
     this.getProductDeliveries();
+    if (localStorage.getItem("access_token")) {
+      this.$store.state.isAuthorized = true
+    }
   }
 }
 </script>
