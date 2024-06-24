@@ -3,15 +3,7 @@
     <layout-default>
       <div class="confirmed__data">
         <template v-if="paymentStatus != 'error'">
-          <h2>Payment successful!</h2>
-          <p>
-            Thank you for your purchase!
-            Your payment has been processed successfully.
-            You will receive a confirmation email shortly with the details of your order.
-          </p>
-          <p>
-            Your Order ID is: {{ orderId }}.
-          </p>
+          <h2>Dzeńkujemy, czekamy na potwierdzenia wpłaty!</h2>
         </template>
         <template v-else>
           <h2>Payment declined!</h2>
