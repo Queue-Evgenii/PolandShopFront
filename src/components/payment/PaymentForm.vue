@@ -307,7 +307,7 @@ export default {
           {
             id: 6,
             type: 'select',
-            name: 'Polska',
+            name: 'Kraj',
             objId: 'country',
             validation: true,
           },
@@ -380,7 +380,7 @@ export default {
           {
             id: 6,
             type: 'select',
-            name: 'Polska',
+            name: 'Kraj',
             objId: 'country',
             validation: true,
           },
@@ -460,7 +460,7 @@ export default {
         nip_ue: '',
         address: '',
         zip_code: '',
-        country: 'Polska',
+        country: '',
         city: '',
         phone: '',
       },
@@ -587,13 +587,16 @@ export default {
         user_id: JSON.parse(localStorage.getItem('user_id')),
         user_information: {},
         deliver_information: {},
+        alt_deliver_information: {},
         confirm_regulations_store: this.agreements.confirm_regulations_store,
         confirm_privacy_policy: this.agreements.confirm_privacy_policy,
       };
       Object.assign(data.user_information, this.userInfo);
       Object.assign(data.deliver_information, this.deliveryInfo);
+      Object.assign(data.alt_deliver_information, this.otherDeliveryInfo);
       data.user_information.fullname = this.userInfo.name + ' ' + this.userInfo.surname;
       data.deliver_information.fullname = this.deliveryInfo.name + ' ' + this.deliveryInfo.surname;
+      data.alt_deliver_information.fullname = this.otherDeliveryInfo.name + ' ' + this.otherDeliveryInfo.surname;
       data.user_information.agree_to_receive_information = this.agreements.agree_to_receive_information;
       this.$emit('submitForm', data);
     },
