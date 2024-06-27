@@ -8,12 +8,19 @@
               <login-form @openForm="openForm" />
             </div>
             <div class="payment-hidden row">
-              <div :class="isOpen || $store.state.isAuthorized ? 'logged' : ''" class="payment-page__content content"
-                ref="mainForm">
-                <div class="payment-page__title">Zapłata za towary</div>
+              <div
+                :class="isOpen || $store.state.isAuthorized ? 'logged' : ''"
+                class="payment-page__content content"
+                ref="mainForm"
+              >
+                <div class="payment-page__title">{{ formTitle }}</div>
                 <div v-if="isOpen || $store.state.isAuthorized" class="payment-page__columns">
-                  <payment-form @goBackPopup="goBackPopup" @registration="registration" @submitForm="submitForm" />
-                  <div class="payment-page__preview preview-payment">
+                  <payment-form
+                    @goBackPopup="goBackPopup"
+                    @registration="registration"
+                    @submitForm="submitForm"
+                  />
+                  <div v-if="$store.state.cartList.length > 0" class="payment-page__preview preview-payment">
                     <div class="preview-payment__content">
                       <div class="preview-payment__row flex">
                         <div class="preview-payment__title">Podsumowanie zamowienia</div>
@@ -35,7 +42,7 @@
               </div>
             </div>
           </div>
-          <div v-else class="confirm-page__container container">
+          <div v-else class="confirmation__container container">
             <preview-product :Items="previewProducts" />
             <div class="preview-payment__total-price flex">
               <span class="preview-payment__label">Delivery total price</span>
@@ -64,6 +71,8 @@
   </div>
 </template>
 <script>
+import { PaymentFormStatus } from '../models/PaymentFormStatus'
+
 import PagePopup from '@/components/PagePopup'
 
 import LayoutDefault from '@/layouts/LayoutDefault'
@@ -123,18 +132,25 @@ export default {
           window.scrollTo(0, 0);
         });
     },
+    registration(data) {
+      this.$store.dispatch("registration", data).then(res => {
+        localStorage.setItem("access_token", JSON.stringify(res.data.access_token))
+        localStorage.setItem("user_id", JSON.stringify(res.data.id))
+        this.$store.state.isAuthorized = true;
+        this.$store.state.paymentFormStatus = PaymentFormStatus.None;
+        
+        if (this.$store.state.cartList.length > 0) {
+          this.openForm();
+          return;
+        }
+        this.$router.replace({name: "home"});
+      });
+    },
     openForm() {
       this.isOpen = true;
       if (!this.$store.state.isAuthorized) {
         this.$refs.mainForm.scrollIntoView({ behavior: "smooth" });
       }
-    },
-    registration(data) {
-      this.$store.dispatch("registration", data).then(res => {
-        localStorage.setItem("access_token", JSON.stringify(res.data.access_token))
-        this.$store.state.isAuthorized = true;
-        this.$refs.mainForm.scrollIntoView({ behavior: "smooth" });
-      });
     },
     goBackPopup() {
       this.openPopup = true;
@@ -167,6 +183,9 @@ export default {
     this.productPreview();
   },
   computed: {
+    formTitle() {
+      return this.$store.state.paymentFormStatus === PaymentFormStatus.Registration ? "Tworzenie konta" : "Zapłata za towary";
+    },
     isQuickBuy() {
       return this.$store.state.isQuickBuy
     },
@@ -195,7 +214,7 @@ export default {
 }
 </script>
 <style lang="stylus">
-.confirm-page__container {
+.confirmation__container {
   max-width: 992px;
   .confirm-button{
     display flex

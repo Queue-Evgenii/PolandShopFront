@@ -305,37 +305,6 @@ export default {
             }
           ]
         },
-        {
-          id: 4,
-          title: 'Pomoc i informacje',
-          items: [
-            {
-              id: 1,
-              label: 'Informacje o dostawie',
-              href: '#'
-            },
-            {
-              id: 2,
-              label: 'Zwrot i wymiana',
-              href: '#'
-            },
-            {
-              id: 3,
-              label: 'Pomoc',
-              href: '#'
-            },
-            {
-              id: 4,
-              label: 'Połącz się z nami',
-              href: '#'
-            },
-            {
-              id: 5,
-              label: 'Covid-19',
-              href: '#'
-            }
-          ]
-        }
       ],
     }
   }

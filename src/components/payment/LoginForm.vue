@@ -48,8 +48,21 @@
     <div class="form-payment__section new-account-section">
       <div class="form-payment__title fz-24">Nowy Klient</div>
       <div class="login-form__actions form-payment__section-btn flex">
-        <button type="button" @click="openForm();$store.state.isNewAccount = false" class="login-form__without-log form-payment__cancel button">Zakupy bez rejestracji</button>
-        <button type="button" @click="openForm();$store.state.isNewAccount = true" class="login-form__submit form-payment__cancel button account">Stwórz konto</button>
+        <button
+          v-if="this.$store.state.cartList.length > 0"
+          type="button"
+          @click="withoutRegistrationButtonClickHandle"
+          class="login-form__without-log form-payment__cancel button"
+        >
+          Zakupy bez rejestracji
+        </button>
+        <button
+          type="button"
+          @click="registrateButtonClickHandle"
+          class="login-form__submit form-payment__cancel button account"
+        >
+          Stwórz konto
+        </button>
       </div>
     </div>
   </form>
@@ -57,6 +70,7 @@
 <script>
 import { useVuelidate } from '@vuelidate/core'
 import { required, email, minLength } from '@vuelidate/validators'
+import { PaymentFormStatus } from '../../models/PaymentFormStatus';
 export default{
   setup () {
     return { v$: useVuelidate() }
@@ -68,7 +82,6 @@ export default{
         password: '',
       },
       error: '',
-      existAccount: true,
     }
   },
   validations() {
@@ -81,18 +94,36 @@ export default{
   },
   methods: {
     async authorization() {
+      this.$store.state.paymentFormStatus = PaymentFormStatus.None;
+
       const isFormCorrect = await this.v$.$validate();
       if (!isFormCorrect) return;
+
       this.$store.dispatch("authorization", this.loginForm)
         .then((res) => {
-          localStorage.setItem("access_token", JSON.stringify(res.data.token))
+          localStorage.setItem("access_token", JSON.stringify(res.data.token));
+
           this.$store.state.isAuthorized = true;
-          this.$store.state.isNewAccount = false;
-          this.openForm()
+
+          if (this.$store.state.cartList.length > 0) {
+            this.openForm();
+            return;
+          }
+          this.$router.replace({name: "home"});
         })
         .catch(err => {
-          this.error = err.response.data.error
-        })
+          this.error = err.response.data.error;
+        });
+    },
+    withoutRegistrationButtonClickHandle() {
+      this.$store.state.paymentFormStatus = PaymentFormStatus.WithoutRegistration;
+      this.openForm();
+    },
+    registrateButtonClickHandle() {
+      localStorage.removeItem("userInfo")
+      localStorage.removeItem("deliveryInfo")
+      this.$store.state.paymentFormStatus = PaymentFormStatus.Registration;
+      this.openForm();
     },
     openForm() {
       this.$emit('openForm');

@@ -1,6 +1,6 @@
 <template>
   <form class="payment-page__form form-payment">
-    <div v-if="!$store.state.isAuthorized" class="form-payment__section">
+    <div v-if="isRegistration" class="form-payment__section">
       <div class="form-payment__title">Szybkie zakupy</div>
       <ul class="form-payment__block">
         <FormItem
@@ -11,7 +11,6 @@
           @onBlur="onBlur"
         />
         <FormItem
-          v-if="$store.state.isNewAccount"
           :destination="'userInfo'"
           :dataItem="formItems.password"
           :vuelidate="v$['userInfo'][formItems.password.objId]"
@@ -29,13 +28,24 @@
         />
       </ul>
     </div>
-    <div v-if="$store.state.isAuthorized" class="form-payment__section">
+    <div
+      v-if="isAuthorized || isWithoutRegistration"
+      class="form-payment__section"
+    >
       <div class="form-payment__title">Adres dostawy</div>
       <ul class="form-payment__block">
-        <li class="form-payment__row">
+        <li v-if="$store.state.isAuthorized" class="form-payment__row">
           <div class="form-payment__label">Adres e-mail</div>
           <div class="form-payment__input input-width">{{ $store.state.tempUserData.userInfo.email }}</div>
         </li>
+        <FormItem
+          v-else
+          :destination="'userInfo'"
+          :dataItem="formItems.email"
+          :vuelidate="v$['userInfo'][formItems.email.objId]"
+          v-model="userInfo[formItems.email.objId]"
+          @onBlur="onBlur"
+        />
         <FormItem
           v-for="item in formItems.delivery"
           :key="item.id"
@@ -69,7 +79,7 @@
         />
       </ul>
     </div>
-    <div v-if="$store.state.isAuthorized" class="form-payment__section">
+    <div v-if="isAuthorized || isWithoutRegistration" class="form-payment__section">
       <ul class="form-payment__block">
         <FormItem
           v-for="item in formItems.agreements"
@@ -89,8 +99,8 @@
     </div>
     <div class="form-payment__section-btn flex">
       <button class="form-payment__cancel button" type="button" @click="goBackPopup()">Cancel</button>
-      <button v-if="!$store.state.isNewAccount" class="form-payment__submit button" type="button" @click="submitForm()">Płacić</button>
-      <button v-else class="form-payment__submit button" type="button" @click="registration()">Registration</button>
+      <button v-if="isRegistration" class="form-payment__submit button" type="button" @click="registration()">Registration</button>
+      <button v-else class="form-payment__submit button" type="button" @click="submitForm()">Płacić</button>
     </div>
   </form>
 </template>
@@ -194,9 +204,13 @@
 import FormItem from '@/components/payment/FormItem'
 import { useVuelidate } from '@vuelidate/core'
 import { required, email, sameAs, minLength, numeric } from '@vuelidate/validators'
+import { PaymentFormStatus } from '../../models/PaymentFormStatus';
 export default {
   components: {
     FormItem,
+  },
+  props: {
+
   },
   setup () {
     return { v$: useVuelidate() }
@@ -275,7 +289,7 @@ export default {
           {
             id: 2,
             type: 'text',
-            name: 'Firma *',
+            name: 'Firma',
             placeholder: 'Firma',
             objId: 'business',
             validation: true,
@@ -283,7 +297,7 @@ export default {
           {
             id: 3,
             type: 'text',
-            name: 'NIP UE *',
+            name: 'NIP UE',
             placeholder: 'NIP UE',
             objId: 'nip_ue',
             validation: true,
@@ -348,7 +362,7 @@ export default {
           {
             id: 2,
             type: 'text',
-            name: 'Firma *',
+            name: 'Firma',
             placeholder: 'Firma',
             objId: 'business',
             validation: true,
@@ -356,7 +370,7 @@ export default {
           {
             id: 3,
             type: 'text',
-            name: 'NIP UE *',
+            name: 'NIP UE',
             placeholder: 'NIP UE',
             objId: 'nip_ue',
             validation: true,
@@ -547,8 +561,6 @@ export default {
       deliveryInfo: {
         name: { required },
         surname: { required },
-        business: { required },
-        nip_ue: { required },
         address: { required },
         zip_code: { required, numeric },
         city: { required },
@@ -558,8 +570,6 @@ export default {
       otherDeliveryInfo: {
         name: { required },
         surname: { required },
-        business: { required },
-        nip_ue: { required },
         address: { required },
         zip_code: { required, numeric },
         city: { required },
@@ -582,22 +592,36 @@ export default {
     async submitForm() {
       const isDeliveryCorrect = await this.v$.deliveryInfo.$validate();
       const isAgreementCorrect = await this.v$.agreements.$validate();
+      
       if (!isDeliveryCorrect || !isAgreementCorrect) return;
+
+      const userId = this.isWithoutRegistration ? null : JSON.parse(localStorage.getItem('user_id'));
+      const { userInfo, deliveryInfo, otherDeliveryInfo, agreements } = this;
+      const fullName = (info) => `${info.name} ${info.surname}`;
+
       const data = {
-        user_id: JSON.parse(localStorage.getItem('user_id')),
-        user_information: {},
-        deliver_information: {},
-        alt_deliver_information: {},
-        confirm_regulations_store: this.agreements.confirm_regulations_store,
-        confirm_privacy_policy: this.agreements.confirm_privacy_policy,
+        user_id: userId,
+        user_information: {
+          ...userInfo,
+          fullname: fullName(this.isWithoutRegistration ? deliveryInfo : userInfo),
+          agree_to_receive_information: agreements.agree_to_receive_information,
+        },
+        deliver_information: {
+          ...deliveryInfo,
+          fullname: fullName(deliveryInfo),
+        },
+        alt_deliver_information: {
+          ...otherDeliveryInfo,
+          fullname: fullName(otherDeliveryInfo),
+        },
+        confirm_regulations_store: agreements.confirm_regulations_store,
+        confirm_privacy_policy: agreements.confirm_privacy_policy,
       };
-      Object.assign(data.user_information, this.userInfo);
-      Object.assign(data.deliver_information, this.deliveryInfo);
-      Object.assign(data.alt_deliver_information, this.otherDeliveryInfo);
-      data.user_information.fullname = this.userInfo.name + ' ' + this.userInfo.surname;
-      data.deliver_information.fullname = this.deliveryInfo.name + ' ' + this.deliveryInfo.surname;
-      data.alt_deliver_information.fullname = this.otherDeliveryInfo.name + ' ' + this.otherDeliveryInfo.surname;
-      data.user_information.agree_to_receive_information = this.agreements.agree_to_receive_information;
+
+      if (this.isWithoutRegistration) {
+        this.setDeliveryDataToLocalStorage();
+      }
+
       this.$emit('submitForm', data);
     },
     async registration() {
@@ -615,8 +639,8 @@ export default {
           this.userInfo[key] = this.$store.state.tempUserData.userInfo[key] = res.data[key];
         }
         localStorage.setItem('user_id', JSON.stringify(res.data.id));
+        this.getDeliveryData();
       });
-      this.getDeliveryData();
     },
     getDeliveryData() {
       this.$store.dispatch('getDeliveryData').then(res => {
@@ -639,12 +663,13 @@ export default {
         this.$store.dispatch('updateUser', data);
       }
     },
-    setLoginForm() {
-      this.deliveryInfo.country = this.dropdownCountryValue;
+    setDeliveryDataToLocalStorage() {
       localStorage.setItem('userInfo', JSON.stringify(this.userInfo));
       localStorage.setItem('deliveryInfo', JSON.stringify(this.deliveryInfo));
     },
-    checkLoginForm() {
+
+    // Question! Do we need it?
+    getUserDataFromLocalStorage() {
       let data = localStorage.getItem('userInfo');
       if(data){
         data = JSON.parse(data);
@@ -661,13 +686,34 @@ export default {
     },
   },
   computed: {
+    isAuthorized() {
+      return this.$store.state.isAuthorized;
+    },
+    isRegistration() {
+      return this.$store.state.paymentFormStatus === PaymentFormStatus.Registration;
+    },
+    isWithoutRegistration() {
+      return this.$store.state.paymentFormStatus === PaymentFormStatus.WithoutRegistration;
+    },
     getData() {
-      return this.$store.state.tempUserData.userInfo
+      return this.$store.state.tempUserData.userInfo;
     }
   },
   mounted() {
-    this.checkLoginForm();
-    this.getUserData();
+    if (this.isAuthorized) {
+      if (!this.$store.state.cartList.length) {
+        this.$router.replace({name: "home"});
+        return;
+      }
+      this.getUserData();
+      return;
+    }
+    this.getUserDataFromLocalStorage();
   },
+  watch: {
+    isAuthorized() {
+      this.getUserData();
+    }
+  }
 }
 </script>

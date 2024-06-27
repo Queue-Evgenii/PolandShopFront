@@ -14,6 +14,7 @@ import removeFavoritesModules from './modules/removeFavorites.modules';
 import searchModules from './modules/search.modules';
 import filtersModules from './modules/filters.modules';
 import checkoutModules from './modules/checkout.modules';
+import { PaymentFormStatus } from '../models/PaymentFormStatus';
 
 function getCartFromLocalStorage() {
   const favoriteItems = localStorage.getItem('cartItems')
@@ -30,8 +31,10 @@ const store = createStore({
     quickBuy: [],
     recentList: [],
     isQuickBuy: false,
-    isNewAccount: false,
+    
     isAuthorized: false,
+    paymentFormStatus: PaymentFormStatus.None,
+
     favoriteItems: [],
     categories: [],
     deliveriesData: null,

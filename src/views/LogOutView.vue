@@ -42,6 +42,7 @@ export default {
   methods: {
     logout() {
       localStorage.removeItem("access_token");
+      localStorage.removeItem("user_id");
       this.$store.state.isAuthorized = false;
       setTimeout(() => {
         this.$router.push({ name: "home" });
