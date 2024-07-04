@@ -35,7 +35,7 @@
       <div class="form-payment__title">Adres dostawy</div>
       <ul class="form-payment__block">
         <li v-if="$store.state.isAuthorized" class="form-payment__row">
-          <div class="form-payment__label">Adres e-mail</div>
+          <div class="form-payment__label">Adres e-mail *</div>
           <div class="form-payment__input input-width">{{ $store.state.tempUserData.userInfo.email }}</div>
         </li>
         <FormItem
@@ -305,7 +305,7 @@ export default {
           {
             id: 4,
             type: 'text',
-            name: 'Adress',
+            name: 'Adress *',
             placeholder: 'ulica/plac koniecznie z numerem budynku',
             objId: 'address',
             validation: true,
@@ -321,7 +321,7 @@ export default {
           {
             id: 6,
             type: 'select',
-            name: 'Kraj',
+            name: 'Kraj *',
             objId: 'country',
             validation: true,
           },
@@ -378,7 +378,7 @@ export default {
           {
             id: 4,
             type: 'text',
-            name: 'Adress',
+            name: 'Adress *',
             placeholder: 'ulica/plac koniecznie z numerem budynku',
             objId: 'address',
             validation: true,
@@ -394,7 +394,7 @@ export default {
           {
             id: 6,
             type: 'select',
-            name: 'Kraj',
+            name: 'Kraj *',
             objId: 'country',
             validation: true,
           },

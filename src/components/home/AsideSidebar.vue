@@ -139,15 +139,18 @@
     visibility hidden
   }
   &__subitem{
-    padding 0 30px
+    padding 0 16px
     position relative
+    &:not(:last-child) {
+      margin-bottom 8px
+    }
     a{
       display block
       width 100%
       height 100%
       color: #3d3d3d
-      font-size: 20px;
-      line-height: 40px;
+      font-size: 16px;
+      line-height: 24px;
       
     }
     @media(min-width: 769px) {
@@ -162,9 +165,10 @@
           position absolute
           left 0
           top 33%
-          width 20px
-          height 14px
+          width 16px
+          height 8px
           background url('../../assets/img/main/icons/arrow-on-hover.png') center no-repeat
+          background-size: cover;
         }
       }
     }

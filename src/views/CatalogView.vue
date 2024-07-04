@@ -8,7 +8,11 @@
             <div class="catalog-page__row row">
               <aside class="catalog-page__sidebar sidebar">
                 <aside-sidebar v-if="SidebarWidth" />
-                <div class="settings-products__body settings-products" ref="filters">
+                <div
+                  v-if="childrenCategories.length === 0"
+                  class="settings-products__body settings-products"
+                  ref="filters"
+                >
                   <aside-filter />
                 </div>
               </aside>
@@ -18,14 +22,15 @@
                 </div>
                 <div class="catalog-page__products">
                   <catalog-products
-                    v-if="isSingleCategory"
+                    v-if="childrenCategories.length === 0"
                     :productsLabel="productsLabel"
                   />
                   <template v-else>
                     <home-catalogue
-                      v-for="item in childrenCategoriesId"
-                      :key="item"
-                      :catalogId='item'
+                      v-for="item in childrenCategories"
+                      :key="item.id"
+                      :category='item'
+                      :isCatalog="true"
                       @addToCart="addToCart"
                     />
                   </template>
@@ -82,11 +87,8 @@ export default {
   },
   data () {
     return {
-      catalogProducts: [],
-      childrenCategoriesId: [],
       productsLabel: '',
       is404: false,
-      isSingleCategory: true,
       SidebarWidth: !(window.innerWidth <= 1200),
     }
   },
@@ -104,6 +106,18 @@ export default {
         return true
       }
     },
+    childrenCategories() {
+      const { categories } = this.$store.state;
+      const parentCategory = categories.find(item => item.id === this.currentCatId);
+
+      if (parentCategory && parentCategory.children.length > 0) {
+        return parentCategory.children.map(child => 
+          categories.find(category => category.id === child.id)
+        ).filter(value => value !== undefined);
+      } else {
+        return [];
+      }
+    }
   },
   methods: {
     onResize() {

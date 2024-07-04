@@ -16,16 +16,10 @@
           </div>
         </div>
         <home-catalogue
-          catalogId='1'
-          @addToCart="addToCart"
-        />
-        <home-catalogue
-          catalogId='2'
-          @addToCart="addToCart"
-        />
-        <page-ads />
-        <home-catalogue
-          catalogId='3'
+          v-for="item in $store.state.categories"
+          :key="item.id"
+          :category='item'
+          :favoriteItems="favoriteItems"
           @addToCart="addToCart"
         />
         <recent-products v-if="recentList.length !== 0" :recentProducts="recentList" @addToCart="addToCart" />
@@ -56,7 +50,7 @@ export default {
   },
   data () {
     return {
-      productItem1: null,
+      favoriteItems: [],
       mainSlides: [
         {
           id: 1,
@@ -99,6 +93,18 @@ export default {
         localStorage.setItem('cartItems', JSON.stringify(cartItems))
       }
     },
+    getFavorites() {
+      if (this.isAuthorised) {
+        this.$store.dispatch("getFavorites").then(res => {
+          this.favoriteItems = res.data;
+        })
+        return;
+      }
+      this.favoriteItems = this.$store.state.favoriteItems;
+    },
+  },
+  mounted () {
+    this.getFavorites();
   },
   components: {
     LayoutDefault,

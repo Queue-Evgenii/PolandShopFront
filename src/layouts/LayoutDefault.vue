@@ -101,37 +101,8 @@ export default {
       this.visibilityPopup = false;
       document.body.style.overflowY = "initial"
     },
-    getFavorites() {
-      if (localStorage.getItem('access_token')) {
-        this.$store.dispatch("getFavorites").then(res => {
-          this.$store.state.favoriteItems = res.data;
-        })
-      }
-      const favItems = localStorage.getItem('favoriteItems')
-      if (favItems) {
-        this.$store.state.favoriteItems = JSON.parse(favItems);
-        return;
-      }
-      this.$store.state.favoriteItems = [];
-    },
-    getCategories() {
-      this.$store.dispatch("getCategories")
-        .then(data => {
-          this.$store.state.categories = data.data;
-          this.$store.state.categories.forEach(el => el.isChecked = false);
-        });
-    },
-    getProductDeliveries() {
-        this.$store.dispatch('getProductDeliveries')
-          .then(data => {
-            this.$store.state.deliveriesData = data;
-          });
-      },
   },
   mounted() {
-    this.getFavorites();
-    this.getCategories();
-    this.getProductDeliveries();
     if (localStorage.getItem("access_token")) {
       this.$store.state.isAuthorized = true
     }

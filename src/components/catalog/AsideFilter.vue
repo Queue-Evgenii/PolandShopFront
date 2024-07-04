@@ -181,6 +181,7 @@ export default {
     },
   },
   mounted() {
+    this.clearFilters();
     this.onChecked(this.currentCategoryId);
   },
   watch: {

@@ -48,7 +48,7 @@ export default {
     productsLabel: {
       type: String,
       required: true,
-    }
+    },
   },
   data () {
     return {
