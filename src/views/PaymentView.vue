@@ -19,6 +19,7 @@
                     @goBackPopup="goBackPopup"
                     @registration="registration"
                     @submitForm="submitForm"
+                    :errMsg="errMsg"
                   />
                   <div v-if="$store.state.cartList.length > 0" class="payment-page__preview preview-payment">
                     <div class="preview-payment__content">
@@ -101,6 +102,7 @@ export default {
       openPopup: false,
       isExistData: false,
       isLoading: false,
+      errMsg: "",
       onPayment: {
         name: "Do you really want go back??",
         nclass: "on-payment",
@@ -133,20 +135,29 @@ export default {
         });
     },
     registration(data) {
-      this.$store.dispatch("registration", data).then(res => {
-        localStorage.setItem("access_token", JSON.stringify(res.data.access_token))
-        localStorage.setItem("user_id", JSON.stringify(res.data.id))
-        this.$store.state.isAuthorized = true;
-        this.$store.state.paymentFormStatus = PaymentFormStatus.None;
-        
-        if (this.$store.state.cartList.length > 0) {
-          this.openForm();
-          return;
-        }
-        this.$router.replace({name: "home"});
-      });
+      this.$store.dispatch("registration", data)
+        .then(res => {
+          localStorage.setItem("access_token", JSON.stringify(res.data.access_token))
+          localStorage.setItem("user_id", JSON.stringify(res.data.id))
+          this.$store.state.isAuthorized = true;
+          this.$store.state.paymentFormStatus = PaymentFormStatus.None;
+          
+          if (this.$store.state.cartList.length > 0) {
+            this.openForm();
+            return;
+          }
+          this.errMsg = "";
+          this.$router.replace({name: "home"});
+        })
+        .catch(err => {
+          console.log(err)
+          if (err.response.data.errors.email !== undefined) {
+            this.errMsg = err.response.data.errors.email.join(", ");
+          }
+        });
     },
     openForm() {
+      this.errMsg = "";
       this.isOpen = true;
       if (!this.$store.state.isAuthorized) {
         this.$refs.mainForm.scrollIntoView({ behavior: "smooth" });

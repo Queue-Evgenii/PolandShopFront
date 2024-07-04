@@ -97,6 +97,9 @@
         </li>
       </ul>
     </div>
+    <div v-if="errMsg.length > 0" class="invalid-data-mark" style="margin-bottom: 16px">
+      {{ errMsg }}
+    </div>
     <div class="form-payment__section-btn flex">
       <button class="form-payment__cancel button" type="button" @click="goBackPopup()">Cancel</button>
       <button v-if="isRegistration" class="form-payment__submit button" type="button" @click="registration()">Registration</button>
@@ -210,7 +213,10 @@ export default {
     FormItem,
   },
   props: {
-
+    errMsg: {
+      type: String,
+      default: "",
+    },
   },
   setup () {
     return { v$: useVuelidate() }
