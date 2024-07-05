@@ -35,7 +35,7 @@ export default {
   },
   computed: {
     getCategories() {
-      const list = this.$store.state.categories.filter(item => item.children.length == 0)
+      const list = this.$store.state.categoriesWithProducts.filter(item => item.products.length !== 0)
       list.forEach(el => {
         el.isChecked = false;
         if (el.id == this.currentCategoryId) {
@@ -50,7 +50,7 @@ export default {
       this.$emit('onSelected');
     },
     onChecked(id) {
-      const list = this.$store.state.categories.filter(item => item.children.length == 0)
+      const list = this.$store.state.categoriesWithProducts
       this.$emit('onChecked', id);
       list.forEach(el => {
         if (el.id == id) {

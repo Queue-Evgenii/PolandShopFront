@@ -144,6 +144,9 @@
     &:not(:last-child) {
       margin-bottom 8px
     }
+    span {
+      display block
+    }
     a{
       display block
       width 100%
@@ -160,15 +163,17 @@
         }
       }
       &:hover{
-        &::before{
-          content ''
-          position absolute
-          left 0
-          top 33%
-          width 16px
-          height 8px
-          background url('../../assets/img/main/icons/arrow-on-hover.png') center no-repeat
-          background-size: cover;
+        a {
+          &::before{
+            content ''
+            position absolute
+            left 0
+            top 33%
+            width 16px
+            height 8px
+            background url('../../assets/img/main/icons/arrow-on-hover.png') center no-repeat
+            background-size: cover;
+          }
         }
       }
     }
@@ -209,7 +214,7 @@ export default {
       return this.listCategory.filter(item => item.parent_id === null)
     },
     listCategory() {
-      return this.$store.state.categories;
+      return this.$store.state.categoriesWithChild;
     }
   },
 }

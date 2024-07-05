@@ -36,7 +36,8 @@ const store = createStore({
     paymentFormStatus: PaymentFormStatus.None,
 
     favoriteItems: [],
-    categories: [],
+    categoriesWithProducts: [],
+    categoriesWithChild: [],
     deliveriesData: null,
     filterParams: ["sort[type]=asc", "sort[column]=name"],
     maxCategoryPage: 1,

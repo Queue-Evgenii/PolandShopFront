@@ -20,10 +20,15 @@
         this.$store.state.favoriteItems = [];
       },
       getCategories() {
-        this.$store.dispatch("getCategories")
+        this.$store.dispatch("getCategoriesWithProducts")
           .then(data => {
-            this.$store.state.categories = data.data;
-            this.$store.state.categories.forEach(el => el.isChecked = false);
+            this.$store.state.categoriesWithProducts = data.data;
+            this.$store.state.categoriesWithProducts.forEach(el => el.isChecked = false);
+          });
+        this.$store.dispatch("getCategoriesWithChild")
+          .then(data => {
+            this.$store.state.categoriesWithChild = data.data;
+            this.$store.state.categoriesWithChild.forEach(el => el.isChecked = false);
           });
       },
       getProductDeliveries() {

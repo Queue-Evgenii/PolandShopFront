@@ -25,15 +25,22 @@
                     v-if="childrenCategories.length === 0"
                     :productsLabel="productsLabel"
                   />
-                  <template v-else>
-                    <home-catalogue
+                  <div v-else class="catalog-page__category-tabs">
+                    <div
                       v-for="item in childrenCategories"
                       :key="item.id"
-                      :category='item'
-                      :isCatalog="true"
-                      @addToCart="addToCart"
-                    />
-                  </template>
+                       class="catalog-page__category-tab"
+                    >
+                      <router-link
+                        class="subslider__slide"
+                        :to="{name: 'catalogList', params: {id: item.id}}"
+                        @click="filterReset()"
+                      >
+                        <div class="subslider__image"><img v-if="item.preview" :src="item.preview" alt=""></div>
+                        <div class="subslider__label">{{ item.name }}</div>
+                      </router-link>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -47,6 +54,20 @@
   </div>
 </template>
 <style lang="stylus">
+.catalog-page{
+  &__category-tabs {
+    display grid
+    row-gap 32px
+    column-gap 24px
+    grid-template-columns: repeat(4, minmax(200px, 400px))
+    @media(max-width: 1400px) {
+      grid-template-columns: repeat(3, minmax(200px, 400px))
+    }
+  }
+  &__category-tab {
+    
+  }
+}
 @media(max-width: 1200px) {
   .catalog-page{
     &__content{
@@ -57,6 +78,31 @@
     }
     &__slider{
       display: none;
+    }
+    &__category-tabs {
+      grid-template-columns: repeat(4, minmax(200px, 400px))
+    }
+  }
+}
+@media(max-width: 992px) {
+  .catalog-page{
+    &__category-tabs {
+      row-gap 24px
+      grid-template-columns: repeat(3, minmax(200px, 400px))
+    }
+  }
+}
+@media(max-width: 768px) {
+  .catalog-page{
+    &__category-tabs {
+      grid-template-columns: repeat(2, minmax(200px, 400px))
+    }
+  }
+}
+@media(max-width: 520px) {
+  .catalog-page{
+    &__category-tabs {
+      grid-template-columns: repeat(1, 1fr)
     }
   }
 }
@@ -70,7 +116,6 @@ import CatalogProducts from '@/components/catalog/CatalogProducts'
 import RecentProducts from '@/components/home/RecentProducts'
 import PageAds from '@/components/PageAds'
 import NotFound from '@/components/NotFound'
-import HomeCatalogue from '../components/home/HomeCatalogue'
 export default {
   name: 'CatalogView',
   layouts: 'default',
@@ -83,7 +128,6 @@ export default {
     RecentProducts,
     PageAds,
     NotFound,
-    HomeCatalogue,
   },
   data () {
     return {
@@ -107,7 +151,7 @@ export default {
       }
     },
     childrenCategories() {
-      const { categories } = this.$store.state;
+      const categories = this.$store.state.categoriesWithChild;
       const parentCategory = categories.find(item => item.id === this.currentCatId);
 
       if (parentCategory && parentCategory.children.length > 0) {
@@ -123,6 +167,9 @@ export default {
     onResize() {
       this.SidebarWidth = !(window.innerWidth <= 1200);
     },
+    filterReset() {
+      this.$store.state.filterParams = ["sort[type]=asc", "sort[column]=name"]
+    }
   },
   mounted() {
     window.addEventListener('resize', this.onResize);

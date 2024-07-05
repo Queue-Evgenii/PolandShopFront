@@ -105,8 +105,10 @@
         background: linear-gradient(117.13deg, #FFFFFF -11.73%, #D5D5D5 105.48%);
         transition: all 0.3s ease 0s
         margin 5px 0
+        height 100%
       }
       &__image{
+        flex: 1 1 100%
         width: 100%;
         overflow: hidden;
         img{
@@ -154,7 +156,7 @@ import 'swiper/swiper.css';
 export default {
   computed: {
     subSlides () {
-      return this.$store.state.categories.filter(item => item.children.length === 0);
+      return this.$store.state.categoriesWithProducts;
     }
   },
   methods: {

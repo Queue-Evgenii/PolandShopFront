@@ -86,9 +86,17 @@ export default {
     padding 5px 10px 5px 10px
     border-radius 10px
   }
-  a.current span {
-    background-color: #FF0031;
+  a.current {
+    span {
+      background-color: #FF0031;
       color: #ffffff
+      
+    }
+    &:hover {
+      &::before {
+        display none !important
+      }
+    }
   }
 }
 </style>

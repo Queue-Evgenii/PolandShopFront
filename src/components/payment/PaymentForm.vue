@@ -298,7 +298,7 @@ export default {
             name: 'Firma',
             placeholder: 'Firma',
             objId: 'business',
-            validation: true,
+            validation: false,
           },
           {
             id: 3,
@@ -306,7 +306,7 @@ export default {
             name: 'NIP UE',
             placeholder: 'NIP UE',
             objId: 'nip_ue',
-            validation: true,
+            validation: false,
           },
           {
             id: 4,
@@ -371,7 +371,7 @@ export default {
             name: 'Firma',
             placeholder: 'Firma',
             objId: 'business',
-            validation: true,
+            validation: false,
           },
           {
             id: 3,
@@ -379,7 +379,7 @@ export default {
             name: 'NIP UE',
             placeholder: 'NIP UE',
             objId: 'nip_ue',
-            validation: true,
+            validation: false,
           },
           {
             id: 4,
@@ -464,7 +464,7 @@ export default {
         nip_ue: '',
         address: '',
         zip_code: '',
-        country: '',
+        country: 'Poland',
         city: '',
         phone: '',
       },
@@ -480,7 +480,7 @@ export default {
         nip_ue: '',
         address: '',
         zip_code: '',
-        country: '',
+        country: 'Poland',
         city: '',
         phone: '',
       },

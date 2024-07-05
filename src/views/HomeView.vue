@@ -16,7 +16,7 @@
           </div>
         </div>
         <home-catalogue
-          v-for="item in $store.state.categories"
+          v-for="item in $store.state.categoriesWithProducts"
           :key="item.id"
           :category='item'
           :favoriteItems="favoriteItems"

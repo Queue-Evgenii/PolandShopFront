@@ -23,7 +23,7 @@ export default {
   },
   computed: {
     categoryItems() {
-      return this.$store.state.categories.slice(0, 3);
+      return this.$store.state.categoriesWithProducts.filter(item => item.parent_id === null).slice(0, 3);
     },
   },
 }
