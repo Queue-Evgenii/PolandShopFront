@@ -88,13 +88,10 @@
         {{ $store.state.deliveriesData.time }}
       </div>
       <div v-if="box.price" class="delivery-commodity__row flex delivery-commodity__delivery">
-        {{ box.price + ' zl' }}
+        {{ (box.price / 1.23).toFixed(2) + ' PLN netto, 23% VAT ' + box.price + ' PLN' }}
       </div>
       <div v-if="$store.state.deliveriesData.protected" class="delivery-commodity__row flex delivery-commodity__protected">
         {{ $store.state.deliveriesData.protected }}
-      </div>
-      <div v-if="box.methodPayment" class="delivery-commodity__row flex delivery-commodity__payment">
-        {{ box.methodPayment }}
       </div>
     </div>
   </div>

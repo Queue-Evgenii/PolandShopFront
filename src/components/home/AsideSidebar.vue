@@ -119,6 +119,8 @@
     line-height: 50px;
     color: #3D3D3D;
     position relative
+  }
+  &__arrow{ 
     cursor pointer
     &::before{
       content ''
@@ -128,7 +130,7 @@
       right 0
       top 43%
       background url('../../assets/img/main/icons/arrow-bottom.png') center no-repeat
-      transform rotate(-90deg)
+      transform rotate(0deg)
       transition transform 0.3s ease 0s
     }
   }

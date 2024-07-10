@@ -6,7 +6,7 @@
           <div class="home-page__container container">
             <div class="home-page__row row">
               <aside class="home-page__sidebar sidebar">
-                <aside-sidebar :asideItems="categoryItems" />
+                <aside-sidebar />
               </aside>
               <div class="home-page__content content">
                 <main-slider :mainSlides="mainSlides" />
@@ -16,7 +16,7 @@
           </div>
         </div>
         <home-catalogue
-          v-for="item in $store.state.categoriesWithProducts"
+          v-for="item in mainCategoryWithProducts"
           :key="item.id"
           :category='item'
           :favoriteItems="favoriteItems"
@@ -40,10 +40,20 @@ import PageAds from '@/components/PageAds'
 export default {
   name: 'HomeView',
   layouts: 'default',
-  created () {
-    this.categoryItems = this.categoryList;
-  },
   computed: {
+    mainCategoryWithProducts() {
+      const parents = this.$store.state.categoriesWithProducts.filter(item => item.parent_id === null);
+
+      this.$store.state.categoriesWithProducts.forEach(category => {
+        parents.forEach(parent => {
+          if (category.parent_id == parent.id) parent.products.push(...category.products);
+        })
+      })
+
+      parents.forEach(item => item.products = item.products.filter(el => el.status === true))
+
+      return parents;
+    },
     recentList () {
       return this.$store.state.recentList;
     },

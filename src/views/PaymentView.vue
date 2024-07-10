@@ -46,11 +46,11 @@
           <div v-else class="confirmation__container container">
             <preview-product :Items="previewProducts" />
             <div class="preview-payment__total-price flex">
-              <span class="preview-payment__label">Delivery total price</span>
+              <span class="preview-payment__label">Przesyłka <span>brutto</span></span>
               <span>{{ confirmData.deliver_price }} PLN</span>
             </div>
             <div class="preview-payment__total-price flex">
-              <span class="preview-payment__label">Całkowity</span>
+              <span class="preview-payment__label">Razem do zapłaty <span>brutto</span></span>
               <span>{{ confirmData.price }} PLN</span>
             </div>
             <div class="confirm-button">
@@ -390,6 +390,9 @@ export default {
     padding 15px 0
   }
   &__label {
+    span {
+      font-size: 28px
+    }
   }
   &__total-price {
     font-weight: 700;

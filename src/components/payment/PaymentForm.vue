@@ -56,13 +56,11 @@
           v-model="deliveryInfo[item.objId]"
           @onBlur="onBlur"
         />
-        <li class="form-payment__row">
-          <div class="radio-block">
-            <input id="other-address" type="checkbox" class="form-payment__radiobox">
-            <label @click="isOther = !isOther" for="other-address" class="form-payment__label-radio">Proszę użyć innego adresu rozliczeniowego</label>
-          </div>
-        </li>
       </ul>
+      <div class="radio-block" style="padding-left: 25px">
+        <input id="other-address" type="checkbox" class="form-payment__radiobox">
+        <label @click="isOther = !isOther" for="other-address" class="form-payment__label-radio">Proszę użyć innego adresu rozliczeniowego</label>
+      </div>
     </div>
     <div class="form-payment__section dropdown-section" :class="isOther ? '_active' : ''" ref="dropdownSection">
       <div class="form-payment__title">Adres dostawy</div>
@@ -149,6 +147,7 @@
     transform: rotateY(0);
     transition: transform 0.5s ease 0s;
     height max-content
+    margin-top: 48px
   }
 }
 .dropdown-menu{
@@ -347,6 +346,14 @@ export default {
             objId: 'phone',
             validation: true,
           },
+          {
+            id: 9,
+            type: 'textarea',
+            name: 'Wiadomość',
+            placeholder: 'Wiadomość',
+            objId: 'comment',
+            validation: false,
+          },
         ],
         otherDelivery: [
           {
@@ -467,6 +474,7 @@ export default {
         country: 'Poland',
         city: '',
         phone: '',
+        comment: '',
       },
       agreements: {
         confirm_regulations_store: false,

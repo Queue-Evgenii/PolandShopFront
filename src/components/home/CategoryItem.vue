@@ -2,15 +2,20 @@
   <li class="sidebar-category__item"
      :class="[{'withoutArr': item.children.length === 0},{'active': isVisible}]"
   >
-     <router-link
-      v-if="item.children.length === 0"
-      :to="{name: 'catalogList', params: {id: item.id}}"
-      class="sidebar-category__item-title" ref="title"
-      @click="filterReset(item.id)"
-    >
-      <span>{{ item.name }}</span>
-    </router-link>
-     <div v-else class="sidebar-category__item-title" @click="categoryToggle()" ref="title"><span>{{ item.name }}</span></div>
+    <div class="sidebar-category__item-title" ref="title">
+      <router-link
+        :to="{name: 'catalogList', params: {id: item.id}}"
+        class="sidebar-category__item-title" ref="title"
+        @click="filterReset(item.id)"
+      >
+        <span>{{ item.name }}</span>
+      </router-link>
+      <div
+        v-if="item.children.length !== 0"
+        @click="categoryToggle()"
+        class="sidebar-category__arrow"
+      ></div>
+    </div>
      <ul class="sidebar-category__sublist" ref="sublist">
         <li
           class="sidebar-category__subitem"
@@ -51,9 +56,9 @@ export default {
 </script>
 <style lang="stylus">
 .sidebar-category__item.active{
-  .sidebar-category__item-title{
+  .sidebar-category__arrow{
     &::before{
-      transform rotate(0)
+      transform rotate(-90deg)
     }
   }
   .sidebar-category__sublist{
@@ -63,7 +68,7 @@ export default {
   }
 }
 .sidebar-category__item.withoutArr{
-  .sidebar-category__item-title{
+  .sidebar-category__arrow{
     &::before{
       display none
     }

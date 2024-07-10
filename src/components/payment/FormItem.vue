@@ -44,7 +44,22 @@
         </div>
       </template>
       <div v-else class="radio-block form-payment__row">
-        <input
+        <textarea 
+          v-if="isTextarea"
+          :name="dataItem.objId"
+          :value="formValue"
+          :id="dataItem.objId"
+          :placeholder="dataItem.placeholder"
+          rows="4"
+          :class="[
+            isTextarea ? 'form-payment__input input-width' : 'form-payment__radiobox',
+            vuelidate && vuelidate.$error ? 'invalid-data-input' : '',
+            vuelidate && vuelidate.$dirty ? 'valid-data-input' : '',
+          ]"
+          @change="onBlur(dataItem.objId, destination, dataItem.validation)"
+          @input="updateFormValue($event.target.value)"
+        ></textarea>
+        <input v-else
           :name="dataItem.objId"
           :value="formValue"
           :id="dataItem.objId"
@@ -116,13 +131,16 @@ export default {
       }
     },
     isCheckbox() {
-      return this.dataItem.type === 'checkbox' ? true : false;
+      return this.dataItem.type === 'checkbox';
     },
     isRadio() {
-      return this.dataItem.type === 'radio' ? true : false;
+      return this.dataItem.type === 'radio';
     },
     isText() {
-      return this.dataItem.type === 'text' ? true : false;
+      return this.dataItem.type === 'text';
+    },
+    isTextarea() {
+      return this.dataItem.type === 'textarea';
     },
   },
   methods: {

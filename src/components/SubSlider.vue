@@ -3,10 +3,9 @@
     <swiper
       v-if="subSlides.length !== 0"
       :modules="modules"
-      :space-between="15"
+      :space-between="24"
       :loop="true"
       :scrollbar="false"
-      :navigation="true"
       :breakpoints="{
             1590: {
               slidesPerView: 4
@@ -70,7 +69,6 @@
       gap: 40px
       align-items center
       min-width: 0
-      padding-right 150px
       position relative
       overflow-y: hidden
       min-height: 140px
