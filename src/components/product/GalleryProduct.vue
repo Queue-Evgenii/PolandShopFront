@@ -1,5 +1,5 @@
 <template>
-  <div v-if="productImages" class="info-product__gallery gallery-product info-product__block">
+  <div v-if="productImages && productImages.length > 0" class="info-product__gallery gallery-product info-product__block">
     <div class="info-product__title">Product photo:</div>
     <div class="gallery-product__items">
       <div class="gallery-product__item" v-for="item in productImages" :key="item.id">

@@ -10,11 +10,52 @@
       <div class="cart-block" v-if="cartList.length !== 0">
         <cart-item :product="product" v-for="product in cartList" :key="product.id" @closePopup="closePopup"/>
         <div class="cart-page__payment payment-cart">
-          <div class="payment-cart__cupon"></div>
+          <template v-if="$store.state.deliveriesData">
+            <div class="delivery">
+              <div class="payment-cart__row end flex">
+                <div class="payment-cart__sub-price bold"><vat-price :basePrice="cartTotalCost" /></div>
+              </div>
+              <div class="payment-cart__row flex">
+                <div class="payment-cart__label">Razem za towary:</div>
+                <div class="payment-cart__total-price">
+                  {{ cartTotalCost }} PLN
+                </div>
+              </div>
+            </div>
+            <div class="delivery">
+              <!-- 
+              <div class="payment-cart__row end flex">
+                <div class="delivery__label">
+                  {{ $store.state.deliveriesData.title }}
+                </div>
+              </div>
+              -->
+              <div class="payment-cart__row end flex">
+                <div class="delivery__label">
+                  {{ $store.state.deliveriesData.time }}
+                </div>
+              </div>
+              <div class="payment-cart__row end flex">
+                <div class="delivery__label">
+                  {{ $store.state.deliveriesData.protected }}
+                </div>
+              </div>
+              <div class="payment-cart__row end flex">
+                <div class="payment-cart__sub-price bold"><vat-price :basePrice="cartDeliveryCost" /></div>
+              </div>
+              <div class="payment-cart__row flex">
+                <div class="payment-cart__label">Razem za dostawę:</div>
+                <div class="payment-cart__total-price">
+                  {{ cartDeliveryCost }} PLN
+                </div>
+              </div>
+            </div>
+          </template>
+          
           <div class="payment-cart__row flex">
             <div class="payment-cart__label">Razem do zapłaty:</div>
             <div v-if="sale()" class="payment-cart__sale item-cart__sale"><span>Rabat</span>{{ sale() + '%' }}</div>
-            <div class="payment-cart__total-price">{{cartTotalCost}} PLN</div>
+            <div class="payment-cart__total-price">{{ cartTotalCost + (cartDeliveryCost ? cartDeliveryCost : 0) }} PLN</div>
           </div>
           <div class="payment-cart__button-box flex">
             <router-link :to="{name: 'payment'}" @click="closePopup()" class="payment-cart__button button"><span @click="notQuickBuy()">Zapłać za towar</span></router-link>
@@ -29,9 +70,11 @@
 </template>
 <script>
 import CartItem from '@/components/cart/CartItem'
+import VatPrice from '@/components/VatPrice'
 export default {
   components: {
     CartItem,
+    VatPrice,
   },
   props: {
     cartList: {
@@ -40,6 +83,41 @@ export default {
     }
   },
   computed: {
+    cartDeliveryCost() {
+        const cart = this.$store.state.cartList;
+        const boxes = this.$store.state.deliveriesData.boxes;
+
+        if (!cart.length) return 0;
+
+        const groups = {}; 
+        for (let item of cart) {
+            if (!groups[item.box_id]) groups[item.box_id] = [];
+            groups[item.box_id].push(item);
+        }
+
+        let totalCost = 0;
+
+        for (let boxId in groups) {
+            const box = boxes.find(b => b.id == boxId);
+            if (!box) continue;
+
+            const boxSize = Number(box.size);
+            let totalVolume = 0;
+
+            for (let item of groups[boxId]) {
+                const itemVolume = Number(item.weight ?? item.size ?? 0);
+                totalVolume += itemVolume * item.amount;
+            }
+
+            if (boxSize <= 0) continue;
+
+            const boxesNeeded = Math.ceil(totalVolume / boxSize);
+
+            totalCost += boxesNeeded * box.price;
+        }
+
+        return totalCost;
+    },
     cartTotalCost() {
       let result = 0;
       if(this.cartList.length > 0){
@@ -74,6 +152,17 @@ export default {
 }
 </script>
 <style lang="stylus">
+
+.delivery {
+  border-bottom: 1px solid #8B8B8B;
+  padding: 8px 0 16px
+  &__label {
+    font-size: 16px;
+    line-height: 1.25;
+    color: #3D3D3D;
+  }
+}
+
 .cart-page__component{
   margin 0 auto
   flex: 0 1 1600px
@@ -205,9 +294,14 @@ export default {
 }
 .payment-cart {
   &__row {
-    padding 24px 0
+    padding 18px 64px 14px
+    margin 0 auto
     width 100%
-    justify-content space-around
+    justify-content space-between;
+    &.end {
+      padding 16px 64px 4px
+      justify-content end;
+    }
   }
   &__label,
   &__total-price {
@@ -215,6 +309,14 @@ export default {
     font-size: 30px;
     line-height: 34px;
     color: #3D3D3D;
+  }
+  &__sub-price {
+    font-size: 20px;
+    line-height: 1.25;
+    color: #3D3D3D;
+    &.bold {
+      font-weight: 700;
+    }
   }
   &__button-box{
     width 100%

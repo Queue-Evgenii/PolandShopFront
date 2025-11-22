@@ -231,7 +231,7 @@ export default {
           validation: true,
         },
         password: {
-          type: 'text',
+          type: 'password',
           name: 'Hasło *',
           placeholder: 'Hasło',
           objId: 'password',

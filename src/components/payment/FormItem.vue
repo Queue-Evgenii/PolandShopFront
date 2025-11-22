@@ -137,7 +137,7 @@ export default {
       return this.dataItem.type === 'radio';
     },
     isText() {
-      return this.dataItem.type === 'text';
+      return this.dataItem.type === 'text' || this.dataItem.type === 'password';
     },
     isTextarea() {
       return this.dataItem.type === 'textarea';

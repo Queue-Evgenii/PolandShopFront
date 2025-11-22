@@ -21,7 +21,7 @@
                 <div class="product-page__info info-product">
                   <about-product v-if="this.productItem.description" :aboutText="this.productItem.description" />
                   <!-- <table-product :tableProductItems="productItem.description" /> -->
-                  <gallery-product v-if="this.productItem.images" :productImages="galleryItems" />
+                  <gallery-product v-if="this.productItem.images && this.productItem.images.length > 0" :productImages="galleryItems" />
                   <reviews-product v-if="this.productItem.feedbacks" :ReviewsProductItems="productItem.feedbacks" />
                   <!-- <button class="info-product__more">Uczyć się więcej</button> -->
                 </div>
@@ -38,7 +38,7 @@
      @closePopup="closePopup"
      :popupOutput="this.productItem"
     >
-      <commodity-slider v-if="galleryItems" :galleryItems="galleryItems" :isPopup="true"/>
+      <commodity-slider v-if="galleryItems && galleryItems.length > 0" :galleryItems="galleryItems" :isPopup="true"/>
       <commodity-content :productItem="this.productItem" />
     </page-popup>
     <page-popup 
@@ -172,7 +172,7 @@ export default {
       return parseInt(this.$route.params.id) || 1;
     },
     galleryItems() {
-      if(this.productItem.images) {
+      if(this.productItem.images && this.productItem.images.length > 0) {
         let items = this.productItem.images;
         items.unshift(this.productItem.preview)
         return items

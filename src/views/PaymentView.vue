@@ -32,9 +32,32 @@
                         </div>
                       </div>
                       <preview-product :Items="this.previewProducts" />
+                      <template v-if="$store.state.deliveriesData">
+                        <div class="preview-payment__sub-price end flex">
+                          <span><vat-price :basePrice="cartTotalCost" /></span>
+                        </div>
+                        <div class="preview-payment__total-price bdb flex">
+                          <span class="preview-payment__label">Razem za towary:</span>
+                          <span>{{ cartTotalCost }} PLN</span>
+                        </div>
+                        <div class="preview-payment__sub-price end flex" style="font-weight: 400">
+                          <span>{{ $store.state.deliveriesData.time }}</span>
+                        </div>
+                        <div class="preview-payment__sub-price end flex" style="font-weight: 400">
+                          <span>{{ $store.state.deliveriesData.protected }}</span>
+                        </div>
+                        <div class="preview-payment__sub-price end flex">
+                          <span><vat-price :basePrice="cartDeliveryCost" /></span>
+                        </div>
+                        <div class="preview-payment__total-price bdb flex">
+                          <span class="preview-payment__label">Razem za dostawę:</span>
+                          <span>{{ cartDeliveryCost }} PLN</span>
+                        </div>
+                      </template>
+                      
                       <div class="preview-payment__total-price flex">
                         <span class="preview-payment__label">Całkowity</span>
-                        <span>{{ cartTotalCost }} PLN</span>
+                        <span>{{ cartTotalCost + (cartDeliveryCost ? cartDeliveryCost : 0) }} PLN</span>
                       </div>
                     </div>
                     <div class="sticky-relative"></div>
@@ -45,6 +68,14 @@
           </div>
           <div v-else class="confirmation__container container">
             <preview-product :Items="previewProducts" />
+            <template v-if="$store.state.deliveriesData">
+              <div class="preview-payment__sub-price end flex" style="font-weight: 400">
+                <span>{{ $store.state.deliveriesData.time }}</span>
+              </div>
+              <div class="preview-payment__sub-price end flex" style="font-weight: 400">
+                <span>{{ $store.state.deliveriesData.protected }}</span>
+              </div>
+            </template>
             <div class="preview-payment__total-price flex">
               <span class="preview-payment__label">Przesyłka <span>brutto</span></span>
               <span>{{ confirmData.deliver_price }} PLN</span>
@@ -82,6 +113,7 @@ import PreviewProduct from '@/components/PreviewProduct'
 import PaymentAlert from '@/components/product/PaymentAlert'
 import PageAds from '@/components/PageAds'
 import LoginForm from '@/components/payment/LoginForm'
+import VatPrice from '@/components/VatPrice'
 export default {
   name: 'CatalogView',
   layouts: 'default',
@@ -93,6 +125,7 @@ export default {
     PaymentAlert,
     PagePopup,
     LoginForm,
+    VatPrice
   },
   data() {
     return {
@@ -221,6 +254,41 @@ export default {
       }
       return result;
     },
+    cartDeliveryCost() {
+        const cart = this.$store.state.cartList;
+        const boxes = this.$store.state.deliveriesData.boxes;
+
+        if (!cart.length) return 0;
+
+        const groups = {}; 
+        for (let item of cart) {
+            if (!groups[item.box_id]) groups[item.box_id] = [];
+            groups[item.box_id].push(item);
+        }
+
+        let totalCost = 0;
+
+        for (let boxId in groups) {
+            const box = boxes.find(b => b.id == boxId);
+            if (!box) continue;
+
+            const boxSize = Number(box.size);
+            let totalVolume = 0;
+
+            for (let item of groups[boxId]) {
+                const itemVolume = Number(item.weight ?? item.size ?? 0);
+                totalVolume += itemVolume * item.amount;
+            }
+
+            if (boxSize <= 0) continue;
+
+            const boxesNeeded = Math.ceil(totalVolume / boxSize);
+
+            totalCost += boxesNeeded * box.price;
+        }
+
+        return totalCost;
+    },
   },
 }
 </script>
@@ -263,6 +331,10 @@ export default {
   .preview-payment__total-price {
     line-height 1
     font-size 28px
+  }
+  .preview-payment__sub-price {
+    line-height 1
+    font-size 22px
   }
   @media(min-width: 679px) {
     .preview-product__label,
@@ -398,8 +470,19 @@ export default {
     font-weight: 700;
     justify-content space-between
     gap: 10px
-    padding 24px 0
-    border-top 1px solid rgba(#8B8B8B, 0.3)
+    padding 16px 0 24px
+    &.bdb {
+      border-bottom: 1px solid rgba(139,139,139,0.3)
+    }
+  }
+  &__sub-price {
+    font-weight: 700;
+    justify-content space-between
+    gap: 10px
+    padding 16px 0 0px
+    &.end {
+      justify-content end
+    }
   }
 }
 .form-payment {
