@@ -105,7 +105,7 @@ export default {
             let totalVolume = 0;
 
             for (let item of groups[boxId]) {
-                const itemVolume = Number(item.weight ?? item.size ?? 0);
+                const itemVolume = Number(item.size ?? 0);
                 totalVolume += itemVolume * item.amount;
             }
 
