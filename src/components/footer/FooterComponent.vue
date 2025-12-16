@@ -7,7 +7,26 @@
           <div class="top-footer__column" v-for="column in footerColumn" :key="column.id">
             <h5 class="top-footer__title">{{ column.title }}</h5>
             <ul class="top-footer__list" v-for="item in column.items" :key="item.id">
-              <li class="top-footer__item hover-underline"><router-link :to="item.href" class="top-footer__link">{{ item.label }}</router-link></li>
+              <li class="top-footer__item hover-underline">
+                <template v-if="item.extern">
+                  <a
+                    :href="item.href"
+                    class="top-footer__link"
+                    target="_blank"
+                    rel="noreferrer noopener"
+                  >
+                    {{ item.label }}
+                  </a>
+                </template>
+                <template v-else>
+                  <router-link
+                    :to="item.href"
+                    class="top-footer__link"
+                  >
+                    {{ item.label }}
+                  </router-link>
+                </template>
+              </li>
             </ul>
           </div>
         </div>
@@ -228,21 +247,16 @@ export default {
             },
             {
               id: 2,
-              label: 'Zwrot i wymiana',
-              href: '#'
-            },
-            {
-              id: 3,
               label: 'Pomoc',
               href: '#'
             },
             {
-              id: 4,
+              id: 3,
               label: 'Połącz się z nami',
               href: '#'
             },
             {
-              id: 5,
+              id: 4,
               label: 'Covid-19',
               href: '#'
             }
@@ -269,16 +283,6 @@ export default {
             },
             {
               id: 5,
-              label: 'Regulamin',
-              href: '/regulamin'
-            },
-            {
-              id: 6,
-              label: 'Reklamacje',
-              href: '/reklamacje'
-            },
-            {
-              id: 7,
               label: 'Polityka prywatności',
               href: '/polityka-prywatnosci'
             },
@@ -302,11 +306,17 @@ export default {
               id: 4,
               label: 'Inne wyjątki',
               href: '#'
+            },
+            {
+              id: 5,
+              label: 'Kontakty',
+              href: 'https://polandgroups.pl/kontakt',
+              extern: true,
             }
           ]
         },
       ],
     }
-  }
+  },
 }
 </script>
