@@ -38,7 +38,7 @@
           <footer-copy v-if="FooterWidth" />
           <div class="bottom-footer__column bottom-footer__social social-footer">
             <a href="#" class="social-footer__twitter"><img src="@/assets/img/header/icon/twitter-icon.png" alt=""></a>
-            <a href="#" class="social-footer__facebook"><img src="@/assets/img/header/icon/fb-icon.png" alt=""></a>
+            <a href="https://www.facebook.com/profile.php?id=100054433513313" target="_blank" class="social-footer__facebook"><img src="@/assets/img/header/icon/fb-icon.png" alt=""></a>
           </div>
           <div class="bottom-footer__column bottom-footer__payment payment-footer">
             <h5 class="payment-footer__title">Metody Płatności</h5>
@@ -107,7 +107,7 @@
     }
     @media(max-width: 688px) {
       &:last-child,&:nth-child(3){
-        display none
+        // display none
       }
     }
   }
@@ -256,32 +256,6 @@ export default {
               href: '#'
             },
             {
-              id: 4,
-              label: 'Covid-19',
-              href: '#'
-            }
-          ]
-        },
-        {
-          id: 2,
-          title: 'Informacje o firmie',
-          items: [
-            {
-              id: 1,
-              label: 'IWarunki korzystania',
-              href: '#'
-            },
-            {
-              id: 3,
-              label: 'Informacje o pliku plików cookie',
-              href: '#'
-            },
-            {
-              id: 4,
-              label: 'Inne wyjątki',
-              href: '#'
-            },
-            {
               id: 5,
               label: 'Polityka prywatności',
               href: '/polityka-prywatnosci'
@@ -292,21 +266,6 @@ export default {
           id: 3,
           title: 'O firmie',
           items: [
-            {
-              id: 1,
-              label: 'IWarunki korzystania',
-              href: '#'
-            },
-            {
-              id: 3,
-              label: 'Informacje o pliku plików cookie',
-              href: '#'
-            },
-            {
-              id: 4,
-              label: 'Inne wyjątki',
-              href: '#'
-            },
             {
               id: 5,
               label: 'Kontakty',

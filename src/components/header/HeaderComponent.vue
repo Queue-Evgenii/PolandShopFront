@@ -41,7 +41,7 @@
           </form>
           <div class="top-header__actions actions-header flex">
             <router-link :to="{name: 'favorite'}" class="actions-header__favorite actions-header__item flex">
-              <div class="actions-header__link hover-underline">Uratowany</div>
+              <div class="actions-header__link hover-underline">Ulubione</div>
               <div class="actions-header__favorite-icon"><span>{{ this.$store.state.favoriteItems.length }}</span></div>
             </router-link>
             <div class="actions-header__cart actions-header__item flex" @click="openPopup">
