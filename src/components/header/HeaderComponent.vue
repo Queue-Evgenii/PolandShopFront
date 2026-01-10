@@ -21,7 +21,7 @@
             </div>
             <div :class="{active: burgerActive}" @click="burgerClose()" class="menu__background"></div>
           </nav>
-          <a href="/" class="top-header__logo"><img src="@/assets/img/header/logo.png" alt=""></a>
+          <a href="/shop" class="top-header__logo"><img src="@/assets/img/header/logo.png" alt=""></a>
           <div class="top-header__phones phones-header flex">
             <button
               @click="activePhones = !activePhones"

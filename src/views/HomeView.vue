@@ -66,26 +66,20 @@ export default {
           id: 1,
           url: '#',
           label: 'Dodaj do koszyka',
-          image: require('@/assets/img/main/slider/slide-bg.png')
+          image: require('@/assets/img/main/slider/1.jpg')
         },
         {
           id: 2,
           url: '#',
           label: 'Dodaj to koszyka',
-          image: require('@/assets/img/main/slider/slide-bg.png')
+          image: require('@/assets/img/main/slider/2.jpg')
         },
         {
           id: 3,
           url: '#',
           label: 'Dodaj to koszyka',
-          image: require('@/assets/img/main/slider/slide-bg.png')
+          image: require('@/assets/img/main/slider/3.jpg')
         },
-        {
-          id: 4,
-          url: '#',
-          label: 'Dodaj to koszyka',
-          image: require('@/assets/img/main/slider/slide-bg.png')
-        }
       ],
     }
   },

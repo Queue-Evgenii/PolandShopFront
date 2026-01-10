@@ -69,6 +69,11 @@ const routes = [
     name: 'confirmed',
     component: () => import('../views/ConfirmedView.vue')
   },
+  {
+    path: '/kontakt',
+    name: 'kontakt',
+    component: () => import('../views/KontaktView.vue')
+  },
 ]
 
 const router = createRouter({

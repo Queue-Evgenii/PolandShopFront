@@ -269,8 +269,7 @@ export default {
             {
               id: 5,
               label: 'Kontakty',
-              href: 'https://polandgroups.pl/kontakt',
-              extern: true,
+              href: '/kontakt',
             }
           ]
         },

@@ -6,8 +6,12 @@
     <li v-for="item in categoryItems" :key="item.id">
       <router-link class="hover-underline" :to="{name: 'catalogList', params: {id: item.id}}">{{ item.name }}</router-link>
     </li>
+    <li>
+      <router-link class="hover-underline" :to="{name: 'kontakt'}">Kontakty</router-link>
+    </li>
   </ul>
   <ul v-else class="bottom-header__content flex">
+    <li class="skeleton-item"></li>
     <li class="skeleton-item"></li>
     <li class="skeleton-item"></li>
     <li class="skeleton-item"></li>
