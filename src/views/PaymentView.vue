@@ -149,7 +149,8 @@ export default {
       this.isLoading = true;
       this.$store.dispatch('submitCheckout', this.confirmData.id)
         .then(res => {
-          window.location.replace(`https://sandbox-go.przelewy24.pl/trnRequest/${res.data.token}`);
+          // window.location.replace(`https://sandbox-go.przelewy24.pl/trnRequest/${res.data.token}`);
+          window.location.replace(`https://secure.przelewy24.pl/trnRequest/${res.data.token}`);
         });
     },
     submitForm(value) {
