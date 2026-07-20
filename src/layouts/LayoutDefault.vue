@@ -14,6 +14,7 @@
       <cart-component :cartList="cartList" @closePopup="closePopup"/>
     </page-popup>
     <access-alert />
+    <cookie-banner />
   </div>
 </template>
 <style lang="stylus">
@@ -30,13 +31,15 @@ import FooterComponent from '../components/footer/FooterComponent'
 import PagePopup from '@/components/PagePopup'
 import AccessAlert from '@/components/AccessAlert'
 import CartComponent from '@/components/cart/CartComponent'
+import CookieBanner from '@/components/CookieBanner'
 export default {
   components: {
     HeaderComponent,
     FooterComponent,
     PagePopup,
     AccessAlert,
-    CartComponent
+    CartComponent,
+    CookieBanner
   },
   data () {
     return {
